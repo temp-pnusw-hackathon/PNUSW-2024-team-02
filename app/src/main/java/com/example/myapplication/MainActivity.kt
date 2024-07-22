@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
     fun goToMainActivity(user: FirebaseUser) {
         // Firebase에 등록된 계정일 경우에만 메인 화면으로 이동
         if (user != null) {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, MainNavigationbar::class.java))
         }
     }
 
