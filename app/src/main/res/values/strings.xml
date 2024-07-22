@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="home">"홈"</string>
+    <string name="detail">"디테일"</string>
+    <string name="map">"맵"</string>
+    <string name="mypage">"마이페이지"</string>
+
 </resources>
