@@ -4,17 +4,18 @@
     <item
         android:icon="@drawable/baseline_home_24"
         android:id="@+id/home"
-        android:title="Home" />
+        android:title="홈"
+        />
     <item
         android:icon="@drawable/baseline_format_list_bulleted_24"
         android:id="@+id/detail"
-        android:title="Detail" />
+        android:title="디테일" />
     <item
         android:icon="@drawable/baseline_map_24"
         android:id="@+id/map"
-        android:title="Map" />
+        android:title="맵" />
     <item
         android:icon="@drawable/baseline_person_24"
         android:id="@+id/mypage"
-        android:title="Mypage" />
+        android:title="마이페이지" />
 </menu>
