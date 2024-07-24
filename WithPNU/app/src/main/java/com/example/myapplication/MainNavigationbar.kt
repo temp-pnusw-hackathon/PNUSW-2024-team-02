@@ -26,27 +26,19 @@ class MainNavigationbar : AppCompatActivity() {
                 R.id.detail-> replaceFragment(DetailFragment())
                 R.id.map-> replaceFragment(MapFragment())
                 R.id.mypage-> replaceFragment(MypageFragment())
-
                 else ->{
-
                 }
             }
             true
-
         }
-
-
-
-
     }
     private fun replaceFragment(fragment: Fragment){
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frame_layout, fragment)
+        fragmentTransaction.replace(R.id.fragment_container, fragment)
         fragmentTransaction.commit()
 
     }
-
 
 }
 
