@@ -53,6 +53,10 @@ class MainActivity : AppCompatActivity() {
             Log.i("Test Credentials", "Email : $email and Password : $password")
             signUp(email, password)
         }
+        finder_btn.setOnClickListener {
+            //비밀번호 찾기를 누를 경우 페이지 이동
+            startActivity(Intent(this, ForgetPasswordActivity::class.java))
+        }
     }
 
     fun signUp(email: String, password: String) {
@@ -60,6 +64,8 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "정보를 모두 입력해주세요", Toast.LENGTH_LONG).show()
             return
         }
+
+
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
