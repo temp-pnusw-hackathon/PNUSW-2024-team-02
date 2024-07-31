@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     lateinit var email_input: EditText
     lateinit var password_input: EditText
     lateinit var login_btn: Button
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
@@ -44,14 +44,16 @@ class MainActivity : AppCompatActivity() {
             signIn(email, password)
         }
         signup_btn.setOnClickListener {
-            val email = email_input.text.toString()
-            val password = password_input.text.toString()
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "정보를 모두 입력해주세요", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
-            Log.i("Test Credentials", "Email : $email and Password : $password")
-            signUp(email, password)
+//            val email = email_input.text.toString()
+//            val password = password_input.text.toString()
+//            if (email.isEmpty() || password.isEmpty()) {
+//                Toast.makeText(this, "정보를 모두 입력해주세요", Toast.LENGTH_LONG).show()
+//                return@setOnClickListener
+//            }
+//            Log.i("Test Credentials", "Email : $email and Password : $password")
+//            signUp(email, password)
+
+            startActivity(Intent(this, SignUp::class.java))
         }
         finder_btn.setOnClickListener {
             //비밀번호 찾기를 누를 경우 페이지 이동

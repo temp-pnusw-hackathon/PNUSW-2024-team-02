@@ -16,9 +16,8 @@ pluginManagement {
         id("org.jetbrains.kotlin.android") version "1.9.0"
         //alias(libs.plugins.jetbrains.kotlin.android)
         id("com.google.gms.google-services") version "4.4.2"
-//        alias(libs.plugins.jetbrains.kotlin.android)
-        //alias(libs.plugins.jetbrains.kotlin.android)
-        //alias(libs.plugins.google.gms.google.services)
+
+
 
     }
 }

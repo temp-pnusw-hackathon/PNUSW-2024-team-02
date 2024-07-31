@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="pusanBlue">#FF2056AE</color>
     <color name="pusanGreen">#FF00A650</color>
+    <color name="gray">#FF979797</color>
 </resources>
