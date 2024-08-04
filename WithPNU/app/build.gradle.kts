@@ -52,6 +52,9 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.4")) // Firebase BOM 버전 업데이트
     implementation("com.google.firebase:firebase-auth-ktx") // 버전 명시 제거
 
+    implementation("com.google.android.gms:play-services-maps:18.0.2")
+    implementation(libs.play.services.location) // Google Maps SDK 추가
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
