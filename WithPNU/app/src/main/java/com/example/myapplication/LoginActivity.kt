@@ -40,6 +40,10 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "정보를 모두 입력해주세요", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
+            if (password.length < 8) {
+                Toast.makeText(this, "비밀번호는 8자리 이상어어야 합니다", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
             Log.i("Test Credentials", "Email : $email and Password : $password")
             signIn(email, password)
         }
