@@ -3,15 +3,148 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".HomeFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center"
+                android:text="보고 싶은 제휴 카테고리를 선택해 주세요"
+                android:textSize="21dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/total_btn"
+                    style="@style/HomeButtonStyle"
+                    android:text="전체"
+                    android:layout_marginLeft="0dp" />
+
+                <Button
+                    android:id="@+id/alcohol_btn"
+                    style="@style/HomeButtonStyle"
+                    android:text="술집" />
+
+                <Button
+                    android:id="@+id/cafe_btn"
+                    style="@style/HomeButtonStyle"
+                    android:text="카페" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/culture_btn"
+                    style="@style/HomeButtonStyle"
+                    android:text="문화"
+                    android:layout_marginLeft="0dp" />
+
+                <Button
+                    android:id="@+id/food_btn"
+                    style="@style/HomeButtonStyle"
+                    android:text="식품" />
+
+                <Button
+                    android:id="@+id/beauty_btn"
+                    style="@style/HomeButtonStyle"
+                    android:text="뷰티" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="19dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/edu_btn"
+                    style="@style/HomeButtonStyle"
+                    android:text="교육"
+                    android:layout_marginLeft="0dp" />
+
+                <Button
+                    android:id="@+id/medi_btn"
+                    style="@style/HomeButtonStyle"
+                    android:text="의료" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="새로 들어온 제휴업체예요"
+                    android:textSize="21dp" />
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/newInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:contentDescription="DB 연결 후 나타나는 정보" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="공지사항"
+                    android:textSize="21dp" />
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/notice"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:contentDescription="DB 연결 후 나타나는 정보" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="home_fragment"
-        android:layout_gravity="center"
-        android:textSize="26dp"
-        />
+
+
 
 </FrameLayout>
