@@ -44,6 +44,7 @@ class SignUp : AppCompatActivity() {
 
         )
 
+
         val collegeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, colleges)
         collegeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerColleges.adapter = collegeAdapter

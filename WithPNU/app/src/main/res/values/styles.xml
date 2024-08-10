@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="HomeButtonStyle">
+        <item name="android:layout_width">90dp</item>
+        <item name="android:layout_height">96dp</item>
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:layout_marginLeft">25dp</item>
+
+    </style>
+</resources>
