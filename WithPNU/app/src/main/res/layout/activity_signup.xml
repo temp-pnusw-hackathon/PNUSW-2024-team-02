@@ -36,6 +36,7 @@
                 android:textSize="50dp"
                 />
 
+
             <TextView
                 android:id="@+id/email_text"
                 android:layout_width="match_parent"
@@ -44,75 +45,52 @@
                 android:text="부산대 웹메일을 적어주세요"
                 android:textSize="20dp" />
 
-            <EditText
-                android:id="@+id/signup_email_input"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/white"
-                android:hint="Email@pusan.ac.kr"
-                android:inputType="text"
-                android:padding="18dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/gray"
-                android:textSize="20sp" />
+                android:orientation="horizontal"
+                android:padding="8dp"
+                >
 
-            <Button
-                android:id="@+id/authentic_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/black"
-                android:text="메일 전송하기 "
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                <EditText
+                    android:id="@+id/signup_email_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/white"
+                    android:hint="Email@pusan.ac.kr"
+                    android:inputType="textEmailAddress"
+                    android:padding="18dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/authentic_button"
+                    android:background="@drawable/right_rounded_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="64dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="-20dp"
+                    android:text="인증"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
 
             <TextView
-                android:id="@+id/email_check_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="인증코드를 적어주세요"
-                android:textSize="20dp" />
-
-            <EditText
-                android:id="@+id/signup_email_input_check"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/white"
-                android:hint="이메일 인증코드"
-                android:inputType="text"
-                android:padding="18dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/gray"
-                android:textSize="20sp" />
-
-
-
-
-
-                <Button
-                    android:id="@+id/authentic_check_button"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="16dp"
-                    android:backgroundTint="@color/black"
-                    android:text="확인"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-
-
+                android:text="인증메일이 발송되었습니다. 메일을 확인해주세요"
+                android:textSize="12sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="10dp">
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/password_text"
@@ -120,8 +98,7 @@
                     android:layout_height="wrap_content"
                     android:text="비밀번호"
                     android:textSize="20sp"
-                    android:layout_gravity="left"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="10dp"
                     android:gravity="center_vertical" />
 
                 <ImageButton
@@ -129,7 +106,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="password"
+                    android:padding="16dp"
                     android:src="@drawable/info_24px" />
+
             </LinearLayout>
 
             <EditText
@@ -207,26 +187,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="10dp">
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/nickname_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="닉네임"
+                    android:padding="10dp"
                     android:textSize="20sp"
-                    android:layout_gravity="left"
-                    android:layout_marginRight="5dp"
                     android:gravity="center_vertical" />
 
-
-                <ImageButton
-                    android:id="@+id/nickname_check_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/check_circle_24px"
-                    android:background="?attr/selectableItemBackgroundBorderless" />
             </LinearLayout>
 
 
