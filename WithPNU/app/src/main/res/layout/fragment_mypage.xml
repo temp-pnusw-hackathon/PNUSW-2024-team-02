@@ -117,6 +117,7 @@
                         style="@style/BoldTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:padding="10dp"
                         android:text="계정" />
 
@@ -142,6 +143,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
+                        android:layout_marginTop="10dp"
                         android:text="커뮤니티" />
 
                     <TextView
@@ -178,6 +180,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
+                        android:layout_marginTop="10dp"
                         android:text="이용안내" />
 
                     <TextView

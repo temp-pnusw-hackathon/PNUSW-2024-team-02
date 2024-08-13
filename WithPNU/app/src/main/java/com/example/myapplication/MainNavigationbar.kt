@@ -37,7 +37,7 @@ class MainNavigationbar : AppCompatActivity() {
                 R.id.home -> replaceFragment(HomeFragment())
                 R.id.detail -> replaceFragment(DetailFragment())
                 R.id.map -> checkLocationPermissionAndReplaceFragment()
-                R.id.mypage -> replaceFragment(MypageFragment())
+                R.id.mypage -> replaceFragment(MypageAdminFragment())
                 else -> {
                 }
             }
