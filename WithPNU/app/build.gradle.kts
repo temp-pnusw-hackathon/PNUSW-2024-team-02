@@ -47,13 +47,14 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-
+    implementation ("androidx.recyclerview:recyclerview:1.1.0") // recyclerview 사용하기 위한 한줄
     // Firebase 종속성 수정
     implementation(platform("com.google.firebase:firebase-bom:32.7.4")) // Firebase BOM 버전 업데이트
     implementation("com.google.firebase:firebase-auth-ktx") // 버전 명시 제거
 
     implementation("com.google.android.gms:play-services-maps:18.0.2")
-    implementation(libs.play.services.location) // Google Maps SDK 추가
+    implementation(libs.play.services.location)
+    implementation(libs.androidx.recyclerview) // Google Maps SDK 추가
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
