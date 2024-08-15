@@ -65,29 +65,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun signUp(email: String, password: String) {
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "정보를 모두 입력해주세요", Toast.LENGTH_LONG).show()
-            return
-        }
-
-
-
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Firebase DB에 저장되어 있는 계정이 아닐 경우
-                    // 입력한 계정을 새로 등록한다
-                    task.result?.user?.let { goToMainActivity(it) }
-                } else if (!task.exception?.message.isNullOrEmpty()) {
-                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
-                } else {
-                    // 입력한 계정 정보가 이미 Firebase DB에 있는 경우
-                    signIn(email, password)
-                }
-            }
-    }
-
     // 회원가입 및 로그인 성공 시 메인 화면으로 이동하는 함수
     fun goToMainActivity(user: FirebaseUser) {
         // Firebase에 등록된 계정일 경우에만 메인 화면으로 이동
