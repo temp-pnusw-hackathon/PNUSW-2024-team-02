@@ -81,7 +81,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="홍길동(닉네임)"
+                                    android:text="세론"
                                     android:textSize="18sp"
                                     android:textStyle="bold" />
 
@@ -91,14 +91,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="과 이름이 보여지는 곳" />
+                                    android:text="정보컴퓨터공학대학 학생회" />
 
                                 <ImageView
                                     android:id="@+id/student_tag_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
-                                    android:src="@drawable/student_tag" />
+                                    android:src="@drawable/admin_tag" />
 
                             </LinearLayout>
 
@@ -117,37 +117,12 @@
                         style="@style/BoldTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:padding="10dp"
-                        android:text="계정" />
-
-                    <TextView
-                        android:id="@+id/edit_profile_btn"
-                        style="@style/RegularTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
-                        android:drawablePadding="8dp"
-                        android:gravity="center_vertical"
-                        android:padding="16dp"
-                        android:text="내 정보 수정하기" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="#E0E0E0" />
-
-                    <TextView
-                        style="@style/BoldTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:layout_marginTop="10dp"
-                        android:text="커뮤니티" />
+                        android:text="글 관리하기" />
 
                     <TextView
-                        android:id="@+id/view_review_btn"
+                        android:id="@+id/partnership_notice_btn"
                         style="@style/RegularTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -156,10 +131,10 @@
                         android:drawablePadding="8dp"
                         android:gravity="center_vertical"
                         android:padding="16dp"
-                        android:text="내가 작성한 리뷰 보기" />
+                        android:text="제휴공지 작성하기" />
 
                     <TextView
-                        android:id="@+id/favorites_btn"
+                        android:id="@+id/edit_partnership_notice_btn"
                         style="@style/RegularTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -168,7 +143,22 @@
                         android:drawablePadding="8dp"
                         android:gravity="center_vertical"
                         android:padding="16dp"
-                        android:text="즐겨찾기" />
+                        android:text="제휴공지 관리하기" />
+
+
+
+                    <TextView
+                        android:id="@+id/update_notice_btn"
+                        style="@style/RegularTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:padding="16dp"
+                        android:text="공지사항 작성하기" />
+
 
                     <View
                         android:layout_width="match_parent"

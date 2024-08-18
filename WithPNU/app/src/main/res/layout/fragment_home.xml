@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,80 +21,144 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|center"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:text="보고 싶은 제휴 카테고리를 선택해 주세요"
-                android:textSize="21dp" />
-
-            <LinearLayout
+                android:textSize="21sp" />
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/total_btn"
-                    style="@style/HomeButtonStyle"
-                    android:text="전체"
-                    android:layout_marginLeft="0dp" />
-
-                <Button
-                    android:id="@+id/alcohol_btn"
-                    style="@style/HomeButtonStyle"
-                    android:text="술집" />
-
-                <Button
-                    android:id="@+id/cafe_btn"
-                    style="@style/HomeButtonStyle"
-                    android:text="카페" />
-
-
-            </LinearLayout>
+                android:padding="8dp"
+                android:textColor="@color/gray"
+                android:text="카테고리에 맞는 제휴업체를 소개시켜드릴게요"
+                android:textSize="15sp" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/culture_btn"
-                    style="@style/HomeButtonStyle"
-                    android:text="문화"
-                    android:layout_marginLeft="0dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/food_btn"
-                    style="@style/HomeButtonStyle"
-                    android:text="식품" />
+                    <ImageButton
+                        android:id="@+id/total_view_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:padding="0dp"
+                        android:src="@drawable/totalview"
+                        android:contentDescription="전체보기버튼" />
 
-                <Button
-                    android:id="@+id/beauty_btn"
-                    style="@style/HomeButtonStyle"
-                    android:text="뷰티" />
+
+                    <ImageButton
+                        android:id="@+id/bar_view_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:padding="0dp"
+                        android:src="@drawable/bar"
+                        android:contentDescription="술집버튼"/>
+
+                    <ImageButton
+                        android:id="@+id/cafe_view_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:padding="0dp"
+                        android:src="@drawable/cafe"
+                        android:contentDescription="카페버튼" />
 
 
-            </LinearLayout>
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="19dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/edu_btn"
-                    style="@style/HomeButtonStyle"
-                    android:text="교육"
-                    android:layout_marginLeft="0dp" />
+                    <ImageButton
+                        android:id="@+id/culture_view_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:padding="0dp"
+                        android:src="@drawable/culture"
+                        android:contentDescription="문화버튼" />
 
-                <Button
-                    android:id="@+id/medi_btn"
-                    style="@style/HomeButtonStyle"
-                    android:text="의료" />
+                    <ImageButton
+                        android:id="@+id/food_view_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:padding="0dp"
+                        android:src="@drawable/food"
+                        android:contentDescription="음식점앤식품버튼" />
 
+                    <ImageButton
+                        android:id="@+id/healthAndBeauty_view_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:padding="0dp"
+                        android:src="@drawable/health_and_beauty"
+                        android:contentDescription="헬스앤뷰티버튼" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+
+                    <ImageButton
+                        android:id="@+id/edu_view_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/edu"
+                        android:contentDescription="교육버튼" />
+
+                    <ImageButton
+                        android:id="@+id/medicalAndLaw_view_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:padding="0dp"
+                        android:src="@drawable/medical_and_law"
+                        android:contentDescription="의료앤법버튼" />
+
+                    <!-- 간격 유지를 위해 만든 보이지 않는 빈 버튼 -->
+                    <ImageButton
+                        android:id="@+id/empty_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:padding="0dp"
+                        android:src="@drawable/totalview"
+                        android:visibility="invisible"
+                        android:contentDescription="빈버튼" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -101,13 +166,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="새로 들어온 제휴업체예요"
-                    android:textSize="21dp" />
+                    android:textSize="21sp" />
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/newInfo"
@@ -128,7 +194,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="공지사항"
-                    android:textSize="21dp" />
+                    android:textSize="21sp" />
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/notice"
