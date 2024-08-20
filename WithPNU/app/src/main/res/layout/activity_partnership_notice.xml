@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".PartnershipNoticeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/titleEditText"
+            android:layout_width="match_parent"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:layout_height="wrap_content"
+            android:hint="제목"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/contentEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="내용을 입력해주세요"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:maxLines="10"
+            android:scrollbars="vertical" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/addPhotoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:contentDescription="사진 추가하기"
+                app:srcCompat="@drawable/pick_picture" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/photosRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                 />
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/baseline_location_pin_24"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="5dp"
+            android:text="위치 추가하기"
+            style="@style/RegularTextStyle"
+        />
+        <Button
+            android:id="@+id/addLocationButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gray_input"
+            android:layout_margin="16dp"
+            android:drawableRight="@drawable/baseline_search_24"
+            style="@style/RegularTextStyle"
+            android:paddingEnd="16dp"
+
+            />
+
+        <TextView
+            android:id="@+id/periodTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="제휴 기간"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="5dp"
+            android:drawableLeft="@drawable/baseline_calendar_month_24"
+            style="@style/RegularTextStyle"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/periodEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:inputType="date"
+            android:layout_margin="16dp"
+            android:background="@drawable/gray_input"
+            android:hint="24/02/05~25/02/05"
+            android:gravity="center"
+            style="@style/RegularTextStyle"
+            android:focusable="false"
+            android:clickable="true" />
+
+        <Button
+            android:id="@+id/uploadButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="업로드하기"
+            android:background="@drawable/rounded_corner"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/pusanBlue" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

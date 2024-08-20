@@ -12,13 +12,8 @@ pluginManagement {
     }
     plugins {
         id("com.android.application") version "8.5.0"
-        //alias(libs.plugins.android.application)
         id("org.jetbrains.kotlin.android") version "1.9.0"
-        //alias(libs.plugins.jetbrains.kotlin.android)
         id("com.google.gms.google-services") version "4.4.2"
-
-
-
     }
 }
 dependencyResolutionManagement {
