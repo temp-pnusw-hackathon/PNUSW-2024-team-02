@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="정보 수정"
+                android:textAlignment="center"
+                android:textSize="21dp"
+                android:padding="15dp"
+                android:textColor="@color/black"
+                android:textAppearance="@style/BoldTextStyle" />
+
+            <ImageButton
+                android:id="@+id/go_back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/go_back"
+                android:background="@android:color/transparent"
+                android:layout_marginLeft="20dp"
+                android:padding="10dp"
+                android:contentDescription="마이페이지 이동 버튼"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="닉네임 변경"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="0dp"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:padding="10dp" />
+
+            <EditText
+                android:id="@+id/change_nickname"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="33dp"
+                android:inputType="text"
+                android:textSize="20sp"
+                android:hint="nickname" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호 변경"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:padding="10dp" />
+
+            <EditText
+                android:id="@+id/change_password"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="33dp"
+                android:inputType="text"
+                android:textSize="20sp"
+                android:hint="password" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호 확인"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:padding="10dp" />
+
+            <EditText
+                android:id="@+id/check_password"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="33dp"
+                android:inputType="text"
+                android:textSize="20sp"
+                android:hint="check_password"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="단과대학 변경"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:padding="10dp" />
+
+            <Spinner
+                android:id="@+id/spinner_colleges"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="33dp"
+                android:padding="13dp"
+                android:spinnerMode="dialog"
+                android:background="@drawable/gray_input" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="학과(부)/전공 변경"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:padding="10dp" />
+
+            <Spinner
+                android:id="@+id/spinner_major"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="33dp"
+                android:padding="13dp"
+                android:spinnerMode="dialog"
+                android:background="@drawable/gray_input" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="프로필 사진 변경하기"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:padding="10dp" />
+
+            <ImageButton
+                android:id="@+id/go_mypage_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/pick_picture"
+                android:background="@android:color/transparent"
+                android:layout_marginLeft="30dp"
+                android:contentDescription="프로필 사진 변경 버튼"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/revise_btn"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:padding="50dp"
+                android:contentDescription="수정 완료 버튼"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
