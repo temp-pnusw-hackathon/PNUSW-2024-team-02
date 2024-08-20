@@ -53,8 +53,9 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx") // 버전 명시 제거
 
     implementation("com.google.android.gms:play-services-maps:18.0.2")
-    implementation(libs.play.services.location)
-    implementation(libs.androidx.recyclerview) // Google Maps SDK 추가
+    implementation ("com.google.firebase:firebase-dynamic-links-ktx")
+    implementation ("com.google.firebase:firebase-analytics-ktx")
+    implementation(libs.play.services.location) // Google Maps SDK 추가
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
