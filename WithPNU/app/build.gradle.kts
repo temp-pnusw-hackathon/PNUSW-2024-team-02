@@ -1,7 +1,9 @@
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    kotlin("kapt") // kapt 플러그인 추가
 }
 
 android {
@@ -28,7 +30,7 @@ android {
         }
     }
 
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
     }
 
@@ -36,6 +38,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -47,17 +50,27 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation ("androidx.recyclerview:recyclerview:1.1.0") // recyclerview 사용하기 위한 한줄
-    // Firebase 종속성 수정
-    implementation(platform("com.google.firebase:firebase-bom:32.7.4")) // Firebase BOM 버전 업데이트
-    implementation("com.google.firebase:firebase-auth-ktx") // 버전 명시 제거
+    implementation("androidx.recyclerview:recyclerview:1.1.0") // RecyclerView 라이브러리
 
+    // Firebase 종속성
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-dynamic-links-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation ("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.android.gms:play-services-maps:18.0.2")
-    implementation ("com.google.firebase:firebase-dynamic-links-ktx")
-    implementation ("com.google.firebase:firebase-analytics-ktx")
-    implementation(libs.play.services.location) // Google Maps SDK 추가
+    implementation(libs.play.services.location) // Google Maps SDK
+    implementation("com.google.android.libraries.places:places:3.2.0")
+
+    // Glide 라이브러리 추가
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    kapt("com.github.bumptech.glide:compiler:4.15.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
 }
+

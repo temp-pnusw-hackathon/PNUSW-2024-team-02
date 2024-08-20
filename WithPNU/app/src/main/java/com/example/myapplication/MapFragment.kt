@@ -20,6 +20,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.location.LocationServices
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -30,6 +34,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var mMap: GoogleMap
+    private lateinit var placesClient: PlacesClient
 
     private val defaultLocation = LatLng(35.231, 129.083) // 부산대 위치
 
@@ -39,6 +44,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        // Places API 초기화
+        Places.initialize(requireContext(), "YOUR_API_KEY_HERE")
+        placesClient = Places.createClient(requireContext())
     }
 
     override fun onCreateView(
@@ -78,6 +87,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     location?.let {
                         val currentLatLng = LatLng(location.latitude, location.longitude)
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+                        fetchNearbyPlaces(currentLatLng) // 현재 위치 기반으로 가게 데이터 가져오기
                     }
                 }
             } else {
@@ -90,6 +100,37 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             )
         }
     }
+
+    private fun fetchNearbyPlaces(latLng: LatLng) {
+        // 권한 확인
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            return
+        }
+
+        val placeFields = listOf(Place.Field.NAME, Place.Field.LAT_LNG)
+        val request = FindCurrentPlaceRequest.newInstance(placeFields)
+
+        // 장소 정보 요청
+        placesClient.findCurrentPlace(request).addOnSuccessListener { response ->
+            for (placeLikelihood in response.placeLikelihoods) {
+                val place = placeLikelihood.place
+                val placeLatLng = place.latLng
+                if (placeLatLng != null) {
+                    mMap.addMarker(
+                        MarkerOptions()
+                            .position(placeLatLng)
+                            .title(place.name)
+                    )
+                }
+            }
+        }.addOnFailureListener { exception ->
+            exception.printStackTrace()
+            // 오류 처리 (예: 로그 출력)
+        }
+    }
+
 
     private fun isLocationEnabled(): Boolean {
         val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
