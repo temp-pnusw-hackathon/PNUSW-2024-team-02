@@ -29,28 +29,26 @@ import java.util.*
 
 class PartnershipNoticeActivity : AppCompatActivity() {
 
-    // Firebase Firestore 인스턴스
+    // Firebase Firestore 인스턴스 생성
     private val db = FirebaseFirestore.getInstance()
 
-    // 날짜를 표시할 EditText
+    // UI 요소 선언
     private lateinit var periodEditText: EditText
-
-    // 위치를 추가할 Button
     private lateinit var addLocationButton: Button
-
-    // 사진 RecyclerView와 어댑터
     private lateinit var photosRecyclerView: RecyclerView
     private val selectedPhotos = mutableListOf<String>() // 선택된 사진 URI 목록
     private val galleryAdapter = GalleryAdapter(selectedPhotos)
 
-    // 시작 날짜와 종료 날짜를 저장할 Calendar 변수
+    // 날짜 관련 변수 선언
     private var startDate: Calendar? = null
     private var endDate: Calendar? = null
-    private var selectedLatLng: LatLng? = null // 선택된 위치의 LatLng
+
+    // 위치 관련 변수 선언
+    private var selectedLatLng: LatLng? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge() // Edge-to-edge 화면 모드 활성화
         setContentView(R.layout.activity_partnership_notice)
 
         // 시스템 바의 패딩을 설정하여 전체 화면 모드 적용
@@ -60,33 +58,29 @@ class PartnershipNoticeActivity : AppCompatActivity() {
             insets
         }
 
-        // periodEditText 초기화 및 클릭 리스너 설정
+        // UI 요소 초기화 및 이벤트 리스너 설정
         periodEditText = findViewById(R.id.periodEditText)
         periodEditText.setOnClickListener {
-            showDateRangePicker()
+            showDateRangePicker() // 날짜 범위 선택 다이얼로그 표시
         }
 
-        // addLocationButton 초기화 및 클릭 리스너 설정
         addLocationButton = findViewById(R.id.addLocationButton)
         addLocationButton.setOnClickListener {
-            openMapActivity()
+            openMapActivity() // 지도 화면 열기
         }
 
-        // 사진 RecyclerView 초기화
         photosRecyclerView = findViewById(R.id.photosRecyclerView)
         photosRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         photosRecyclerView.adapter = galleryAdapter
 
-        // 사진 추가 버튼 설정
         val addPhotoButton: ImageButton = findViewById(R.id.addPhotoButton)
         addPhotoButton.setOnClickListener {
-            selectPhotosFromGallery()
+            selectPhotosFromGallery() // 갤러리에서 사진 선택
         }
 
-        // 업로드 버튼 설정
         val uploadButton: Button = findViewById(R.id.uploadButton)
         uploadButton.setOnClickListener {
-            uploadDataToFirestore()
+            uploadDataToFirestore() // Firestore에 데이터 업로드
         }
     }
 
@@ -95,17 +89,33 @@ class PartnershipNoticeActivity : AppCompatActivity() {
         val today = Calendar.getInstance()
 
         DatePickerDialog(this, { _, year, month, dayOfMonth ->
+            // 시작 날짜 선택
             startDate = Calendar.getInstance().apply {
-                set(year, month, dayOfMonth)
+                set(Calendar.YEAR, year)
+                set(Calendar.MONTH, month)
+                set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                clearTime() // 시간 정보를 제거하여 년/월/일만 저장
             }
             DatePickerDialog(this, { _, endYear, endMonth, endDayOfMonth ->
+                // 종료 날짜 선택
                 endDate = Calendar.getInstance().apply {
-                    set(endYear, endMonth, endDayOfMonth)
+                    set(Calendar.YEAR, endYear)
+                    set(Calendar.MONTH, endMonth)
+                    set(Calendar.DAY_OF_MONTH, endDayOfMonth)
+                    clearTime() // 시간 정보를 제거하여 년/월/일만 저장
                 }
-                updatePeriodEditText()
+                updatePeriodEditText() // 선택된 날짜를 EditText에 표시
             }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH)).show()
 
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH)).show()
+    }
+
+    // Calendar 객체에서 시간 정보를 제거하는 확장 함수
+    private fun Calendar.clearTime() {
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
     }
 
     // 선택된 두 날짜를 EditText에 표시하는 메서드
@@ -129,7 +139,7 @@ class PartnershipNoticeActivity : AppCompatActivity() {
             if (lat != null && lng != null) {
                 selectedLatLng = LatLng(lat, lng)
             }
-            addLocationButton.text = placeName
+            addLocationButton.text = placeName // 선택된 위치 이름을 버튼에 표시
         }
     }
 
@@ -211,7 +221,8 @@ class PartnershipNoticeActivity : AppCompatActivity() {
         // 현재 사용자 정보 가져오기
         val currentUser = FirebaseAuth.getInstance().currentUser
 
-        if (title.isNotEmpty() && content.isNotEmpty() && currentUser != null && selectedLatLng != null) {
+        // 모든 필드가 올바르게 채워졌는지 확인
+        if (title.isNotEmpty() && content.isNotEmpty() && currentUser != null && selectedLatLng != null && startDate != null && endDate != null) {
             // Firestore에 저장할 데이터 생성
             val data = hashMapOf(
                 "title" to title,
@@ -219,20 +230,25 @@ class PartnershipNoticeActivity : AppCompatActivity() {
                 "location" to GeoPoint(selectedLatLng!!.latitude, selectedLatLng!!.longitude),
                 "postedDate" to Timestamp.now(),
                 "uid" to currentUser.uid,
-                "photos" to selectedPhotos
+                "photos" to selectedPhotos,
+                "startDate" to Timestamp(startDate!!.time), // 년/월/일만 저장된 시작 날짜
+                "endDate" to Timestamp(endDate!!.time) // 년/월/일만 저장된 종료 날짜
             )
 
             // Firestore에 데이터 저장
             db.collection("partnershipinfo")
                 .add(data)
                 .addOnSuccessListener {
+                    // 업로드 성공 시 Toast 메시지와 함께 Activity 종료
                     Toast.makeText(this, "데이터 업로드 성공", Toast.LENGTH_SHORT).show()
                     finish() // 현재 Activity를 종료하여 이전 Fragment로 돌아감
                 }
                 .addOnFailureListener { e ->
+                    // 업로드 실패 시 Toast 메시지 출력
                     Toast.makeText(this, "데이터 업로드 실패: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         } else {
+            // 필드가 비어 있는 경우 경고 메시지 출력
             Toast.makeText(this, "모든 필드를 채워주세요.", Toast.LENGTH_SHORT).show()
         }
     }

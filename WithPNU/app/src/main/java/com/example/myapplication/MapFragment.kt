@@ -36,6 +36,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var placesClient: PlacesClient
 
+    // 기본 위치를 부산대 위치로 설정
     private val defaultLocation = LatLng(35.231, 129.083) // 부산대 위치
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +56,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
+
         // 지도 초기화
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -64,16 +66,21 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         if (::mMap.isInitialized) {
-            updateMap()
+            updateMap() // 지도 업데이트
         }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 15f)) // 기본 위치를 부산대로 설정
+
+        // 기본 위치를 부산대로 설정하고 초기 줌 레벨 설정
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 15f))
+
+        // 지도 업데이트 실행
         updateMap()
     }
 
+    // 사용자의 위치 정보로 지도를 업데이트하는 메서드
     private fun updateMap() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED
@@ -87,11 +94,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     location?.let {
                         val currentLatLng = LatLng(location.latitude, location.longitude)
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
-                        fetchNearbyPlaces(currentLatLng) // 현재 위치 기반으로 가게 데이터 가져오기
+
+                        // 주변 장소 검색
+                        fetchNearbyPlaces(currentLatLng)
                     }
                 }
             } else {
-                showLocationSettingDialog()
+                showLocationSettingDialog() // 위치 설정 다이얼로그 표시
             }
         } else {
             requestPermissions(
@@ -101,42 +110,40 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    // Google Places API를 사용해 주변 장소 정보를 가져오는 메서드
     private fun fetchNearbyPlaces(latLng: LatLng) {
-        // 권한 확인
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
-            return
-        }
-
         val placeFields = listOf(Place.Field.NAME, Place.Field.LAT_LNG)
         val request = FindCurrentPlaceRequest.newInstance(placeFields)
 
-        // 장소 정보 요청
-        placesClient.findCurrentPlace(request).addOnSuccessListener { response ->
-            for (placeLikelihood in response.placeLikelihoods) {
-                val place = placeLikelihood.place
-                val placeLatLng = place.latLng
-                if (placeLatLng != null) {
-                    mMap.addMarker(
-                        MarkerOptions()
-                            .position(placeLatLng)
-                            .title(place.name)
-                    )
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            placesClient.findCurrentPlace(request).addOnSuccessListener { response ->
+                for (placeLikelihood in response.placeLikelihoods) {
+                    val place = placeLikelihood.place
+                    val placeLatLng = place.latLng
+                    if (placeLatLng != null) {
+                        mMap.addMarker(
+                            MarkerOptions()
+                                .position(placeLatLng)
+                                .title(place.name)
+                        )
+                    }
                 }
+            }.addOnFailureListener { exception ->
+                exception.printStackTrace()
+                // 오류 처리 (예: 로그 출력)
             }
-        }.addOnFailureListener { exception ->
-            exception.printStackTrace()
-            // 오류 처리 (예: 로그 출력)
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
         }
     }
 
-
+    // 사용자의 위치 서비스 활성화 여부 확인 메서드
     private fun isLocationEnabled(): Boolean {
         val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
 
+    // 위치 서비스 설정 다이얼로그 표시 메서드
     private fun showLocationSettingDialog() {
         AlertDialog.Builder(requireContext())
             .setTitle("위치 서비스 비활성화")
