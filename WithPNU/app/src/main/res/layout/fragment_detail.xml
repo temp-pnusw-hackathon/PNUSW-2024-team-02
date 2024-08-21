@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:text="로그인 정보에 따라\n 알맞은 제휴 업체를 보여드려요"
             android:textAlignment="center"
+            android:textColor="@color/black"
             android:textSize="21dp" />
 
         <HorizontalScrollView
