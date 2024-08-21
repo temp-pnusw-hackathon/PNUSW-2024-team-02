@@ -113,4 +113,5 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         setResult(Activity.RESULT_OK, resultIntent)
         finish()
     }
+    
 }
