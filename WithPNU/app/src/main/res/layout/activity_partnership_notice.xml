@@ -73,7 +73,7 @@
             android:drawableRight="@drawable/baseline_search_24"
             style="@style/RegularTextStyle"
             android:paddingEnd="16dp"
-
+            android:contentDescription="클릭하면 위치 추가 페이지로 이동합니다"
             />
 
         <TextView
@@ -101,6 +101,15 @@
             style="@style/RegularTextStyle"
             android:focusable="false"
             android:clickable="true" />
+
+        <Spinner
+            android:id="@+id/spinner_categories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gray_input"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:spinnerMode="dialog" />
 
         <Button
             android:id="@+id/uploadButton"

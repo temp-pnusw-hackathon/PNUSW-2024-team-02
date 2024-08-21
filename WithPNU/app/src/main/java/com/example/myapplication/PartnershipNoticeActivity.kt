@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -82,7 +85,40 @@ class PartnershipNoticeActivity : AppCompatActivity() {
         uploadButton.setOnClickListener {
             uploadDataToFirestore() // Firestore에 데이터 업로드
         }
+
+        setupCategoriesSpinner()
     }
+    // 카테고리 선택 함수
+    private fun setupCategoriesSpinner() {
+        // 1. Spinner 참조 얻기
+        val spinner: Spinner = findViewById(R.id.spinner_categories) // 여기서 R.id.categories_spinner는 Spinner의 ID입니다.
+
+        // 2. 카테고리 데이터 정의
+        val categories = arrayOf("전체", "술집", "카페", "문화", "음식점•식품", "헬스•뷰티", "교육", "의료•법")
+
+        // 3. ArrayAdapter 생성
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+
+        // 4. 어댑터의 드롭다운 레이아웃 설정
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        // 5. Spinner에 어댑터 설정
+        spinner.adapter = adapter
+
+        // 6. 선택 이벤트 리스너 설정 (선택한 항목을 처리할 수 있습니다.)
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                // 선택된 항목의 위치에 따라 행동을 정의할 수 있습니다.
+                val selectedCategory = categories[position]
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // 아무 항목도 선택되지 않았을 때의 동작을 정의합니다.
+            }
+        }
+    }
+
 
     // 날짜 선택 다이얼로그를 표시하는 메서드
     private fun showDateRangePicker() {
