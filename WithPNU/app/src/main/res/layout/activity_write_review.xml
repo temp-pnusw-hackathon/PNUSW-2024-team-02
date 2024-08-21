@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/go_back"
+                android:id="@+id/go_detail_back_btn"
+                android:background="@android:color/transparent"
+                android:padding="20dp"
+                android:contentDescription="디테일 페이지로 돌아가는 버튼"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="평점 등록하기"
+                android:textColor="@color/black"
+                android:textAppearance="@style/BoldTextStyle"
+                android:paddingVertical="15dp"
+                android:textSize="21dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/baseline_location_pin_24"
+                android:layout_marginTop="16dp"
+                android:drawablePadding="5dp"
+                android:text="선택한 제휴 업체"
+                android:layout_marginLeft="20dp"
+                style="@style/RegularTextStyle" />
+
+            <Button
+                android:id="@+id/addLocationButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gray_input"
+                android:layout_margin="16dp"
+                android:drawableRight="@drawable/baseline_search_24"
+                style="@style/RegularTextStyle"
+                android:paddingEnd="16dp"
+                android:contentDescription="업체 등록하는 버튼"/>
+
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBar"
+                style="@android:style/Widget.DeviceDefault.Light.RatingBar"
+                android:layout_marginTop="12dp"
+                android:isIndicator="false"
+                android:layout_gravity="center"
+                android:numStars="5"
+                android:rating="0"
+                android:stepSize="2" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="리뷰 작성하기"
+                android:layout_marginTop="50dp"
+                android:textColor="@color/black"
+                android:textAppearance="@style/BoldTextStyle"
+                android:paddingVertical="15dp"
+                android:textSize="21dp" />
+
+
+            <EditText
+                android:id="@+id/titleEditText"
+                android:layout_width="match_parent"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:hint="제목"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/contentEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="리뷰를 작성해 주세요"
+                android:inputType="textMultiLine"
+                android:layout_marginHorizontal="20dp"
+                android:lines="3"
+                android:maxLines="10"
+                android:scrollbars="vertical" />
+
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/complete_btn"
+                android:padding="20dp"
+                android:background="@android:color/transparent"
+                android:layout_marginVertical="50dp"
+                android:contentDescription="작성 완료 버튼"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
