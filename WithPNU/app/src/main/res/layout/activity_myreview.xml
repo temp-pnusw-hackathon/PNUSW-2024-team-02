@@ -22,7 +22,20 @@
                 android:paddingVertical="15dp"
                 android:textSize="21dp" />
 
-            <androidx.recyclerview.widget.RecyclerView
+
+            <ImageButton
+                android:id="@+id/go_back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/go_back"
+                android:background="@android:color/transparent"
+                android:layout_marginLeft="10dp"
+                android:padding="10dp"
+                android:contentDescription="마이페이지 이동 버튼"/>
+
+
+
+            <androidx.appcompat.widget.AppCompatCheckedTextView
                 android:id="@+id/list_myReview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

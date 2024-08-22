@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/go_back"
                 android:background="@android:color/transparent"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:padding="10dp"
                 android:contentDescription="마이페이지 이동 버튼"/>
 
@@ -83,7 +83,7 @@
                 android:padding="10dp" />
 
             <EditText
-                android:id="@+id/check_password"
+                android:id="@+id/chㄱeck_password"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="33dp"
@@ -129,24 +129,6 @@
                 android:spinnerMode="dialog"
                 android:background="@drawable/gray_input" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="프로필 사진 변경하기"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:textSize="18dp"
-                android:textColor="@color/black"
-                android:padding="10dp" />
-
-            <ImageButton
-                android:id="@+id/go_mypage_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/pick_picture"
-                android:background="@android:color/transparent"
-                android:layout_marginLeft="30dp"
-                android:contentDescription="프로필 사진 변경 버튼"/>
 
             <ImageButton
                 android:layout_width="wrap_content"
