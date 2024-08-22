@@ -61,7 +61,7 @@ class SignUp : AppCompatActivity() {
         password_input.addTextChangedListener(createTextWatcher())
         password_check.addTextChangedListener(createTextWatcher())
 
-        setupSpinners()
+        setupCollegeSpinners()
 
         // 이메일 링크로 앱이 열렸을 때의 처리
         handleEmailLink(intent)
@@ -156,7 +156,8 @@ class SignUp : AppCompatActivity() {
         return true
     }
 
-    private fun setupSpinners() {
+
+    private fun setupCollegeSpinners() {
         val colleges = arrayOf(
             "전체", "인문대학", "사회과학대학", "자연과학대학", "공과대학", "사범대학", "경제통상대학", "경영대학",
             "약학대학", "생활과학대학", "예술대학", "나노과학기술대학", "간호대학", "의과대학", "정보의생명공학대학"
