@@ -73,7 +73,7 @@
             android:drawableRight="@drawable/baseline_search_24"
             style="@style/RegularTextStyle"
             android:paddingEnd="16dp"
-
+            android:contentDescription="제휴 업체 위치 등록"
             />
 
         <TextView
