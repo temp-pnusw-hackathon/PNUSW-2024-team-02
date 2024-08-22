@@ -6,14 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -39,6 +32,7 @@ class PartnershipNoticeActivity : AppCompatActivity() {
     private lateinit var periodEditText: EditText
     private lateinit var addLocationButton: Button
     private lateinit var photosRecyclerView: RecyclerView
+    private lateinit var spinnerCategories: Spinner
     private val selectedPhotos = mutableListOf<String>() // 선택된 사진 URI 목록
     private val galleryAdapter = GalleryAdapter(selectedPhotos)
 
@@ -48,6 +42,9 @@ class PartnershipNoticeActivity : AppCompatActivity() {
 
     // 위치 관련 변수 선언
     private var selectedLatLng: LatLng? = null
+
+    // 선택된 카테고리를 저장할 변수 선언
+    private var selectedCategory: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,12 +83,14 @@ class PartnershipNoticeActivity : AppCompatActivity() {
             uploadDataToFirestore() // Firestore에 데이터 업로드
         }
 
+        // Spinner 초기화 및 선택 이벤트 설정
         setupCategoriesSpinner()
     }
+
     // 카테고리 선택 함수
     private fun setupCategoriesSpinner() {
         // 1. Spinner 참조 얻기
-        val spinner: Spinner = findViewById(R.id.spinner_categories) // 여기서 R.id.categories_spinner는 Spinner의 ID입니다.
+        spinnerCategories = findViewById(R.id.spinner_categories) // 여기서 R.id.categories_spinner는 Spinner의 ID입니다.
 
         // 2. 카테고리 데이터 정의
         val categories = arrayOf("전체", "술집", "카페", "문화", "음식점•식품", "헬스•뷰티", "교육", "의료•법")
@@ -103,14 +102,13 @@ class PartnershipNoticeActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         // 5. Spinner에 어댑터 설정
-        spinner.adapter = adapter
+        spinnerCategories.adapter = adapter
 
         // 6. 선택 이벤트 리스너 설정 (선택한 항목을 처리할 수 있습니다.)
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        spinnerCategories.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 // 선택된 항목의 위치에 따라 행동을 정의할 수 있습니다.
-                val selectedCategory = categories[position]
-
+                selectedCategory = categories[position] // 선택된 카테고리를 변수에 저장
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -118,7 +116,6 @@ class PartnershipNoticeActivity : AppCompatActivity() {
             }
         }
     }
-
 
     // 날짜 선택 다이얼로그를 표시하는 메서드
     private fun showDateRangePicker() {
@@ -258,7 +255,7 @@ class PartnershipNoticeActivity : AppCompatActivity() {
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         // 모든 필드가 올바르게 채워졌는지 확인
-        if (title.isNotEmpty() && content.isNotEmpty() && currentUser != null && selectedLatLng != null && startDate != null && endDate != null) {
+        if (title.isNotEmpty() && content.isNotEmpty() && currentUser != null && selectedLatLng != null && startDate != null && endDate != null && selectedCategory != null) {
             // Firestore에 저장할 데이터 생성
             val data = hashMapOf(
                 "title" to title,
@@ -268,7 +265,8 @@ class PartnershipNoticeActivity : AppCompatActivity() {
                 "uid" to currentUser.uid,
                 "photos" to selectedPhotos,
                 "startDate" to Timestamp(startDate!!.time), // 년/월/일만 저장된 시작 날짜
-                "endDate" to Timestamp(endDate!!.time) // 년/월/일만 저장된 종료 날짜
+                "endDate" to Timestamp(endDate!!.time), // 년/월/일만 저장된 종료 날짜
+                "category" to selectedCategory // 선택된 카테고리를 Firestore에 저장
             )
 
             // Firestore에 데이터 저장
