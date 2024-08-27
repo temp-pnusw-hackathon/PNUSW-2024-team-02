@@ -1,8 +1,10 @@
 package com.example.myapplication
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
 class DetailFragment : Fragment() {
@@ -28,27 +31,24 @@ class DetailFragment : Fragment() {
 
         gridView = view.findViewById(R.id.partnership_gridView)
 
-        // 각 버튼에 대한 클릭 리스너 설정
-        val barBtn: ImageButton = view.findViewById(R.id.bar_btn)
-        val cafeBtn: ImageButton = view.findViewById(R.id.cafe_btn)
-        val cultureBtn: ImageButton = view.findViewById(R.id.culture_btn)
-        val foodBtn: ImageButton = view.findViewById(R.id.food_btn)
-        val healthBtn: ImageButton = view.findViewById(R.id.health_btn)
-        val eduBtn: ImageButton = view.findViewById(R.id.edu_btn)
-        val mediBtn: ImageButton = view.findViewById(R.id.medi_btn)
-        val totalBtn: ImageButton = view.findViewById(R.id.total_btn)
-
-        barBtn.setOnClickListener { loadPartnershipsByCategory("술집") }
-        cafeBtn.setOnClickListener { loadPartnershipsByCategory("카페") }
-        cultureBtn.setOnClickListener { loadPartnershipsByCategory("문화") }
-        foodBtn.setOnClickListener { loadPartnershipsByCategory("음식점•식품") }
-        healthBtn.setOnClickListener { loadPartnershipsByCategory("헬스•뷰티") }
-        eduBtn.setOnClickListener { loadPartnershipsByCategory("교육") }
-        mediBtn.setOnClickListener { loadPartnershipsByCategory("의료•법") }
-        totalBtn.setOnClickListener { loadPartnershipsByCategory("전체") }
+        // 버튼 클릭 리스너 설정
+        view.findViewById<ImageButton>(R.id.bar_btn).setOnClickListener { loadPartnershipsByCategory("술집") }
+        view.findViewById<ImageButton>(R.id.cafe_btn).setOnClickListener { loadPartnershipsByCategory("카페") }
+        view.findViewById<ImageButton>(R.id.culture_btn).setOnClickListener { loadPartnershipsByCategory("문화") }
+        view.findViewById<ImageButton>(R.id.food_btn).setOnClickListener { loadPartnershipsByCategory("음식점•식품") }
+        view.findViewById<ImageButton>(R.id.health_btn).setOnClickListener { loadPartnershipsByCategory("헬스•뷰티") }
+        view.findViewById<ImageButton>(R.id.edu_btn).setOnClickListener { loadPartnershipsByCategory("교육") }
+        view.findViewById<ImageButton>(R.id.medi_btn).setOnClickListener { loadPartnershipsByCategory("의료•법") }
+        view.findViewById<ImageButton>(R.id.total_btn).setOnClickListener { loadPartnershipsByCategory("전체") }
 
         // 권한 확인 및 요청
         checkAndRequestPermissions()
+
+        // GridView 클릭 리스너 설정
+        gridView.setOnItemClickListener { parent, _, position, _ ->
+            val selectedDocument = parent.getItemAtPosition(position) as DocumentSnapshot
+            openDetailMoreActivity(selectedDocument)
+        }
 
         return view
     }
@@ -87,4 +87,31 @@ class DetailFragment : Fragment() {
             Toast.makeText(requireContext(), "Error: ${exception.message}", Toast.LENGTH_SHORT).show()
         }
     }
+
+    // 선택된 항목의 데이터를 DetailMoreActivity로 전달하는 함수
+    private fun openDetailMoreActivity(document: DocumentSnapshot) {
+        // photos 필드를 안전하게 가져오고, 올바른 형식인지 확인
+        val photos = document.get("photos") as? List<*>
+        val firstPhotoUrl = photos?.filterIsInstance<String>()?.firstOrNull()
+
+        // Null 또는 다른 타입이 섞여 있을 가능성에 대비
+        if (firstPhotoUrl == null) {
+            Log.e("DetailFragment", "No valid photo URL found.")
+        }
+
+        val intent = Intent(requireContext(), DetailMoreActivity::class.java).apply {
+            putExtra("photoUrl", firstPhotoUrl)
+            putExtra("startDate", document.getTimestamp("startDate")?.seconds ?: 0L)
+            putExtra("endDate", document.getTimestamp("endDate")?.seconds ?: 0L)
+            putExtra("content", document.getString("content"))
+            putExtra("latitude", document.getGeoPoint("location")?.latitude)
+            putExtra("longitude", document.getGeoPoint("location")?.longitude)
+        }
+        startActivity(intent)
+    }
+
+
+
+
+
 }
