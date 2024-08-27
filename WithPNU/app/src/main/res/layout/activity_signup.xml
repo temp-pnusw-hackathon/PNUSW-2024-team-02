@@ -83,14 +83,6 @@
             </LinearLayout>
 
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="인증메일이 발송되었습니다. 메일을 확인해주세요"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corner"
                 android:hint="Password"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:padding="18dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray"
@@ -147,7 +139,7 @@
 
                 android:background="@drawable/rounded_corner"
                 android:hint="Password Check"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:padding="18dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray"

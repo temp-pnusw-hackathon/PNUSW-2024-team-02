@@ -47,6 +47,16 @@ class MypageAdminFragment : Fragment() {
             startActivity(intent)
         }
 
+        // 공지사항 작성하기 버튼 클릭
+        val uploadNoticeButton: TextView = view.findViewById(R.id.update_notice_btn)
+        uploadNoticeButton.setOnClickListener {
+            //UploadNoticeActivity로 이동
+            val intent = Intent(activity, UploadNoticeActivity::class.java)
+            startActivity(intent)
+        }
+
+
+
         return view
     }
 
