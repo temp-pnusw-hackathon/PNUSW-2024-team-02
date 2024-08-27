@@ -1,59 +1,117 @@
 package com.example.myapplication
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridView
+import android.widget.ImageButton
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var gridView: GridView
+    private val db = FirebaseFirestore.getInstance()
+    private val REQUEST_CODE_READ_EXTERNAL_STORAGE = 1001
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        val view = inflater.inflate(R.layout.fragment_detail, container, false)
+
+        gridView = view.findViewById(R.id.partnership_gridView)
+
+        // 버튼 클릭 리스너 설정
+        view.findViewById<ImageButton>(R.id.bar_btn).setOnClickListener { loadPartnershipsByCategory("술집") }
+        view.findViewById<ImageButton>(R.id.cafe_btn).setOnClickListener { loadPartnershipsByCategory("카페") }
+        view.findViewById<ImageButton>(R.id.culture_btn).setOnClickListener { loadPartnershipsByCategory("문화") }
+        view.findViewById<ImageButton>(R.id.food_btn).setOnClickListener { loadPartnershipsByCategory("음식점•식품") }
+        view.findViewById<ImageButton>(R.id.health_btn).setOnClickListener { loadPartnershipsByCategory("헬스•뷰티") }
+        view.findViewById<ImageButton>(R.id.edu_btn).setOnClickListener { loadPartnershipsByCategory("교육") }
+        view.findViewById<ImageButton>(R.id.medi_btn).setOnClickListener { loadPartnershipsByCategory("의료•법") }
+        view.findViewById<ImageButton>(R.id.total_btn).setOnClickListener { loadPartnershipsByCategory("전체") }
+
+        // 권한 확인 및 요청
+        checkAndRequestPermissions()
+
+        // GridView 클릭 리스너 설정
+        gridView.setOnItemClickListener { parent, _, position, _ ->
+            val selectedDocument = parent.getItemAtPosition(position) as DocumentSnapshot
+            openDetailMoreActivity(selectedDocument)
+        }
+
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun checkAndRequestPermissions() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+            // 권한이 없으면 요청
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                REQUEST_CODE_READ_EXTERNAL_STORAGE
+            )
+        } else {
+            // 권한이 이미 부여되어 있으면 데이터를 로드
+            loadPartnershipsByCategory("전체")
+        }
     }
+
+    // Firestore에서 데이터를 로드하고 GridView에 표시하는 함수
+    private fun loadPartnershipsByCategory(category: String) {
+        val query = if (category == "전체") {
+            db.collection("partnershipinfo")
+        } else {
+            db.collection("partnershipinfo").whereEqualTo("category", category)
+        }
+
+        query.get().addOnSuccessListener { documents ->
+            if (documents.isEmpty) {
+                Toast.makeText(requireContext(), "No partnerships found.", Toast.LENGTH_SHORT).show()
+            } else {
+                val adapter = PartnershipAdapter(requireContext(), documents.documents)
+                gridView.adapter = adapter
+            }
+        }.addOnFailureListener { exception ->
+            Toast.makeText(requireContext(), "Error: ${exception.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // 선택된 항목의 데이터를 DetailMoreActivity로 전달하는 함수
+    private fun openDetailMoreActivity(document: DocumentSnapshot) {
+        // photos 필드를 안전하게 가져오고, 올바른 형식인지 확인
+        val photos = document.get("photos") as? List<*>
+        val firstPhotoUrl = photos?.filterIsInstance<String>()?.firstOrNull()
+
+        // Null 또는 다른 타입이 섞여 있을 가능성에 대비
+        if (firstPhotoUrl == null) {
+            Log.e("DetailFragment", "No valid photo URL found.")
+        }
+
+        val intent = Intent(requireContext(), DetailMoreActivity::class.java).apply {
+            putExtra("photoUrl", firstPhotoUrl)
+            putExtra("startDate", document.getTimestamp("startDate")?.seconds ?: 0L)
+            putExtra("endDate", document.getTimestamp("endDate")?.seconds ?: 0L)
+            putExtra("content", document.getString("content"))
+            putExtra("latitude", document.getGeoPoint("location")?.latitude)
+            putExtra("longitude", document.getGeoPoint("location")?.longitude)
+        }
+        startActivity(intent)
+    }
+
+
+
+
+
 }
