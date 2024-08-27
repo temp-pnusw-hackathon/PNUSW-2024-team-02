@@ -74,6 +74,7 @@ dependencies {
     implementation(libs.play.services.location) // Google Maps SDK
     implementation("com.google.android.libraries.places:places:3.2.0")
     implementation ("com.google.firebase:firebase-database:20.0.5")
+    implementation ("com.google.firebase:firebase-storage:20.0.1")
 
     // Glide 라이브러리 추가
     implementation("com.github.bumptech.glide:glide:4.15.1")

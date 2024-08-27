@@ -1,51 +1,115 @@
 package com.example.myapplication
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.myapplication.databinding.FragmentDetailBinding
+import android.widget.GridView
+import android.widget.ImageButton
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 
 class DetailFragment : Fragment() {
 
-    // _binding은 null일 수 있지만, binding은 절대 null이 아님
-    private var _binding: FragmentDetailBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var gridView: GridView
+    private val db = FirebaseFirestore.getInstance()
+    private val REQUEST_CODE_READ_EXTERNAL_STORAGE = 1001
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // FragmentDetailBinding을 사용하여 레이아웃을 확장합니다.
-        _binding = FragmentDetailBinding.inflate(inflater, container, false)
-        return binding.root
+
+        val view = inflater.inflate(R.layout.fragment_detail, container, false)
+
+        gridView = view.findViewById(R.id.partnership_gridView)
+
+        // 버튼 클릭 리스너 설정
+        view.findViewById<ImageButton>(R.id.bar_btn).setOnClickListener { loadPartnershipsByCategory("술집") }
+        view.findViewById<ImageButton>(R.id.cafe_btn).setOnClickListener { loadPartnershipsByCategory("카페") }
+        view.findViewById<ImageButton>(R.id.culture_btn).setOnClickListener { loadPartnershipsByCategory("문화") }
+        view.findViewById<ImageButton>(R.id.food_btn).setOnClickListener { loadPartnershipsByCategory("음식점•식품") }
+        view.findViewById<ImageButton>(R.id.health_btn).setOnClickListener { loadPartnershipsByCategory("헬스•뷰티") }
+        view.findViewById<ImageButton>(R.id.edu_btn).setOnClickListener { loadPartnershipsByCategory("교육") }
+        view.findViewById<ImageButton>(R.id.medi_btn).setOnClickListener { loadPartnershipsByCategory("의료•법") }
+        view.findViewById<ImageButton>(R.id.total_btn).setOnClickListener { loadPartnershipsByCategory("전체") }
+
+        // 권한 확인 및 요청
+        checkAndRequestPermissions()
+
+        // GridView 클릭 리스너 설정
+        gridView.setOnItemClickListener { parent, _, position, _ ->
+            val selectedDocument = parent.getItemAtPosition(position) as DocumentSnapshot
+            openDetailMoreActivity(selectedDocument)
+        }
+
+        return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // arguments가 null일 경우 기본값("")을 가져옵니다.
-        val category = arguments?.getString("category") ?: ""
-
-    }
-
-    private fun getCategoryDescription(category: String): String {
-        return when (category) {
-            "술집" -> "이 페이지는 술집 관련 정보입니다."
-            "카페" -> "이 페이지는 카페 관련 정보입니다."
-            "문화" -> "이 페이지는 문화 관련 정보입니다."
-            "음식점•식품" -> "이 페이지는 음식점•식품 관련 정보입니다."
-            "헬스•뷰티" -> "이 페이지는 헬스•뷰티 관련 정보입니다."
-            "교육" -> "이 페이지는 교육 관련 정보입니다."
-            "의료•법" -> "이 페이지는 의료•법 관련 정보입니다."
-            else -> "전체보기 페이지입니다."
+    private fun checkAndRequestPermissions() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+            // 권한이 없으면 요청
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                REQUEST_CODE_READ_EXTERNAL_STORAGE
+            )
+        } else {
+            // 권한이 이미 부여되어 있으면 데이터를 로드
+            loadPartnershipsByCategory("전체")
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        // 뷰가 더 이상 사용되지 않도록 _binding을 null로 설정합니다.
-        _binding = null
+    // Firestore에서 데이터를 로드하고 GridView에 표시하는 함수
+    private fun loadPartnershipsByCategory(category: String) {
+        val query = if (category == "전체") {
+            db.collection("partnershipinfo")
+        } else {
+            db.collection("partnershipinfo").whereEqualTo("category", category)
+        }
+
+        query.get().addOnSuccessListener { documents ->
+            if (documents.isEmpty) {
+                Toast.makeText(requireContext(), "No partnerships found.", Toast.LENGTH_SHORT).show()
+            } else {
+                val adapter = PartnershipAdapter(requireContext(), documents.documents)
+                gridView.adapter = adapter
+            }
+        }.addOnFailureListener { exception ->
+            Toast.makeText(requireContext(), "Error: ${exception.message}", Toast.LENGTH_SHORT).show()
+        }
     }
+
+    // 선택된 항목의 데이터를 DetailMoreActivity로 전달하는 함수
+    private fun openDetailMoreActivity(document: DocumentSnapshot) {
+        // photos 필드를 안전하게 가져오고, 올바른 형식인지 확인
+        val photos = document.get("photos") as? List<*>
+        val firstPhotoUrl = photos?.filterIsInstance<String>()?.firstOrNull()
+
+        // Null 또는 다른 타입이 섞여 있을 가능성에 대비
+        if (firstPhotoUrl == null) {
+            Log.e("DetailFragment", "No valid photo URL found.")
+        }
+
+        val intent = Intent(requireContext(), DetailMoreActivity::class.java).apply {
+            putExtra("photoUrl", firstPhotoUrl)
+            putExtra("startDate", document.getTimestamp("startDate")?.seconds ?: 0L)
+            putExtra("endDate", document.getTimestamp("endDate")?.seconds ?: 0L)
+            putExtra("content", document.getString("content"))
+            putExtra("latitude", document.getGeoPoint("location")?.latitude)
+            putExtra("longitude", document.getGeoPoint("location")?.longitude)
+        }
+        startActivity(intent)
+    }
+
+
 }
