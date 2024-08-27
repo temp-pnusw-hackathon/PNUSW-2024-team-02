@@ -15,18 +15,19 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.ActionCodeSettings
 import java.util.Locale
+import kotlinx.coroutines.tasks.await
 
 class SignUp : AppCompatActivity() {
 
-    private lateinit var email_input: EditText
+    private lateinit var emailInput: EditText
     private lateinit var password_input: EditText
     private lateinit var password_check: EditText
-    private lateinit var signup_btn: Button
-    private lateinit var authentic_button: Button
+    private lateinit var signupBtn: Button
+    private lateinit var authenticButton: Button
     private lateinit var spinnerColleges: Spinner
     private lateinit var spinnerDepartments: Spinner
     private lateinit var nickname: EditText
-    private lateinit var admin_code: EditText
+    private lateinit var adminCode: EditText
 
     private lateinit var auth: FirebaseAuth
     private var isEmailVerified = false
@@ -43,28 +44,29 @@ class SignUp : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         // 레이아웃들 연결
-        email_input = findViewById(R.id.signup_email_input)
+        emailInput = findViewById(R.id.signup_email_input)
         password_input = findViewById(R.id.password_input)
         password_check = findViewById(R.id.password_check)
-        signup_btn = findViewById(R.id.signup_btn)
-        authentic_button = findViewById(R.id.authentic_button)
+        signupBtn = findViewById(R.id.signup_btn)
+        authenticButton = findViewById(R.id.authentic_button)
         spinnerColleges = findViewById(R.id.spinner_colleges)
         spinnerDepartments = findViewById(R.id.spinner_departments)
         nickname = findViewById(R.id.nickname)
-        admin_code = findViewById(R.id.admin_code)
+        adminCode = findViewById(R.id.admin_code)
 
         // 버튼 클릭 리스너 설정
-        signup_btn.setOnClickListener { signUp() }
-        authentic_button.setOnClickListener { sendSignInLink(email_input.text.toString()) }
+        authenticButton.setOnClickListener { sendEmailVerification() }
+        signupBtn.setOnClickListener { completeSignUp() }
 
         // 비밀번호 입력 시 유효성 검사
         password_input.addTextChangedListener(createTextWatcher())
         password_check.addTextChangedListener(createTextWatcher())
+        emailInput.addTextChangedListener(emailTextWatcher())
 
         setupCollegeSpinners()
 
-        // 이메일 링크로 앱이 열렸을 때의 처리
-        handleEmailLink(intent)
+        // 이메일 인증 상태를 확인
+        checkEmailVerification()
     }
 
     private fun createTextWatcher(): TextWatcher {
@@ -77,65 +79,128 @@ class SignUp : AppCompatActivity() {
         }
     }
 
-    private fun isValidPusanEmail(email: String): Boolean {
-        val emailRegex = Regex("^[a-zA-Z0-9._%+-]+@pusan\\.ac\\.kr$")
-        return emailRegex.matches(email)
-    }
-
-    private fun sendSignInLink(email: String) {
-        val actionCodeSettings = ActionCodeSettings.newBuilder()
-            .setUrl("https://seuguen.page.link")
-            .setHandleCodeInApp(true)
-            .setAndroidPackageName(
-                "com.example.myapplication",
-                true,
-                "12"
-            )
-            .build()
-
-        auth.sendSignInLinkToEmail(email, actionCodeSettings)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "Email sent successfully.")
-                    Toast.makeText(this, "인증 이메일이 발송되었습니다. 이메일을 확인해주세요.", Toast.LENGTH_LONG).show()
-                    getSharedPreferences("AUTH_PREF", MODE_PRIVATE).edit().apply {
-                        putString("EMAIL_FOR_SIGNIN", email)
-                        apply()
-                    }
-                } else {
-                    Log.e(TAG, "Failed to send email: ${task.exception?.message}")
-                    Toast.makeText(this, "이메일 발송에 실패했습니다: ${task.exception?.message}", Toast.LENGTH_LONG).show()
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.e(TAG, "Error sending email", exception)
-            }
-    }
-
-    private fun handleEmailLink(intent: Intent?) {
-        if (intent?.action == Intent.ACTION_VIEW) {
-            val emailLink = intent.data.toString()
-            if (auth.isSignInWithEmailLink(emailLink)) {
-                val email = getSharedPreferences("AUTH_PREF", MODE_PRIVATE).getString("EMAIL_FOR_SIGNIN", null)
-                if (email != null) {
-                    signInWithEmailLink(email, emailLink)
-                } else {
-                    Toast.makeText(this, "이메일을 다시 입력해주세요.", Toast.LENGTH_LONG).show()
-                }
+    private fun emailTextWatcher(): TextWatcher {
+        return object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                validateEmail()
             }
         }
     }
 
-    private fun signInWithEmailLink(email: String, emailLink: String) {
-        auth.signInWithEmailLink(email, emailLink)
+    private fun validateEmail(): Boolean {
+        val email = emailInput.text.toString()
+        return if (email.endsWith("@pusan.ac.kr")) {
+            emailInput.error = null
+            true
+        } else {
+            emailInput.error = "@pusan.ac.kr로 끝나는 이메일을 입력해주세요."
+            false
+        }
+    }
+
+    private fun sendEmailVerification() {
+        val email = emailInput.text.toString()
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Firebase에서 임시 계정 생성 후 이메일 인증 메일 발송
+        auth.createUserWithEmailAndPassword(email, "temporaryPassword") // 임시 비밀번호 사용
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d(TAG, "Successfully signed in with email link!")
-                    isEmailVerified = true
-                    Toast.makeText(this, "이메일 인증 성공!", Toast.LENGTH_SHORT).show()
+                    val user = auth.currentUser
+                    user?.sendEmailVerification()?.addOnCompleteListener { verifyTask ->
+                        if (verifyTask.isSuccessful) {
+                            Log.d(TAG, "Email sent.")
+                            Toast.makeText(this, "인증 이메일이 발송되었습니다. 이메일을 확인해주세요.", Toast.LENGTH_LONG).show()
+                        } else {
+                            Log.e(TAG, "Failed to send email verification: ${verifyTask.exception?.message}")
+                            Toast.makeText(this, "이메일 발송에 실패했습니다.", Toast.LENGTH_LONG).show()
+                        }
+                    }
                 } else {
-                    Log.e(TAG, "Error signing in with email link", task.exception)
-                    Toast.makeText(this, "이메일 인증 실패: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    Log.e(TAG, "Failed to create user: ${task.exception?.message}")
+                    Toast.makeText(this, "사용자 생성에 실패했습니다: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+    }
+
+    private fun checkEmailVerification(callback: () -> Unit = {}) {
+        val user = auth.currentUser
+        user?.reload()?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                isEmailVerified = user.isEmailVerified
+                callback()
+            } else {
+                Log.e(TAG, "Failed to reload user: ${task.exception?.message}")
+            }
+        }
+    }
+
+
+    private fun completeSignUp() {
+        val email = emailInput.text.toString()
+        val password = password_input.text.toString()
+        val passwordCheck = password_check.text.toString()
+        val nickname = nickname.text.toString()
+        val adminCode = adminCode.text.toString()
+
+        // 예외 처리
+        if (TextUtils.isEmpty(nickname) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "모든 필드를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+
+        if (!validatePassword()) {
+            Toast.makeText(this, "비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // 이메일 인증 상태 확인 후 최종 계정 생성
+        val user = auth.currentUser
+        user?.reload()?.addOnCompleteListener { task ->
+            if (task.isSuccessful && user.isEmailVerified) {
+                // 비밀번호 재설정
+                user.updatePassword(password).addOnCompleteListener { passwordTask ->
+                    if (passwordTask.isSuccessful) {
+                        val role = if (adminCode == "1111") "admin" else "user"
+                        saveUserToDatabase(user.uid, nickname, email, role)
+                    } else {
+                        Toast.makeText(this, "비밀번호 재설정에 실패했습니다: ${passwordTask.exception?.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                Toast.makeText(this, "이메일 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun saveUserToDatabase(userId: String, name: String, email: String, role: String) {
+        val userMap = mapOf(
+            "id" to userId,
+            "username" to name.lowercase(Locale.getDefault()),
+            "email" to email,
+            "role" to role
+        )
+
+        FirebaseDatabase.getInstance().reference.child("Users").child(userId)
+            .setValue(userMap)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this@SignUp, "가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                    val intent = if (role == "admin") {
+                        Intent(this@SignUp, MypageAdminFragment::class.java)
+                    } else {
+                        Intent(this@SignUp, MypageFragment::class.java)
+                    }
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this@SignUp, "회원가입 중 문제가 발생했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -203,66 +268,5 @@ class SignUp : AppCompatActivity() {
                 spinnerDepartments.visibility = View.GONE
             }
         }
-    }
-
-    private fun signUp() {
-        val email = email_input.text.toString()
-        val password = password_input.text.toString()
-        val nickname = nickname.text.toString()
-        val adminCode = admin_code.text.toString()
-
-        // 예외 처리
-        if (TextUtils.isEmpty(nickname) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "모든 필드를 입력해주세요.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (!isEmailVerified) {
-            Toast.makeText(this, "이메일 인증을 먼저 완료해주세요.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (!validatePassword()) {
-            Toast.makeText(this, "비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // Firebase Authentication을 이용한 유저 생성
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val userId = auth.currentUser?.uid ?: return@addOnCompleteListener
-                    val role = if (adminCode == "1111") "admin" else "user"
-                    saveUserToDatabase(userId, nickname, email, role)
-                } else {
-                    Toast.makeText(this, "회원가입 실패: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
-
-    private fun saveUserToDatabase(userId: String, name: String, email: String, role: String) {
-        val userMap = mapOf(
-            "id" to userId,
-            "username" to name.lowercase(Locale.getDefault()),
-            "email" to email,
-            "role" to role
-        )
-
-        FirebaseDatabase.getInstance().reference.child("Users").child(userId)
-            .setValue(userMap)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this@SignUp, "가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                    val intent = if (role == "admin") {
-                        Intent(this@SignUp, MypageAdminFragment::class.java)
-                    } else {
-                        Intent(this@SignUp, MypageFragment::class.java)
-                    }
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this@SignUp, "회원가입 중 문제가 발생했습니다.", Toast.LENGTH_SHORT).show()
-                }
-            }
     }
 }

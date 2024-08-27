@@ -27,6 +27,7 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
 
         gridView = view.findViewById(R.id.partnership_gridView)
@@ -109,9 +110,6 @@ class DetailFragment : Fragment() {
         }
         startActivity(intent)
     }
-
-
-
 
 
 }
