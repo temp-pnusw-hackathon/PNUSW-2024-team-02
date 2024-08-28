@@ -24,6 +24,8 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.GeoPoint
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -35,6 +37,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var param2: String? = null
     private lateinit var mMap: GoogleMap
     private lateinit var placesClient: PlacesClient
+    private val firestore = FirebaseFirestore.getInstance() // Firestore 인스턴스
 
     // 기본 위치를 부산대 위치로 설정
     private val defaultLocation = LatLng(35.231, 129.083) // 부산대 위치
@@ -63,21 +66,39 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (::mMap.isInitialized) {
-            updateMap() // 지도 업데이트
-        }
-    }
-
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
         // 기본 위치를 부산대로 설정하고 초기 줌 레벨 설정
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 15f))
 
-        // 지도 업데이트 실행
-        updateMap()
+        // Firestore에서 위치 데이터를 가져와서 지도에 표시
+        loadLocationsFromFirestore()
+    }
+
+    // Firestore에서 위치 데이터를 가져와서 지도에 마커를 추가하는 메서드
+    private fun loadLocationsFromFirestore() {
+        firestore.collection("partnershipinfo") // 위치 데이터가 저장된 컬렉션 이름을 입력하세요.
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val geoPoint = document.getGeoPoint("location") // "location" 필드에서 위치 데이터를 가져옵니다.
+                    val title = document.getString("title") // 가게 이름이나 위치의 제목을 가져옵니다.
+
+                    if (geoPoint != null && title != null) {
+                        val latLng = LatLng(geoPoint.latitude, geoPoint.longitude)
+                        mMap.addMarker(
+                            MarkerOptions()
+                                .position(latLng)
+                                .title(title)
+                        )
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                exception.printStackTrace()
+                // 오류 처리 (예: 로그 출력)
+            }
     }
 
     // 사용자의 위치 정보로 지도를 업데이트하는 메서드
