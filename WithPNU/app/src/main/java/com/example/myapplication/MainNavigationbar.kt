@@ -9,9 +9,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import com.example.myapplication.databinding.ActivityMainNavigationbarBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainNavigationbar : AppCompatActivity() {
     private lateinit var binding: ActivityMainNavigationbarBinding
+    private val db = FirebaseFirestore.getInstance()
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -37,11 +40,31 @@ class MainNavigationbar : AppCompatActivity() {
                 R.id.home -> replaceFragment(HomeFragment())
                 R.id.detail -> replaceFragment(DetailFragment())
                 R.id.map -> checkLocationPermissionAndReplaceFragment()
-                R.id.mypage -> replaceFragment(MypageAdminFragment())
+                R.id.mypage -> loadMypageFragmentBasedOnRole()
                 else -> {
                 }
             }
             true
+        }
+    }
+
+    private fun loadMypageFragmentBasedOnRole() {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            db.collection("Users").document(currentUser.uid).get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val role = document.getString("role")
+                        val fragment = when (role) {
+                            "admin" -> MypageAdminFragment()
+                            else -> MypageFragment()
+                        }
+                        replaceFragment(fragment)
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "사용자 역할을 불러오는 데 실패했습니다: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 

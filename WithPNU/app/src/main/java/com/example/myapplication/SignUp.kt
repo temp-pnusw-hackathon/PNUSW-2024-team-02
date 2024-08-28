@@ -156,6 +156,7 @@ class SignUp : AppCompatActivity() {
         val nickname = nickname.text.toString()
         val adminCode = adminCode.text.toString()
 
+
         // 예외 처리
         if (TextUtils.isEmpty(nickname) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             Toast.makeText(this, "모든 필드를 입력해주세요.", Toast.LENGTH_SHORT).show()
@@ -192,12 +193,13 @@ class SignUp : AppCompatActivity() {
     }
 
 
-    private fun saveUserToFirestore(userId: String, name: String, email: String, role: String) {
+    private fun saveUserToFirestore(userId: String, name: String, email: String, role: String, ) {
         val userMap = hashMapOf(
             "id" to userId,
             "username" to name.lowercase(Locale.getDefault()),
             "email" to email,
             "role" to role
+
         )
 
         db.collection("Users")
