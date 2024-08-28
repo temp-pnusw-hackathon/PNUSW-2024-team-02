@@ -13,11 +13,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.auth.EmailAuthProvider
-import com.google.firebase.auth.ActionCodeSettings
+import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Locale
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SignUp : AppCompatActivity() {
+    private val db = FirebaseFirestore.getInstance()
 
     private lateinit var emailInput: EditText
     private lateinit var password_input: EditText
@@ -65,8 +69,6 @@ class SignUp : AppCompatActivity() {
 
         setupCollegeSpinners()
 
-        // 이메일 인증 상태를 확인
-        checkEmailVerification()
     }
 
     private fun createTextWatcher(): TextWatcher {
@@ -107,35 +109,41 @@ class SignUp : AppCompatActivity() {
             return
         }
 
-        // Firebase에서 임시 계정 생성 후 이메일 인증 메일 발송
-        auth.createUserWithEmailAndPassword(email, "temporaryPassword") // 임시 비밀번호 사용
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    user?.sendEmailVerification()?.addOnCompleteListener { verifyTask ->
-                        if (verifyTask.isSuccessful) {
-                            Log.d(TAG, "Email sent.")
-                            Toast.makeText(this, "인증 이메일이 발송되었습니다. 이메일을 확인해주세요.", Toast.LENGTH_LONG).show()
-                        } else {
-                            Log.e(TAG, "Failed to send email verification: ${verifyTask.exception?.message}")
-                            Toast.makeText(this, "이메일 발송에 실패했습니다.", Toast.LENGTH_LONG).show()
-                        }
-                    }
-                } else {
-                    Log.e(TAG, "Failed to create user: ${task.exception?.message}")
-                    Toast.makeText(this, "사용자 생성에 실패했습니다: ${task.exception?.message}", Toast.LENGTH_LONG).show()
-                }
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                // Firebase에서 임시 계정 생성 후 이메일 인증 메일 발송
+                auth.createUserWithEmailAndPassword(email, "temporaryPassword").await()
+                val user = auth.currentUser
+                user?.sendEmailVerification()?.await()
+                Log.d(TAG, "Email sent.")
+                Toast.makeText(this@SignUp, "인증 이메일이 발송되었습니다. 이메일을 확인해주세요.", Toast.LENGTH_LONG).show()
+
+                // 이메일 인증 완료 여부를 확인하기 위해 checkEmailVerification 호출
+                checkEmailVerification()
+
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to send email verification: ${e.message}")
+                Toast.makeText(this@SignUp, "이메일 발송에 실패했습니다: ${e.message}", Toast.LENGTH_LONG).show()
             }
+        }
     }
 
-    private fun checkEmailVerification(callback: () -> Unit = {}) {
-        val user = auth.currentUser
-        user?.reload()?.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                isEmailVerified = user.isEmailVerified
-                callback()
-            } else {
-                Log.e(TAG, "Failed to reload user: ${task.exception?.message}")
+    private fun checkEmailVerification() {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                while (!isEmailVerified) {
+                    val user = auth.currentUser
+                    user?.reload()?.await()
+                    isEmailVerified = user?.isEmailVerified ?: false
+                    if (isEmailVerified) {
+                        Log.d(TAG, "Email verification complete.")
+                        Toast.makeText(this@SignUp, "이메일 인증이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                        break
+                    }
+                    kotlinx.coroutines.delay(2000) // 2초 간격으로 확인
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error during email verification check: ${e.message}")
             }
         }
     }
@@ -155,55 +163,54 @@ class SignUp : AppCompatActivity() {
         }
 
 
-        if (!validatePassword()) {
-            Toast.makeText(this, "비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show()
-            return
-        }
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                Log.d(TAG, "Starting completeSignUp process")
+                val user = auth.currentUser
+                user?.reload()?.await()
 
-        // 이메일 인증 상태 확인 후 최종 계정 생성
-        val user = auth.currentUser
-        user?.reload()?.addOnCompleteListener { task ->
-            if (task.isSuccessful && user.isEmailVerified) {
-                // 비밀번호 재설정
-                user.updatePassword(password).addOnCompleteListener { passwordTask ->
-                    if (passwordTask.isSuccessful) {
-                        val role = if (adminCode == "1111") "admin" else "user"
-                        saveUserToDatabase(user.uid, nickname, email, role)
-                    } else {
-                        Toast.makeText(this, "비밀번호 재설정에 실패했습니다: ${passwordTask.exception?.message}", Toast.LENGTH_SHORT).show()
-                    }
+                if (user != null && user.isEmailVerified) {
+                    Log.d(TAG, "User is verified, updating password")
+                    user.updatePassword(password).await()
+                    val role = if (adminCode == "1111") "admin" else "user"
+                    saveUserToFirestore(user.uid, nickname, email, role)
+
+                    // 회원가입 완료 후 로그인 화면으로 이동
+                    val intent = Intent(this@SignUp, LoginActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Log.d(TAG, "User is not verified or is null")
+                    Toast.makeText(this@SignUp, "이메일 인증이 완료되지 않았습니다. 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                Toast.makeText(this, "이메일 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Log.e(TAG, "회원가입 중 문제가 발생했습니다: ${e.message}")
+                Toast.makeText(this@SignUp, "회원가입 중 문제가 발생했습니다: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun saveUserToDatabase(userId: String, name: String, email: String, role: String) {
-        val userMap = mapOf(
+
+    private fun saveUserToFirestore(userId: String, name: String, email: String, role: String) {
+        val userMap = hashMapOf(
             "id" to userId,
             "username" to name.lowercase(Locale.getDefault()),
             "email" to email,
             "role" to role
         )
 
-        FirebaseDatabase.getInstance().reference.child("Users").child(userId)
-            .setValue(userMap)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this@SignUp, "가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                    val intent = if (role == "admin") {
-                        Intent(this@SignUp, MypageAdminFragment::class.java)
-                    } else {
-                        Intent(this@SignUp, MypageFragment::class.java)
-                    }
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this@SignUp, "회원가입 중 문제가 발생했습니다.", Toast.LENGTH_SHORT).show()
-                }
+        db.collection("Users")
+            .document(userId)
+            .set(userMap)
+            .addOnSuccessListener {
+                Toast.makeText(this@SignUp, "가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this@SignUp, "회원가입 중 문제가 발생했습니다: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 
     private fun validatePassword(): Boolean {
         val password = password_input.text.toString()
@@ -270,3 +277,5 @@ class SignUp : AppCompatActivity() {
         }
     }
 }
+
+
