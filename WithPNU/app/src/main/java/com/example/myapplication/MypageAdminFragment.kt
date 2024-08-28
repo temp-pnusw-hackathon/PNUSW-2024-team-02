@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import org.w3c.dom.Text
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,15 +48,19 @@ class MypageAdminFragment : Fragment() {
             startActivity(intent)
         }
 
+        val editNoticeButton: TextView = view.findViewById(R.id.edit_partnership_notice_btn)
+        editNoticeButton.setOnClickListener{
+            val intent = Intent(activity, EditPartnershipNoticeActivity::class.java)
+            startActivity(intent)
+        }
+
         // 공지사항 작성하기 버튼 클릭
-        val uploadNoticeButton: TextView = view.findViewById(R.id.update_notice_btn)
+        val uploadNoticeButton: TextView = view.findViewById(R.id.upload_notice_btn)
         uploadNoticeButton.setOnClickListener {
             //UploadNoticeActivity로 이동
             val intent = Intent(activity, UploadNoticeActivity::class.java)
             startActivity(intent)
         }
-
-
 
         return view
     }
