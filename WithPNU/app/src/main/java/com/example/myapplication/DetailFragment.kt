@@ -105,6 +105,8 @@ class DetailFragment : Fragment() {
             putExtra("startDate", document.getTimestamp("startDate")?.seconds ?: 0L)
             putExtra("endDate", document.getTimestamp("endDate")?.seconds ?: 0L)
             putExtra("content", document.getString("content"))
+            putExtra("storeName", document.getString("storeName")) // storeName 추가
+            putExtra("title", document.getString("title")) // title 추가
             putExtra("latitude", document.getGeoPoint("location")?.latitude)
             putExtra("longitude", document.getGeoPoint("location")?.longitude)
         }
