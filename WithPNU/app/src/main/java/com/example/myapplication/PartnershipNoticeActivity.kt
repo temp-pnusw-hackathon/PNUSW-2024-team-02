@@ -41,13 +41,13 @@ class PartnershipNoticeActivity : AppCompatActivity() {
     private val selectedPhotos = mutableListOf<Uri>()
     private val galleryAdapter = GalleryAdapter(selectedPhotos)
 
-
     // 날짜 관련 변수 선언
     private var startDate: Calendar? = null
     private var endDate: Calendar? = null
 
-    // 위치 관련 변수 선언
+    // 위치 및 가게 이름 관련 변수 선언
     private var selectedLatLng: LatLng? = null
+    private var storeName: String? = null // 가게 이름을 저장할 변수 추가
 
     // 선택된 카테고리를 저장할 변수 선언
     private var selectedCategory: String? = null
@@ -154,6 +154,7 @@ class PartnershipNoticeActivity : AppCompatActivity() {
             val lng = result.data?.getDoubleExtra("longitude", 0.0)
             if (lat != null && lng != null) {
                 selectedLatLng = LatLng(lat, lng)
+                storeName = placeName // 가게 이름 저장
             }
             addLocationButton.text = placeName
         }
@@ -200,7 +201,7 @@ class PartnershipNoticeActivity : AppCompatActivity() {
         val content = findViewById<EditText>(R.id.contentEditText).text.toString()
         val currentUser = FirebaseAuth.getInstance().currentUser
 
-        if (title.isNotEmpty() && content.isNotEmpty() && currentUser != null && selectedLatLng != null && startDate != null && endDate != null && selectedCategory != null) {
+        if (title.isNotEmpty() && content.isNotEmpty() && currentUser != null && selectedLatLng != null && startDate != null && endDate != null && selectedCategory != null && storeName != null) {
             uploadPhotosToStorage { photoUrls ->
                 val data = hashMapOf(
                     "title" to title,
@@ -211,7 +212,8 @@ class PartnershipNoticeActivity : AppCompatActivity() {
                     "photos" to photoUrls,
                     "startDate" to Timestamp(startDate!!.time),
                     "endDate" to Timestamp(endDate!!.time),
-                    "category" to selectedCategory
+                    "category" to selectedCategory,
+                    "storeName" to storeName // 가게 이름 추가
                 )
 
                 db.collection("partnershipinfo")

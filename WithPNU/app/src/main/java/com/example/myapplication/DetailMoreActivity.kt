@@ -10,6 +10,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,6 +19,8 @@ class DetailMoreActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
     private lateinit var dateTextView: TextView
     private lateinit var contentTextView: TextView
+    private lateinit var storeNameTextView: TextView
+    private lateinit var titleTextView: TextView
     private lateinit var mapView: MapView
 
     private var latitude: Double? = null
@@ -30,19 +33,23 @@ class DetailMoreActivity : AppCompatActivity() {
         imageView = findViewById(R.id.detail_photo)
         dateTextView = findViewById(R.id.partnership_dateTodate)
         contentTextView = findViewById(R.id.partnership_content)
+        storeNameTextView = findViewById(R.id.partnership_store)
+        titleTextView = findViewById(R.id.store_name)
         mapView = findViewById(R.id.detail_map)
 
         // Intent에서 데이터 수신
         val photoUrl = intent.getStringExtra("photoUrl")
-        val startDateSeconds = intent.getLongExtra("startDate", 0L)
-        val endDateSeconds = intent.getLongExtra("endDate", 0L)
+        val startDate = intent.getLongExtra("startDate", 0L)
+        val endDate = intent.getLongExtra("endDate", 0L)
         val content = intent.getStringExtra("content")
+        val storeName = intent.getStringExtra("storeName") // storeName 필드 수신
+        val title = intent.getStringExtra("title") // title 필드 수신
         latitude = intent.getDoubleExtra("latitude", 0.0)
         longitude = intent.getDoubleExtra("longitude", 0.0)
 
         // 로그로 데이터 확인
-        Log.d("DetailMoreActivity", "startDateSeconds: $startDateSeconds")
-        Log.d("DetailMoreActivity", "endDateSeconds: $endDateSeconds")
+        Log.d("DetailMoreActivity", "startDate: $startDate")
+        Log.d("DetailMoreActivity", "endDate: $endDate")
 
         // 사진 설정
         if (!photoUrl.isNullOrEmpty()) {
@@ -50,17 +57,18 @@ class DetailMoreActivity : AppCompatActivity() {
         }
 
         // 날짜 설정
-        val dateFormat = SimpleDateFormat("yy.MM.dd", Locale.getDefault())
-
-        if (startDateSeconds > 0 && endDateSeconds > 0) {
-            val formattedStartDate = dateFormat.format(Date(startDateSeconds * 1000))
-            val formattedEndDate = dateFormat.format(Date(endDateSeconds * 1000))
+        if (startDate > 0 && endDate > 0) {
+            val dateFormat = SimpleDateFormat("yy.MM.dd", Locale.getDefault())
+            val formattedStartDate = dateFormat.format(Date(startDate * 1000))
+            val formattedEndDate = dateFormat.format(Date(endDate * 1000))
             dateTextView.text = "제휴 기간 : $formattedStartDate~$formattedEndDate"
         } else {
-            Log.e("DetailMoreActivity", "Invalid start or end date.")
             dateTextView.text = "날짜 정보가 없습니다."
         }
 
+        // 제목과 가게 이름 설정
+        titleTextView.text = title ?: "업체 이름이 없습니다."
+        storeNameTextView.text = "제휴 업체명 : ${storeName ?: "가게 이름이 없습니다."}"
 
         // 본문 설정
         contentTextView.text = content ?: "내용이 없습니다."
@@ -69,7 +77,7 @@ class DetailMoreActivity : AppCompatActivity() {
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync { googleMap ->
             val location = LatLng(latitude ?: 0.0, longitude ?: 0.0)
-            googleMap.addMarker(MarkerOptions().position(location).title("제휴 업체 위치"))
+            googleMap.addMarker(MarkerOptions().position(location).title(storeName ?: "제휴 업체 위치"))
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
         }
     }
