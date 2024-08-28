@@ -155,6 +155,8 @@ class SignUp : AppCompatActivity() {
         val passwordCheck = password_check.text.toString()
         val nickname = nickname.text.toString()
         val adminCode = adminCode.text.toString()
+        val college = spinnerColleges.selectedItem.toString()
+        val department = spinnerDepartments.selectedItem.toString()
 
 
         // 예외 처리
@@ -174,7 +176,7 @@ class SignUp : AppCompatActivity() {
                     Log.d(TAG, "User is verified, updating password")
                     user.updatePassword(password).await()
                     val role = if (adminCode == "1111") "admin" else "user"
-                    saveUserToFirestore(user.uid, nickname, email, role)
+                    saveUserToFirestore(user.uid, nickname, email, role, college, department)
 
                     // 회원가입 완료 후 로그인 화면으로 이동
                     val intent = Intent(this@SignUp, LoginActivity::class.java)
@@ -193,13 +195,14 @@ class SignUp : AppCompatActivity() {
     }
 
 
-    private fun saveUserToFirestore(userId: String, name: String, email: String, role: String, ) {
+    private fun saveUserToFirestore(userId: String, name: String, email: String, role: String,college: String, department: String ) {
         val userMap = hashMapOf(
             "id" to userId,
             "username" to name.lowercase(Locale.getDefault()),
             "email" to email,
-            "role" to role
-
+            "role" to role,
+            "college" to college,
+            "department" to department
         )
 
         db.collection("Users")
