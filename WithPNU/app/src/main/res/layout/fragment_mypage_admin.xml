@@ -148,7 +148,7 @@
 
 
                     <TextView
-                        android:id="@+id/update_notice_btn"
+                        android:id="@+id/upload_notice_btn"
                         style="@style/RegularTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
