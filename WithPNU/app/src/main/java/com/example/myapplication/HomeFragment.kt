@@ -2,16 +2,21 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.FragmentHomeBinding
+import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +61,29 @@ class HomeFragment : Fragment() {
         binding.medicalAndLawViewBtn.setOnClickListener {
             navigateToDetailActivity("의료•법")
         }
+
+        // RecyclerView에 LayoutManager 설정
+        binding.notice.layoutManager = LinearLayoutManager(requireContext())
+
+        // Firestore에서 공지사항 불러오기
+        loadNotices()
+    }
+
+    private fun loadNotices() {
+        db.collection("noticeinfo")
+            .get()
+            .addOnSuccessListener { result ->
+                val notices = result.map { document ->
+                    Notice(
+                        title = document.getString("title") ?: "",
+                        content = document.getString("content") ?: "" // 내용은 저장만 하고 표시하지 않음
+                    )
+                }
+                binding.notice.adapter = SimpleNoticeAdapter(notices)
+            }
+            .addOnFailureListener { e ->
+                e.printStackTrace()
+            }
     }
 
     private fun navigateToDetailActivity(category: String) {
@@ -68,5 +96,30 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+}
+
+// Notice 데이터 클래스
+data class Notice(val title: String, val content: String) // content는 사용하지 않음
+
+// 간단한 RecyclerView 어댑터
+class SimpleNoticeAdapter(private val notices: List<Notice>) :
+    RecyclerView.Adapter<SimpleNoticeAdapter.NoticeViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(android.R.layout.simple_list_item_1, parent, false)
+        return NoticeViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: NoticeViewHolder, position: Int) {
+        val notice = notices[position]
+        holder.titleTextView.text = notice.title // 제목만 표시
+    }
+
+    override fun getItemCount() = notices.size
+
+    class NoticeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val titleTextView: TextView = view.findViewById(android.R.id.text1) // 제목만 표시할 TextView
     }
 }
