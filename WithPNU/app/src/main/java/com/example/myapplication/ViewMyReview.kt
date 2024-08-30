@@ -14,12 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MypageFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class MypageFragment : Fragment() {
+class ViewMyReview : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -36,22 +31,8 @@ class MypageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_mypage, container, false)
-        // 로그아웃 버튼 클릭
-        val logoutButton: TextView = view.findViewById(R.id.logout_btn)
-        logoutButton.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
+        val view = inflater.inflate(R.layout.activity_myreview, container, false)
 
-            val logoutIntent = Intent(activity, LoginActivity::class.java)
-            logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(logoutIntent)
-        }
-        // 작성한 리뷰 보기 버튼 클릭
-        val viewReviewButton: TextView = view.findViewById(R.id.view_review_btn)
-        viewReviewButton.setOnClickListener {
-            val intent = Intent(activity, ViewMyReview::class.java)
-            startActivity(intent)
-        }
         return view
     }
 
