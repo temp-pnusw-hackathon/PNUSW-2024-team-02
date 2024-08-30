@@ -49,5 +49,6 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="title_activity_more_detail_fragment">MoreDetailFragment</string>
+    <string name="title_activity_view_my_review">ViewMyReview</string>
 
 </resources>
