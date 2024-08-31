@@ -37,6 +37,7 @@ class MypageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_mypage, container, false)
+
         // 로그아웃 버튼 클릭
         val logoutButton: TextView = view.findViewById(R.id.logout_btn)
         logoutButton.setOnClickListener {
@@ -46,12 +47,21 @@ class MypageFragment : Fragment() {
             logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(logoutIntent)
         }
+
         // 작성한 리뷰 보기 버튼 클릭
         val viewReviewButton: TextView = view.findViewById(R.id.view_review_btn)
         viewReviewButton.setOnClickListener {
             val intent = Intent(activity, ViewMyReview::class.java)
             startActivity(intent)
         }
+
+        // 내 정보 수정하기 버튼 클릭 (추가된 부분)
+        val editProfileButton: TextView = view.findViewById(R.id.edit_profile_btn)
+        editProfileButton.setOnClickListener {
+            val intent = Intent(activity, ChangeMyinfoActivity::class.java)
+            startActivity(intent)
+        }
+
         return view
     }
 

@@ -131,6 +131,7 @@
 
 
             <ImageButton
+                android:id="@+id/revise_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/revise_btn"
