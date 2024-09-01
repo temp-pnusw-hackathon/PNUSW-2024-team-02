@@ -8,6 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,6 +29,14 @@ class MypageFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    // Firestore와 FirebaseAuth 인스턴스
+    private val db = FirebaseFirestore.getInstance()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    // View 요소를 나중에 초기화할 변수
+    private lateinit var mypageNickname: TextView
+    private lateinit var userMajorInfo: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -37,6 +50,14 @@ class MypageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_mypage, container, false)
+
+        // View 요소 초기화
+        mypageNickname = view.findViewById(R.id.mypage_nickname)
+        userMajorInfo = view.findViewById(R.id.userMajorInfo)
+
+        // Firestore에서 사용자 정보 가져오기
+        fetchUserInfo()
+
         // 로그아웃 버튼 클릭
         val logoutButton: TextView = view.findViewById(R.id.logout_btn)
         logoutButton.setOnClickListener {
@@ -46,13 +67,52 @@ class MypageFragment : Fragment() {
             logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(logoutIntent)
         }
+
         // 작성한 리뷰 보기 버튼 클릭
         val viewReviewButton: TextView = view.findViewById(R.id.view_review_btn)
         viewReviewButton.setOnClickListener {
             val intent = Intent(activity, ViewMyReview::class.java)
             startActivity(intent)
         }
+
+        // 내 정보 수정하기 버튼 클릭
+        val editProfileButton: TextView = view.findViewById(R.id.edit_profile_btn)
+        editProfileButton.setOnClickListener {
+            val intent = Intent(activity, ChangeMyinfoActivity::class.java)
+            startActivity(intent)
+        }
+
         return view
+    }
+
+    /**
+     * Firestore에서 현재 사용자의 정보를 가져와서 화면에 표시하는 함수
+     */
+    private fun fetchUserInfo() {
+        val userId = auth.currentUser?.uid
+
+        if (userId != null) {
+            CoroutineScope(Dispatchers.Main).launch {
+                try {
+                    // Firestore에서 사용자 문서를 가져옴
+                    val userDoc = db.collection("Users").document(userId).get().await()
+                    if (userDoc.exists()) {
+                        val username = userDoc.getString("username") ?: "닉네임 없음"
+                        val department = userDoc.getString("department") ?: "학과 없음"
+
+                        // 화면에 표시
+                        mypageNickname.text = username
+                        userMajorInfo.text = department
+                    } else {
+                        mypageNickname.text = "닉네임 없음"
+                        userMajorInfo.text = "학과 없음"
+                    }
+                } catch (e: Exception) {
+                    mypageNickname.text = "오류 발생"
+                    userMajorInfo.text = "오류 발생"
+                }
+            }
+        }
     }
 
     companion object {
