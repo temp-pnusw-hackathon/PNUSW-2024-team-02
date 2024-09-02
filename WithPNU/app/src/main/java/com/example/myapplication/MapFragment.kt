@@ -82,7 +82,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
-        updateMap()  // 위치 설정이 변경되었을 때 다시 위치를 업데이트
+        if (::mMap.isInitialized) {  // mMap이 초기화되었는지 확인
+            updateMap()  // 위치 설정이 변경되었을 때 다시 위치를 업데이트
+        } else {
+            // mMap이 초기화되지 않았을 경우 처리
+            // 이 상황은 거의 발생하지 않겠지만, 만약 발생하면 필요한 경우 로그를 남기거나 알림을 줄 수 있습니다.
+            // 예: Log.w("MapFragment", "mMap is not initialized in onResume")
+        }
     }
 
     // Firestore에서 위치 데이터를 가져와서 지도에 마커를 추가하는 메서드
