@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -25,7 +26,6 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.GeoPoint
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -38,6 +38,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var placesClient: PlacesClient
     private val firestore = FirebaseFirestore.getInstance() // Firestore 인스턴스
+    private var isLocationDialogShown = false // 위치 다이얼로그 중복 방지 플래그
 
     // 기본 위치를 부산대 위치로 설정
     private val defaultLocation = LatLng(35.231, 129.083) // 부산대 위치
@@ -74,6 +75,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         // Firestore에서 위치 데이터를 가져와서 지도에 표시
         loadLocationsFromFirestore()
+
+        // 현재 위치 업데이트 메서드 호출
+        updateMap()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (::mMap.isInitialized) {  // mMap이 초기화되었는지 확인
+            updateMap()  // 위치 설정이 변경되었을 때 다시 위치를 업데이트
+        } else {
+            // mMap이 초기화되지 않았을 경우 처리
+            // 이 상황은 거의 발생하지 않겠지만, 만약 발생하면 필요한 경우 로그를 남기거나 알림을 줄 수 있습니다.
+            // 예: Log.w("MapFragment", "mMap is not initialized in onResume")
+        }
     }
 
     // Firestore에서 위치 데이터를 가져와서 지도에 마커를 추가하는 메서드
@@ -119,6 +134,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                         // 주변 장소 검색
                         fetchNearbyPlaces(currentLatLng)
                     }
+                }.addOnFailureListener { exception ->
+                    exception.printStackTrace()
+                    Toast.makeText(requireContext(), "위치 정보를 가져오는 데 실패했습니다: ${exception.message}", Toast.LENGTH_LONG).show()
                 }
             } else {
                 showLocationSettingDialog() // 위치 설정 다이얼로그 표시
@@ -166,15 +184,21 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     // 위치 서비스 설정 다이얼로그 표시 메서드
     private fun showLocationSettingDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("위치 서비스 비활성화")
-            .setMessage("위치 서비스를 활성화해야 합니다. 위치 설정 화면으로 이동하시겠습니까?")
-            .setPositiveButton("예") { _, _ ->
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
-            }
-            .setNegativeButton("아니오", null)
-            .show()
+        if (!isLocationDialogShown) {  // 다이얼로그가 이미 표시되었는지 확인
+            isLocationDialogShown = true
+            AlertDialog.Builder(requireContext())
+                .setTitle("위치 서비스 비활성화")
+                .setMessage("위치 서비스를 활성화해야 합니다. 위치 설정 화면으로 이동하시겠습니까?")
+                .setPositiveButton("예") { _, _ ->
+                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(intent)
+                    isLocationDialogShown = false // 다이얼로그가 닫히면 플래그 리셋
+                }
+                .setNegativeButton("아니오") { _, _ ->
+                    isLocationDialogShown = false // 다이얼로그가 닫히면 플래그 리셋
+                }
+                .show()
+        }
     }
 
     companion object {

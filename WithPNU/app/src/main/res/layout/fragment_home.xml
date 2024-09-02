@@ -181,8 +181,8 @@
                     android:id="@+id/newInfo"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    android:background="@drawable/gray_input"
                     android:layout_marginTop="10dp"
+                    android:background="@drawable/gray_input"
                     android:backgroundTint="@color/gray"
                     android:contentDescription="DB 연결 후 나타나는 정보" />
 
