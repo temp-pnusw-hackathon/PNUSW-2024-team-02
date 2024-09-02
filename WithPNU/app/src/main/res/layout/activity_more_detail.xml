@@ -62,11 +62,11 @@
                     android:contentDescription="제휴 업체 이름" />
 
                 <ImageButton
-                    android:id="@+id/starred_mark"
+                    android:id="@+id/unstarred_mark"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/starred_mark"
+                    android:src="@drawable/unstarred_mark"
                     android:background="@android:color/transparent"
                     android:contentDescription="즐겨찾기 버튼"
                     android:layout_gravity="center"

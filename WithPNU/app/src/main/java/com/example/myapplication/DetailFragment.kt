@@ -79,12 +79,15 @@ class DetailFragment : Fragment() {
 
         query.get().addOnSuccessListener { documents ->
             if (documents.isEmpty) {
-                Toast.makeText(requireContext(), "No partnerships found.", Toast.LENGTH_SHORT).show()
+                // 데이터가 없을 경우 빈 어댑터 설정
+                gridView.adapter = null
             } else {
                 val adapter = PartnershipAdapter(requireContext(), documents.documents)
                 gridView.adapter = adapter
             }
         }.addOnFailureListener { exception ->
+            // 에러가 발생했을 때도 빈 어댑터 설정
+            gridView.adapter = null
             Toast.makeText(requireContext(), "Error: ${exception.message}", Toast.LENGTH_SHORT).show()
         }
     }
@@ -112,6 +115,4 @@ class DetailFragment : Fragment() {
         }
         startActivity(intent)
     }
-
-
 }
