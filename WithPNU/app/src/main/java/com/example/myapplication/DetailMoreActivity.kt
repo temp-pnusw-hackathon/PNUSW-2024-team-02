@@ -1,9 +1,12 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Button
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -21,6 +24,7 @@ class DetailMoreActivity : AppCompatActivity() {
     private lateinit var storeNameTextView: TextView
     private lateinit var titleTextView: TextView
     private lateinit var mapView: MapView
+    private lateinit var writeReview: ImageButton
 
     private var latitude: Double? = null
     private var longitude: Double? = null
@@ -39,6 +43,7 @@ class DetailMoreActivity : AppCompatActivity() {
         storeNameTextView = findViewById(R.id.partnership_store)
         titleTextView = findViewById(R.id.store_name)
         mapView = findViewById(R.id.detail_map)
+        writeReview = findViewById(R.id.write_review_btn)
 
         // Intent에서 데이터 수신
         val photoUrl = intent.getStringExtra("photoUrl")
@@ -87,7 +92,18 @@ class DetailMoreActivity : AppCompatActivity() {
             googleMap.addMarker(MarkerOptions().position(location).title(storeName ?: "제휴 업체 위치"))
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
         }
+
+        // 리뷰 쓰기 버튼 클릭
+
+        writeReview.setOnClickListener {
+            val intent = Intent(this@DetailMoreActivity, WriteMyReview::class.java)
+            intent.putExtra("storeName", storeName)
+            intent.putExtra("latitude", latitude)
+            intent.putExtra("longitude", longitude)
+            startActivity(intent)
+        }
     }
+
 
     // MapView 생명주기 관리
     override fun onResume() {
