@@ -13,9 +13,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.Timestamp
-import java.text.SimpleDateFormat
-import java.util.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.GeoPoint
 
 class DetailMoreActivity : AppCompatActivity() {
 
@@ -29,6 +28,10 @@ class DetailMoreActivity : AppCompatActivity() {
 
     private var latitude: Double? = null
     private var longitude: Double? = null
+
+    private val currentUser = FirebaseAuth.getInstance().currentUser
+    private var partnershipId: String? = null
+    private var photoUrls: List<String> = listOf() // 사진 URL 리스트
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,18 +47,21 @@ class DetailMoreActivity : AppCompatActivity() {
 
         // Intent에서 데이터 수신
         val photoUrl = intent.getStringExtra("photoUrl")
+        photoUrls = intent.getStringArrayListExtra("photoUrls") ?: listOf() // PhotoUrls 초기화
         val startDate = intent.getLongExtra("startDate", 0L)
         val endDate = intent.getLongExtra("endDate", 0L)
         val content = intent.getStringExtra("content")
-        val storeName = intent.getStringExtra("storeName") // storeName 필드 수신
-        val title = intent.getStringExtra("title") // title 필드 수신
+        val storeName = intent.getStringExtra("storeName")
+        val title = intent.getStringExtra("title")
         latitude = intent.getDoubleExtra("latitude", 0.0)
         longitude = intent.getDoubleExtra("longitude", 0.0)
+        partnershipId = intent.getStringExtra("partnershipId") // partnershipId 초기화
 
-
-        // 로그로 데이터 확인
-        Log.d("DetailMoreActivity", "startDate: $startDate")
-        Log.d("DetailMoreActivity", "endDate: $endDate")
+        // 인증된 사용자인지 확인
+        if (currentUser == null) {
+            Log.e("DetailMoreActivity", "User not authenticated")
+            return
+        }
 
         // 사진 설정
         if (!photoUrl.isNullOrEmpty()) {
@@ -64,9 +70,9 @@ class DetailMoreActivity : AppCompatActivity() {
 
         // 날짜 설정
         if (startDate > 0 && endDate > 0) {
-            val dateFormat = SimpleDateFormat("yy.MM.dd", Locale.getDefault())
-            val formattedStartDate = dateFormat.format(Date(startDate * 1000))
-            val formattedEndDate = dateFormat.format(Date(endDate * 1000))
+            val dateFormat = java.text.SimpleDateFormat("yy.MM.dd", java.util.Locale.getDefault())
+            val formattedStartDate = dateFormat.format(java.util.Date(startDate * 1000))
+            val formattedEndDate = dateFormat.format(java.util.Date(endDate * 1000))
             dateTextView.text = "제휴 기간 : $formattedStartDate~$formattedEndDate"
         } else {
             dateTextView.text = "날짜 정보가 없습니다."

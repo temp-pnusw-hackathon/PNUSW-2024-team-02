@@ -27,17 +27,21 @@
                 android:id="@+id/go_back_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/go_back"
+                android:src="@drawable/baseline_arrow_back_24"
                 android:background="@android:color/transparent"
                 android:layout_marginLeft="10dp"
                 android:padding="10dp"
                 android:contentDescription="마이페이지 이동 버튼"/>
 
 
-            <ListView
+            <GridView
                 android:id="@+id/starred_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:verticalSpacing="16dp"
+                android:horizontalSpacing="16dp"
+                android:padding="16dp"
+                android:clipToPadding="false"
                 />
 
 
