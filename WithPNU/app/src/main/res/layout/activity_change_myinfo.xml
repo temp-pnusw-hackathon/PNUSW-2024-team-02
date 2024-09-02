@@ -28,7 +28,7 @@
                 android:id="@+id/go_back_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/go_back"
+                android:src="@drawable/baseline_arrow_back_24"
                 android:background="@android:color/transparent"
                 android:layout_marginLeft="10dp"
                 android:padding="10dp"
