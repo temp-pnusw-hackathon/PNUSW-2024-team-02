@@ -18,6 +18,9 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".WriteMyReview"
+            android:exported="false"/>
+        <activity
             android:name=".ViewMyReview"
             android:exported="false"
             android:label="@string/title_activity_view_my_review"
@@ -49,7 +52,7 @@
             android:exported="false" />
         <activity
             android:name=".ChangeMyinfoActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">
