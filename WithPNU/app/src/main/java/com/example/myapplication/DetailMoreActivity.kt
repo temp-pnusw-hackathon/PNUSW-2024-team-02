@@ -47,6 +47,7 @@ class DetailMoreActivity : AppCompatActivity() {
     private var longitude: Double? = null
 
     private val currentUser = FirebaseAuth.getInstance().currentUser
+    private var title: String? = null
     private var partnershipId: String? = null
     private var photoUrls: List<String> = listOf() // 사진 URL 리스트
 
@@ -74,12 +75,19 @@ class DetailMoreActivity : AppCompatActivity() {
         val endDate = intent.getLongExtra("endDate", 0L)
         val content = intent.getStringExtra("content")
         storeName = intent.getStringExtra("storeName")
-        val title = intent.getStringExtra("title")
 
         latitude = intent.getDoubleExtra("latitude", 0.0)
         longitude = intent.getDoubleExtra("longitude", 0.0)
         partnershipId = intent.getStringExtra("partnershipId") // partnershipId 초기화
 
+        // Intent에서 데이터 수신
+        title = intent.getStringExtra("title")
+
+        if (title != null) {
+            fetchAndDisplayDetailsByTitle(title!!)
+        } else {
+            Log.e("DetailMoreActivity", "제목이 전달되지 않았습니다.")
+        }
 
         // 인증된 사용자인지 확인
         if (currentUser == null) {
@@ -135,6 +143,57 @@ class DetailMoreActivity : AppCompatActivity() {
         calculateAndDisplayAverageRating()
 
     }
+
+    private fun fetchAndDisplayDetailsByTitle(title: String) {
+        db.collection("partnerships")
+            .whereEqualTo("title", title)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val document = documents.first()  // 첫 번째 문서 가져오기
+                    val storeName = document.getString("storeName") ?: "가게 이름 없음"
+                    val content = document.getString("content") ?: "내용 없음"
+                    val photoUrl = document.getString("photoUrl")
+                    val startDate = document.getLong("startDate") ?: 0L
+                    val endDate = document.getLong("endDate") ?: 0L
+                    latitude = document.getDouble("latitude") ?: 0.0
+                    longitude = document.getDouble("longitude") ?: 0.0
+
+                    // UI 업데이트
+                    titleTextView.text = title
+                    storeNameTextView.text = "제휴 업체명 : $storeName"
+                    contentTextView.text = content
+
+                    if (photoUrl != null) {
+                        Glide.with(this).load(photoUrl).into(imageView)
+                    }
+
+                    val dateFormat = SimpleDateFormat("yy.MM.dd", Locale.getDefault())
+                    dateTextView.text = "제휴 기간 : ${dateFormat.format(Date(startDate * 1000))} ~ ${dateFormat.format(Date(endDate * 1000))}"
+
+                    // 지도에 위치 표시
+                    mapView.getMapAsync { googleMap ->
+                        val location = LatLng(latitude ?: 0.0, longitude ?: 0.0)
+                        googleMap.addMarker(MarkerOptions().position(location).title(storeName))
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
+                    }
+
+                    // 리뷰 데이터 로드 및 ListView에 표시
+                    loadReviews()
+                    // 평균 리뷰 보기
+                    calculateAndDisplayAverageRating()
+
+                } else {
+                    Log.e("DetailMoreActivity", "해당 제목에 대한 제휴 공지를 찾을 수 없습니다.")
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("DetailMoreActivity", "제휴 공지 데이터를 가져오는 중 오류 발생", e)
+            }
+    }
+
+
+
 
     private fun calculateAndDisplayAverageRating() {
         val db = FirebaseFirestore.getInstance()
@@ -194,7 +253,7 @@ class DetailMoreActivity : AppCompatActivity() {
                     Log.w("DetailMoreActivity", "리뷰 데이터를 가져오는 중 오류 발생")
                 }
         }
-}
+    }
 
 
     // MapView 생명주기 관리

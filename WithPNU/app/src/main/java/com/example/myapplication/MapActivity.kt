@@ -10,16 +10,15 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.RectangularBounds
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.google.android.libraries.places.api.net.FetchPlaceRequest
-import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.firebase.firestore.FirebaseFirestore
 
 private const val AUTOCOMPLETE_REQUEST_CODE = 1
 
@@ -29,6 +28,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var placesClient: PlacesClient
     private var selectedPlaceName: String? = null
     private var selectedLatLng: LatLng? = null  // 경도와 위도 정보를 저장하기 위한 변수
+    private val db = FirebaseFirestore.getInstance()  // Firestore 인스턴스
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,11 +58,39 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // 마커 클릭 리스너 설정
         mMap.setOnMarkerClickListener { marker ->
-            selectedPlaceName = marker.title
-            selectedLatLng = marker.position  // 마커의 위치를 저장
-            returnToPartnershipNoticeActivity()  // 선택된 장소 이름과 위치 반환
+            val title = marker.title
+            if (title != null) {
+                fetchPartnershipAndNavigate(title)
+            }
             true
         }
+    }
+
+    private fun fetchPartnershipAndNavigate(title: String) {
+        db.collection("partnershipinfo")
+            .whereEqualTo("title", title)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val document = documents.first()
+                    val intent = Intent(this, DetailMoreActivity::class.java).apply {
+                        putExtra("title", document.getString("title"))
+                        putExtra("storeName", document.getString("storeName"))
+                        putExtra("content", document.getString("content"))
+                        putExtra("photoUrl", document.getString("photoUrl"))
+                        putExtra("startDate", document.getLong("startDate"))
+                        putExtra("endDate", document.getLong("endDate"))
+                        putExtra("latitude", document.getDouble("location.latitude"))
+                        putExtra("longitude", document.getDouble("location.longitude"))
+                    }
+                    startActivity(intent)
+                } else {
+                    // 데이터가 없는 경우 처리
+                }
+            }
+            .addOnFailureListener { e ->
+                // 에러 처리
+            }
     }
 
     // AutocompleteActivity를 열어 장소 검색 기능 제공
@@ -113,5 +141,5 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         setResult(Activity.RESULT_OK, resultIntent)
         finish()
     }
-    
+
 }
