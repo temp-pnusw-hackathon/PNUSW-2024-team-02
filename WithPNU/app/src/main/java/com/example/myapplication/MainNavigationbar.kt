@@ -21,7 +21,7 @@ class MainNavigationbar : AppCompatActivity() {
     ) { permissions ->
         if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true) {
             // 위치 권한이 부여된 경우 MapFragment로 교체
-            replaceFragment(MapFragment.newInstance("", ""))
+            replaceFragment(MapFragment.newInstance("", ""), R.id.map)
         } else {
             // 위치 권한이 거부된 경우 사용자에게 알림
             Toast.makeText(this, "위치 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
@@ -33,12 +33,12 @@ class MainNavigationbar : AppCompatActivity() {
         binding = ActivityMainNavigationbarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        replaceFragment(HomeFragment())
+        replaceFragment(HomeFragment())  // 앱 시작 시 기본 프래그먼트는 HomeFragment
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> replaceFragment(HomeFragment())
-                R.id.detail -> replaceFragment(DetailFragment())
+                R.id.detail -> replaceFragment(DetailFragment(), R.id.detail)
                 R.id.map -> checkLocationPermissionAndReplaceFragment()
                 R.id.mypage -> loadMypageFragmentBasedOnRole()
                 else -> {
@@ -59,7 +59,7 @@ class MainNavigationbar : AppCompatActivity() {
                             "admin" -> MypageAdminFragment()
                             else -> MypageFragment()
                         }
-                        replaceFragment(fragment)
+                        replaceFragment(fragment, R.id.mypage)
                     }
                 }
                 .addOnFailureListener { e ->
@@ -73,7 +73,7 @@ class MainNavigationbar : AppCompatActivity() {
             ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
                     PackageManager.PERMISSION_GRANTED -> {
                 // 권한이 이미 부여된 경우 MapFragment로 교체
-                replaceFragment(MapFragment.newInstance("", ""))
+                replaceFragment(MapFragment.newInstance("", ""), R.id.map)
             }
             else -> {
                 // 권한 요청
@@ -84,10 +84,23 @@ class MainNavigationbar : AppCompatActivity() {
         }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    private var isNavigating = false
+
+    fun replaceFragment(fragment: Fragment, menuItemId: Int? = null) {
+        if (isNavigating) return
+
+        isNavigating = true
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragment_container, fragment)
         fragmentTransaction.commit()
+
+        // Navigation Bar의 선택 상태를 업데이트 (menuItemId가 전달된 경우)
+        menuItemId?.let {
+            binding.bottomNavigationView.selectedItemId = it
+        }
+
+        isNavigating = false
     }
+
 }
