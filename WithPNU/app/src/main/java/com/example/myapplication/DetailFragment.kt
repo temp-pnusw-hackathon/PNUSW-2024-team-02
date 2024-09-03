@@ -27,6 +27,18 @@ class DetailFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
     private val REQUEST_CODE_READ_EXTERNAL_STORAGE = 1001
 
+    // 버튼 상태 변수 초기화
+    private var isTotalViewSelected = false
+    private var isBarViewSelected = false
+    private var isCafeViewSelected = false
+    private var isCultureViewSelected = false
+    private var isFoodViewSelected = false
+    private var isHealthViewSelected = false
+    private var isEduViewSelected = false
+    private var isMediViewSelected = false
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,36 +59,60 @@ class DetailFragment : Fragment() {
 
         // 버튼 클릭 리스너 설정
         view.findViewById<ImageButton>(R.id.bar_btn).setOnClickListener {
+            resetButtonStates()
+            isBarViewSelected = true
             selectedCategory = "술집"
             loadPartnershipsByCategory(selectedCategory)
+            updateButtonImages(view)
         }
         view.findViewById<ImageButton>(R.id.cafe_btn).setOnClickListener {
+            resetButtonStates()
+            isCafeViewSelected = true
             selectedCategory = "카페"
             loadPartnershipsByCategory(selectedCategory)
+            updateButtonImages(view)
         }
         view.findViewById<ImageButton>(R.id.culture_btn).setOnClickListener {
+            resetButtonStates()
+            isCultureViewSelected = true
             selectedCategory = "문화"
             loadPartnershipsByCategory(selectedCategory)
+            updateButtonImages(view)
         }
         view.findViewById<ImageButton>(R.id.food_btn).setOnClickListener {
+            resetButtonStates()
+            isFoodViewSelected = true
             selectedCategory = "음식점•식품"
             loadPartnershipsByCategory(selectedCategory)
+            updateButtonImages(view)
         }
         view.findViewById<ImageButton>(R.id.health_btn).setOnClickListener {
+            resetButtonStates()
+            isHealthViewSelected = true
             selectedCategory = "헬스•뷰티"
             loadPartnershipsByCategory(selectedCategory)
+            updateButtonImages(view)
         }
         view.findViewById<ImageButton>(R.id.edu_btn).setOnClickListener {
+            resetButtonStates()
+            isEduViewSelected = true
             selectedCategory = "교육"
             loadPartnershipsByCategory(selectedCategory)
+            updateButtonImages(view)
         }
         view.findViewById<ImageButton>(R.id.medi_btn).setOnClickListener {
+            resetButtonStates()
+            isMediViewSelected = true
             selectedCategory = "의료•법"
             loadPartnershipsByCategory(selectedCategory)
+            updateButtonImages(view)
         }
         view.findViewById<ImageButton>(R.id.total_btn).setOnClickListener {
+            resetButtonStates()
+            isTotalViewSelected = true
             selectedCategory = "전체"
             loadPartnershipsByCategory(selectedCategory)
+            updateButtonImages(view)
         }
 
         // 권한 확인 및 요청
@@ -94,6 +130,44 @@ class DetailFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun resetButtonStates() {
+        isTotalViewSelected = false
+        isBarViewSelected = false
+        isCafeViewSelected = false
+        isCultureViewSelected = false
+        isFoodViewSelected = false
+        isHealthViewSelected = false
+        isEduViewSelected = false
+        isMediViewSelected = false
+    }
+
+    private fun updateButtonImages(view: View) {
+        view.findViewById<ImageButton>(R.id.total_btn).setImageResource(
+            if (isTotalViewSelected) R.drawable.totalview_click else R.drawable.totalview
+        )
+        view.findViewById<ImageButton>(R.id.bar_btn).setImageResource(
+            if (isBarViewSelected) R.drawable.bar_click else R.drawable.bar
+        )
+        view.findViewById<ImageButton>(R.id.cafe_btn).setImageResource(
+            if (isCafeViewSelected) R.drawable.cafe else R.drawable.cafe
+        )
+        view.findViewById<ImageButton>(R.id.culture_btn).setImageResource(
+            if (isCultureViewSelected) R.drawable.culture_click else R.drawable.culture
+        )
+        view.findViewById<ImageButton>(R.id.food_btn).setImageResource(
+            if (isFoodViewSelected) R.drawable.food_click else R.drawable.food
+        )
+        view.findViewById<ImageButton>(R.id.health_btn).setImageResource(
+            if (isHealthViewSelected) R.drawable.health_and_beauty_click else R.drawable.health_and_beauty
+        )
+        view.findViewById<ImageButton>(R.id.edu_btn).setImageResource(
+            if (isEduViewSelected) R.drawable.edu_click else R.drawable.edu
+        )
+        view.findViewById<ImageButton>(R.id.medi_btn).setImageResource(
+            if (isMediViewSelected) R.drawable.medical_and_law else R.drawable.medical_and_law
+        )
     }
 
     private fun checkAndRequestPermissions() {

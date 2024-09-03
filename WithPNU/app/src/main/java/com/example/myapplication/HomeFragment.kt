@@ -36,34 +36,42 @@ class HomeFragment : Fragment() {
 
         // "전체보기" 버튼 클릭 시
         binding.totalViewBtn.setOnClickListener {
+            binding.totalViewBtn.setImageResource(R.drawable.totalview_click)
             navigateToDetailFragment("전체")
         }
         // "술집" 버튼 클릭 시
         binding.barViewBtn.setOnClickListener {
+            binding.totalViewBtn.setImageResource(R.drawable.bar_click)
             navigateToDetailFragment("술집")
         }
         // "카페" 버튼 클릭 시
         binding.cafeViewBtn.setOnClickListener {
+            binding.totalViewBtn.setImageResource(R.drawable.cafe)
             navigateToDetailFragment("카페")
         }
         // "문화" 버튼 클릭 시
         binding.cultureViewBtn.setOnClickListener {
+            binding.totalViewBtn.setImageResource(R.drawable.culture_click)
             navigateToDetailFragment("문화")
         }
         // "음식점•식품" 버튼 클릭 시
         binding.foodViewBtn.setOnClickListener {
+            binding.totalViewBtn.setImageResource(R.drawable.food_click)
             navigateToDetailFragment("음식점•식품")
         }
         // "헬스•뷰티" 버튼 클릭 시
         binding.healthAndBeautyViewBtn.setOnClickListener {
+            binding.totalViewBtn.setImageResource(R.drawable.health_and_beauty_click)
             navigateToDetailFragment("헬스•뷰티")
         }
         // "교육" 버튼 클릭 시
         binding.eduViewBtn.setOnClickListener {
+            binding.totalViewBtn.setImageResource(R.drawable.edu_click)
             navigateToDetailFragment("교육")
         }
         // "의료•법" 버튼 클릭 시
         binding.medicalAndLawViewBtn.setOnClickListener {
+            binding.totalViewBtn.setImageResource(R.drawable.medical_and_law)
             navigateToDetailFragment("의료•법")
         }
 
