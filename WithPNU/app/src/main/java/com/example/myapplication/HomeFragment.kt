@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -95,8 +93,8 @@ class HomeFragment : Fragment() {
             }
         }
 
-        // MainNavigationbar 액티비티의 replaceFragment 메소드를 호출하고, Navigation Bar의 상태를 업데이트
-        (activity as? MainNavigationbar)?.replaceFragment(detailFragment, R.id.detail)
+        // MainNavigationbar 액티비티의 replaceFragment 메소드를 호출
+        (activity as? MainNavigationbar)?.replaceFragment(detailFragment)
     }
 
     override fun onDestroyView() {
@@ -106,7 +104,7 @@ class HomeFragment : Fragment() {
 }
 
 // Notice 데이터 클래스
-data class Notice(val title: String, val content: String)
+data class Notice(val title: String, val content: String) // content는 사용하지 않음
 
 // 간단한 RecyclerView 어댑터
 class SimpleNoticeAdapter(private val notices: List<Notice>) :
@@ -126,6 +124,6 @@ class SimpleNoticeAdapter(private val notices: List<Notice>) :
     override fun getItemCount() = notices.size
 
     class NoticeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val titleTextView: TextView = view.findViewById(android.R.id.text1)
+        val titleTextView: TextView = view.findViewById(android.R.id.text1) // 제목만 표시할 TextView
     }
 }
