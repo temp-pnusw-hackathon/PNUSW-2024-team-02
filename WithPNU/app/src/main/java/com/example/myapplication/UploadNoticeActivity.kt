@@ -5,6 +5,7 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import androidx.appcompat.widget.Toolbar
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -12,7 +13,9 @@ class UploadNoticeActivity : AppCompatActivity() {
     private lateinit var titleEditText: EditText
     private lateinit var contentEditText: EditText
     private lateinit var uploadButton: Button
+
     private val db = FirebaseFirestore.getInstance()
+    private val currentUser = FirebaseAuth.getInstance().currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,11 +28,13 @@ class UploadNoticeActivity : AppCompatActivity() {
         uploadButton.setOnClickListener {
             val title = titleEditText.text.toString()
             val content = contentEditText.text.toString()
+            val uid = currentUser?.uid
 
             // Firestore에 저장
             val noticeData = hashMapOf(
                 "title" to title,
-                "content" to content
+                "content" to content,
+                "uid" to uid
             )
 
             db.collection("noticeinfo")

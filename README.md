@@ -124,25 +124,38 @@ WithPNU 프로젝트는 부산대학교 인근 상권의 회복과 활성화를 
 [코딩역량강화플랫폼 Online Judge](http://10.125.121.115:8080/)를 예시로 작성하였습니다.
 ### 3.1. 전체시스템 흐름도
 
-- 유저 플로우 차트
-  > 코딩 역량강화 플랫폼의 회원가입 부분만 작성했습니다. <br/>
-  > 사용자의 행동 흐름을 도식화하여 보여줍니다.
-  <img width="400px" alt="유저 플로우 차트" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/c8de7c98-efd8-4f64-a39a-720faabccd78" />
+#### 유저 플로우 차트
 
-- 테스크 플로우 차트
-  > 코딩 역량강화 플랫폼의 로그인 부분만 작성했습니다. <br/>
-  > 주요 테스크의 프로세스를 도식화하여 보여줍니다.
-  <img width="400px" alt="테스크 플로우 차트" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/b83502a9-032d-4453-8687-428d54643610" />
+  ①. 로그인 및 회원가입 (+비번 찾기)
 
-- 시스템 플로우 차트
-  > 코딩 역량강화 플랫폼의 로그인 부분만 작성했습니다. <br/>
-  > 테스크의 흐름에 따른 데이터 처리를 도식화하여 보여줍니다.
-  <img width="600px" alt="시스템 플로우 차트" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/1bfb66f0-446c-4450-8a81-a78bfe5ac9ce" />
+![image](https://github.com/user-attachments/assets/2d94a459-5501-4293-bb67-87f03942af29)
+
+  ②. 홈 화면
+
+![image](https://github.com/user-attachments/assets/e783e179-58fb-450c-b25c-77f2a2e48efc)
+
+
+  ③. 디테일 화면
+
+![image](https://github.com/user-attachments/assets/a0873c58-582d-43ac-a1c8-eec2fb789e8c)
+
+  ④. 맵 화면
+
+![image](https://github.com/user-attachments/assets/7da64803-6276-435e-bd4f-6bceebed43e8)
+
+  ⑤. 사용자 마이페이지 화면
+
+![image](https://github.com/user-attachments/assets/dabc61e3-2a2e-4f9a-81ab-0f97d6c294e6)
+
+ ⑥. 관리자 마이페이지 화면
+
+![image](https://github.com/user-attachments/assets/9257388d-17df-4e3e-8224-0dbe19ac845c)
+
+<br/>
 
   
-- IA(Information Architecture)
-  > 정보나 시스템의 구조를 도식화하여 보여줍니다. <br/>
-  <img width="600px" alt="IA" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/07d842fe-fb73-4079-97a3-58b2495ff331" />
+#### IA(Information Architecture)
+![스크린샷 2024-09-03 210013](https://github.com/user-attachments/assets/992c6f28-af48-4b85-9cb6-96230b821b13)
 
 <br/>
 
@@ -257,24 +270,43 @@ WithPNU 프로젝트는 부산대학교 인근 상권의 회복과 활성화를 
 
 <br/>
 
-#### `디테일 화면`
-<img src="https://github.com/user-attachments/assets/14716ce8-780d-478f-a121-eccf4c241201" alt="image" width="300" height="750"/>
+#### `사용자 마이페이지 화면`
+<img src="https://github.com/user-attachments/assets/2edf7cd5-529a-44ba-a550-0d5ef88bfd8b" alt="image" width="300" height="750"/>
+
 
 
 
 
 |라벨|이름|상세|
 |:---:|:----------------------------:|:---|
-| S1  | 전체보기        | - 전체 제휴 가게 확인 |
-| S2  | 술집| - 술집 카테고리 제휴 확인 |
-| S3  | 카페               | - 카페 카테고리 제휴 확인|
-| S4  | 문화         | - 문화 카테고리 제휴 확인 |
-| S5  | 음식점&식품                        | - 음식점&식품 카테고리 제휴 확인 |
-| S6  | 헬스&뷰티          | - 헬스&뷰티 카테고리 제휴 확인|
-| S7  | 교육               | - 교육 카테고리 제휴 확인 |
-| S8  | 의료&법           | - 의료&법 카테고리 제휴 확인 |
-| S9  | 최신 제휴 공지 화면             | - 최신 제휴 공지 간략하게 열람 |
-| S10 | 제휴 관련 공지사항                 | - 제휴 관련 공지사항 미리보기|
+| S1  | 내 정보 수정        | - 닉네임 및 전공 수정 |
+| S2  | 내가 작성한 리뷰 보기| - 사용자가 작성한 제휴 관련 리뷰 확인 |
+| S3  | 설정                        | - 푸쉬 알림 설정 |
+| S4  | 공지사항          | - 앱 관련 공지사항 확인|
+| S5  | 문의/버그 신고              | - 문의 오픈채팅방으로 이동 |
+| S6  | 로그아웃           | - 클릭 시 로그아웃 |
+
+<br/>
+
+#### `관리자 마이페이지 화면`
+<img src="https://github.com/user-attachments/assets/77c6e8ac-e718-4bad-bf6e-42f4704c7bfd" alt="image" width="300" height="750"/>
+
+
+
+
+
+
+|라벨|이름|상세|
+|:---:|:----------------------------:|:---|
+| S1  | 제휴공지 작성        | - 제휴 공고 작성 |
+| S2  | 제휴공지 관리| - 제휴 공고 수정 |
+| S3  | 공지사항 작성               | - 제휴 관련 공지사항 작성|
+| S4  | 공지사항 관리         | - 작성한 공지사항 수정 |
+| S5  | 설정                        | - 푸쉬 알림 설정 |
+| S6  | 공지사항          | - 앱 관련 공지사항 확인|
+| S7  | 문의/버그 신고              | - 문의 오픈채팅방으로 이동 |
+| S8  | 로그아웃           | - 클릭 시 로그아웃 |
+
 
 
 ### 3.4. 디렉토리 구조
