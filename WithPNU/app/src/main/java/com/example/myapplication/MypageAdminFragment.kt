@@ -49,8 +49,9 @@ class MypageAdminFragment : Fragment() {
             startActivity(intent)
         }
 
-        val editNoticeButton: TextView = view.findViewById(R.id.edit_partnership_notice_btn)
-        editNoticeButton.setOnClickListener{
+        // 제휴공지 관리하기
+        val editPartnershipNoticeButton: TextView = view.findViewById(R.id.edit_partnership_notice_btn)
+        editPartnershipNoticeButton.setOnClickListener{
             val intent = Intent(activity, EditPartnershipNoticeActivity::class.java)
             startActivity(intent)
         }
@@ -63,6 +64,14 @@ class MypageAdminFragment : Fragment() {
             startActivity(intent)
         }
 
+        // 공지사항 관리하기 버튼 클릭
+        val editNoticeButton: TextView = view.findViewById(R.id.edit_notice_btn)
+        editNoticeButton.setOnClickListener {
+            //EditNoticeActivity로 이동
+            val intent = Intent(activity, EditNoticeActivity::class.java)
+            startActivity(intent)
+        }
+
         // 로그아웃 버튼 클릭
         val logoutButton: TextView = view.findViewById(R.id.logout_btn)
         logoutButton.setOnClickListener {
@@ -72,9 +81,6 @@ class MypageAdminFragment : Fragment() {
             logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(logoutIntent)
         }
-
-
-
 
 
         return view
