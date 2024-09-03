@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/baseline_arrow_back_ios_new_24"
-                android:id="@+id/go_detail_back_btn"
-                android:background="@android:color/transparent"
-                android:padding="20dp"
-                android:contentDescription="디테일 페이지로 돌아가는 버튼"/>
+
 
 
             <TextView
@@ -78,19 +92,19 @@
                 android:paddingVertical="15dp"
                 android:textSize="21dp" />
 
+
             <EditText
                 android:id="@+id/contentEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="리뷰를 작성해 주세요"
-
-                android:inputType="textMultiLine"
                 android:layout_marginHorizontal="20dp"
+                android:paddingStart="16dp"
+                android:background="@drawable/gray_input"
+                android:hint="리뷰를 작성해 주세요"
+                android:inputType="textMultiLine"
                 android:lines="3"
                 android:maxLines="10"
-                android:background="@drawable/gray_input"
                 android:scrollbars="vertical" />
-
 
             <ImageButton
                 android:id="@+id/submitBtn"
