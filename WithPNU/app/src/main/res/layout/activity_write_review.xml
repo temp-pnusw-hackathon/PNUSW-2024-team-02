@@ -79,16 +79,6 @@
 
 
             <EditText
-                android:id="@+id/titleEditText"
-                android:layout_width="match_parent"
-                android:minWidth="48dp"
-                android:minHeight="48dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:hint="제목"
-                android:textSize="18sp" />
-
-            <EditText
                 android:id="@+id/contentEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
