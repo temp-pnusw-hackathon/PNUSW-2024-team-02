@@ -20,15 +20,14 @@ class MypageAdminFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_mypage_admin, container, false)
 
-        // partnership_notice_btn 클릭 이벤트 처리
+        // 제휴공지 작성하기 버튼 클릭
         val partnershipNoticeButton: TextView = view.findViewById(R.id.partnership_notice_btn)
         partnershipNoticeButton.setOnClickListener {
-            // PartnershipNoticeActivity로 이동
             val intent = Intent(activity, PartnershipNoticeActivity::class.java)
             startActivity(intent)
         }
 
-        // 제휴공지 관리하기
+        // 제휴공지 관리하기 버튼 클릭
         val editPartnershipNoticeButton: TextView = view.findViewById(R.id.edit_partnership_notice_btn)
         editPartnershipNoticeButton.setOnClickListener{
             val intent = Intent(activity, EditPartnershipNoticeActivity::class.java)
