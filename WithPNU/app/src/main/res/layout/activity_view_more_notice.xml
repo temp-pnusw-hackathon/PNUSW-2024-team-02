@@ -59,7 +59,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_margintop="8dp"
+                android:layout_marginTop="8dp"
                 android:background="#E0E0E0" />
 
             <TextView
@@ -68,7 +68,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
                 android:text="공지사항의 내용이 업로드 됩니다."
                 android:textSize="16sp" />
         </LinearLayout>

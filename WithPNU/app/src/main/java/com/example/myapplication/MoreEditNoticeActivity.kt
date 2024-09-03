@@ -35,5 +35,5 @@ class MoreEditNoticeActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-    }
 }
+
