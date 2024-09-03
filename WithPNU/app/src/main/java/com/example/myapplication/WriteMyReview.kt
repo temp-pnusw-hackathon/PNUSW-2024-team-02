@@ -20,7 +20,6 @@ class WriteMyReview : AppCompatActivity() {
 
     // UI 요소 선언
     private lateinit var addLocationButton: TextView
-    private lateinit var titleEditText: EditText
     private lateinit var contentEditText: EditText
     private lateinit var submitBtn: ImageButton
     private lateinit var ratingBar : RatingBar
@@ -37,7 +36,6 @@ class WriteMyReview : AppCompatActivity() {
 
         // UI 요소 초기화
         addLocationButton = findViewById(R.id.addLocationButton)
-        titleEditText = findViewById(R.id.titleEditText)
         contentEditText = findViewById(R.id.contentEditText)
         submitBtn = findViewById(R.id.submitBtn)
 
@@ -48,10 +46,7 @@ class WriteMyReview : AppCompatActivity() {
         ratingBar = findViewById(R.id.ratingBar)
 
 
-        // 제목과 내용 입력 처리
-        titleEditText.setOnClickListener {
-            titleEditText.requestFocus()
-        }
+        // 내용 입력 처리
 
         contentEditText.setOnClickListener {
             contentEditText.requestFocus()
@@ -70,7 +65,6 @@ class WriteMyReview : AppCompatActivity() {
         ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
             this.rating = rating
         }
-
 
         // 제출 버튼 클릭 시 리뷰를 데이터베이스에 저장
         submitBtn.setOnClickListener {
@@ -103,19 +97,17 @@ class WriteMyReview : AppCompatActivity() {
 
     // 리뷰를 데이터베이스에 저장하는 함수
     private fun saveReviewToDatabase() {
-        val title = titleEditText.text.toString()
         val content = contentEditText.text.toString()
 
-        // 제목과 내용이 비어 있는지 확인
-        if (title.isEmpty() || content.isEmpty()) {
+        // 내용이 비어 있는지 확인
+        if (content.isEmpty()) {
             // 비어 있을 경우 처리
-            Toast.makeText(this, "모든 필드를 채워주세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "리뷰를 적어주세요", Toast.LENGTH_SHORT).show()
             return
         }
 
         // 리뷰 데이터 생성
         val reviewData = mapOf(
-            "title" to title,
             "content" to content,
             "storeName" to storeName,
             "latitude" to latitude,
