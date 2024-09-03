@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -71,6 +72,33 @@ class MypageFragment : Fragment() {
         val viewReviewButton: TextView = view.findViewById(R.id.view_review_btn)
         viewReviewButton.setOnClickListener {
             val intent = Intent(activity, ViewMyReview::class.java)
+            startActivity(intent)
+        }
+
+        //설정 버튼 클릭
+        val settingButton: TextView = view.findViewById(R.id.settings_btn)
+        settingButton.setOnClickListener {
+            //setting으로 이동
+            val intent = Intent(activity, setting::class.java)
+            startActivity(intent)
+        }
+
+        //공지사항 버튼 클릭
+        val notice: TextView = view.findViewById(R.id.notice_btn)
+        notice.setOnClickListener {
+            //ListNotice로 이동
+            val intent = Intent(activity, ListNotice::class.java)
+            startActivity(intent)
+        }
+
+        //문의/버그 신고 버튼 클릭
+        val bugreport: TextView = view.findViewById(R.id.report_issue_btn)
+        bugreport.setOnClickListener {
+            // 오픈채팅 링크로 이동
+            val url = "https://open.kakao.com/o/sH8uWIMg"
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(url)
+            }
             startActivity(intent)
         }
 
