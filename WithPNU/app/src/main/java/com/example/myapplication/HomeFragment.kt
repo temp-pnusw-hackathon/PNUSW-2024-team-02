@@ -31,35 +31,35 @@ class HomeFragment : Fragment() {
 
         // "전체보기" 버튼 클릭 시
         binding.totalViewBtn.setOnClickListener {
-            navigateToDetailActivity("")
+            navigateToDetailFragment("전체")
         }
         // "술집" 버튼 클릭 시
         binding.barViewBtn.setOnClickListener {
-            navigateToDetailActivity("술집")
+            navigateToDetailFragment("술집")
         }
         // "카페" 버튼 클릭 시
         binding.cafeViewBtn.setOnClickListener {
-            navigateToDetailActivity("카페")
+            navigateToDetailFragment("카페")
         }
         // "문화" 버튼 클릭 시
         binding.cultureViewBtn.setOnClickListener {
-            navigateToDetailActivity("문화")
+            navigateToDetailFragment("문화")
         }
         // "음식점•식품" 버튼 클릭 시
         binding.foodViewBtn.setOnClickListener {
-            navigateToDetailActivity("음식점•식품")
+            navigateToDetailFragment("음식점•식품")
         }
         // "헬스•뷰티" 버튼 클릭 시
         binding.healthAndBeautyViewBtn.setOnClickListener {
-            navigateToDetailActivity("헬스•뷰티")
+            navigateToDetailFragment("헬스•뷰티")
         }
         // "교육" 버튼 클릭 시
         binding.eduViewBtn.setOnClickListener {
-            navigateToDetailActivity("교육")
+            navigateToDetailFragment("교육")
         }
         // "의료•법" 버튼 클릭 시
         binding.medicalAndLawViewBtn.setOnClickListener {
-            navigateToDetailActivity("의료•법")
+            navigateToDetailFragment("의료•법")
         }
 
         // RecyclerView에 LayoutManager 설정
@@ -86,11 +86,15 @@ class HomeFragment : Fragment() {
             }
     }
 
-    private fun navigateToDetailActivity(category: String) {
-        val intent = Intent(activity, DetailFragment::class.java).apply {
-            putExtra("category", category)
+    private fun navigateToDetailFragment(category: String) {
+        val detailFragment = DetailFragment().apply {
+            arguments = Bundle().apply {
+                putString("selectedCategory", category)
+            }
         }
-        startActivity(intent)
+
+        // MainNavigationbar 액티비티의 replaceFragment 메소드를 호출하고, Navigation Bar의 상태를 업데이트
+        (activity as? MainNavigationbar)?.replaceFragment(detailFragment, R.id.detail)
     }
 
     override fun onDestroyView() {
