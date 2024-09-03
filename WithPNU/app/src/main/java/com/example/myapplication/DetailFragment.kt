@@ -145,28 +145,28 @@ class DetailFragment : Fragment() {
 
     private fun updateButtonImages(view: View) {
         view.findViewById<ImageButton>(R.id.total_btn).setImageResource(
-            if (isTotalViewSelected) R.drawable.totalview_click else R.drawable.totalview
+            if (isTotalViewSelected) R.drawable.big_totalview_click else R.drawable.totalview
         )
         view.findViewById<ImageButton>(R.id.bar_btn).setImageResource(
-            if (isBarViewSelected) R.drawable.bar_click else R.drawable.bar
+            if (isBarViewSelected) R.drawable.big_bar_click else R.drawable.bar
         )
         view.findViewById<ImageButton>(R.id.cafe_btn).setImageResource(
-            if (isCafeViewSelected) R.drawable.cafe else R.drawable.cafe
+            if (isCafeViewSelected) R.drawable.big_cafe_click else R.drawable.cafe
         )
         view.findViewById<ImageButton>(R.id.culture_btn).setImageResource(
-            if (isCultureViewSelected) R.drawable.culture_click else R.drawable.culture
+            if (isCultureViewSelected) R.drawable.big_culture_click else R.drawable.culture
         )
         view.findViewById<ImageButton>(R.id.food_btn).setImageResource(
-            if (isFoodViewSelected) R.drawable.food_click else R.drawable.food
+            if (isFoodViewSelected) R.drawable.big_food_click else R.drawable.food
         )
         view.findViewById<ImageButton>(R.id.health_btn).setImageResource(
-            if (isHealthViewSelected) R.drawable.health_and_beauty_click else R.drawable.health_and_beauty
+            if (isHealthViewSelected) R.drawable.big_health_click else R.drawable.health_and_beauty
         )
         view.findViewById<ImageButton>(R.id.edu_btn).setImageResource(
-            if (isEduViewSelected) R.drawable.edu_click else R.drawable.edu
+            if (isEduViewSelected) R.drawable.big_edu_click else R.drawable.edu
         )
         view.findViewById<ImageButton>(R.id.medi_btn).setImageResource(
-            if (isMediViewSelected) R.drawable.medical_and_law else R.drawable.medical_and_law
+            if (isMediViewSelected) R.drawable.big_medi_click else R.drawable.medical_and_law
         )
     }
 

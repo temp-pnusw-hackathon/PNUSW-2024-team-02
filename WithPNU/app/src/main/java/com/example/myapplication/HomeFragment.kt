@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
         }
         // "카페" 버튼 클릭 시
         binding.cafeViewBtn.setOnClickListener {
-            binding.totalViewBtn.setImageResource(R.drawable.cafe)
+            binding.totalViewBtn.setImageResource(R.drawable.cafe_click)
             navigateToDetailFragment("카페")
         }
         // "문화" 버튼 클릭 시
@@ -71,7 +71,7 @@ class HomeFragment : Fragment() {
         }
         // "의료•법" 버튼 클릭 시
         binding.medicalAndLawViewBtn.setOnClickListener {
-            binding.totalViewBtn.setImageResource(R.drawable.medical_and_law)
+            binding.totalViewBtn.setImageResource(R.drawable.medical_and_law_click)
             navigateToDetailFragment("의료•법")
         }
 
