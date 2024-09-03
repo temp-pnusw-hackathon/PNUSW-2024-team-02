@@ -359,12 +359,12 @@ $ npm run dev
 <br/>
 
 
-### 5. 소개 및 시연영상
+## 5. 소개 및 시연영상
 [<img width="700px" alt="소개 및 시연영상" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/162132cd-9af5-4154-9b9a-41c96cf5e8fd" />](https://www.youtube.com/watch?v=EfEgTrm5_u4)
 
 <br/>
 
-### 6. 팀 소개
+## 6. 팀 소개
 | 곽도연 | 김태란 | 서혜민 | 안소희 |
 |:-------:|:-------:|:-------:|:-------:|
 |<img width="100px" alt="곽도연" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/f5b5df2a-e174-437d-86b2-a5a23d9ee75d" /> | <img width="100px" alt="김태란" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/fe4e8910-4565-4f3f-9bd1-f135e74cb39d" /> | <img width="100px" alt="서혜민" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/675d8471-19b9-4abc-bf8a-be426989b318" /> |<img width="100px" alt="안소희" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/675d8471-19b9-4abc-bf8a-be426989b318" /> |
@@ -375,7 +375,7 @@ $ npm run dev
 <br/>
 
 
-### 7. 해커톤 참여 후기
+## 7. 해커톤 참여 후기
 - 곽도연
   > 비록 개발을 아예 모르는 사람은 아니었지만 비전공자였기 때문에 초반에는 어려움이 많았습니다. 하지만 약 3개월의 시간 동안 팀원들과 같이 개발을 함으로써 프로그래밍 실력이 쌓여 개발에 흥미를 느끼게 된 좋은 계기가 된 것 같습니다.
 - 김태란
@@ -385,3 +385,10 @@ $ npm run dev
 - 안소희
   > 작성하세요.
 <br/>
+
+## 8. 참고문헌
+부산대 상권의 속절없는 추락… 노른자위 상가도 텅텅 비었다 https://www.kookje.co.kr/news2011/asp/newsbody.asp?code=0300&key=20240422.99008006533
+
+대표 상권 몰락에 소상인 고통.."대책 없어" https://busanmbc.co.kr/01_new/new01_view.asp?idx=262150
+
+'4곳 중 1곳 공실' 쇠퇴한 부산대 앞 상권 살리기 나선 지자체 https://www.yna.co.kr/view/AKR20240722054100051
