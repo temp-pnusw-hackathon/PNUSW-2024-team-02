@@ -157,21 +157,23 @@ $ npm run dev
 <br/>
 
 ### 6. 팀 소개
-| MEMBER1 | MEMBER2 | MEMBER3 |
-|:-------:|:-------:|:-------:|
-|<img width="100px" alt="MEMBER1" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/f5b5df2a-e174-437d-86b2-a5a23d9ee75d" /> | <img width="100px" alt="MEMBER2" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/fe4e8910-4565-4f3f-9bd1-f135e74cb39d" /> | <img width="100px" alt="MEMBER3" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/675d8471-19b9-4abc-bf8a-be426989b318" /> |
-| member1@pusan.ac.kr | member2@gmail.com | member3@naver.com |
-| 프론트앤드 개발 | 인프라 구축 <br/> 백앤드 개발 | DB 설계 <br/> 백앤드 개발 |
+| 곽도연 | 김태란 | 서혜민 | 안소희 |
+|:-------:|:-------:|:-------:|:-------:|
+|<img width="100px" alt="곽도연" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/f5b5df2a-e174-437d-86b2-a5a23d9ee75d" /> | <img width="100px" alt="김태란" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/fe4e8910-4565-4f3f-9bd1-f135e74cb39d" /> | <img width="100px" alt="서혜민" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/675d8471-19b9-4abc-bf8a-be426989b318" /> |<img width="100px" alt="안소희" src="https://github.com/pnuswedu/SW-Hackathon-2024/assets/34933690/675d8471-19b9-4abc-bf8a-be426989b318" /> |
+| gdy0210@pusan.ac.kr | taeran4767@pusan.ac.kr | gp4077@pusan.ac.kr | soheean1370@pusan.ac.kr |
+| 백엔드 개발 <br/> UI/UX 디자인 | 아이디어 기획 <br/> 프론트엔드 개발 | 프론트엔드 개발 <br/> UI/UX 디자인 | 총괄 <br/> 백앤드 개발 |
 
 
 <br/>
 
 
 ### 7. 해커톤 참여 후기
-- MEMBER1
+- 곽도연
+  > 비록 개발을 아예 모르는 사람은 아니었지만 비전공자였기 때문에 초반에는 어려움이 많았습니다. 하지만 약 3개월의 시간 동안 팀원들과 같이 개발을 함으로써 프로그래밍 실력이 쌓여 개발에 흥미를 느끼게 된 좋은 계기가 된 것 같습니다.
+- 김태란
   > 작성하세요.
-- MEMBER2
+- 서혜민
   > 작성하세요.
-- MEMBER3
+- 안소희
   > 작성하세요.
 <br/>
