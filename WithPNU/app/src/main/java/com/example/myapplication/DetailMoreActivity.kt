@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager.widget.PagerAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.RatingBar
@@ -32,7 +34,7 @@ class DetailMoreActivity : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
 
-    private lateinit var imageView: ImageView
+    private lateinit var imageView: ViewPager
     private lateinit var dateTextView: TextView
     private lateinit var contentTextView: TextView
     private lateinit var storeNameTextView: TextView
@@ -87,10 +89,10 @@ class DetailMoreActivity : AppCompatActivity() {
             return
         }
 
-        // 사진 설정
-        if (!photoUrl.isNullOrEmpty()) {
-            Glide.with(this).load(photoUrl).into(imageView)
-        }
+        // ViewPager에 어댑터 설정
+        val adapter = ImagePagerAdapter(this, photoUrls)
+        imageView.adapter = adapter
+
 
         // 날짜 설정
         if (startDate > 0 && endDate > 0) {
@@ -217,5 +219,27 @@ class DetailMoreActivity : AppCompatActivity() {
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()
+    }
+
+    class ImagePagerAdapter(private val context: Context, private val imageUrls: List<String>) : PagerAdapter() {
+
+        override fun instantiateItem(container: ViewGroup, position: Int): Any {
+            val imageView = ImageView(context)
+            Glide.with(context).load(imageUrls[position]).into(imageView)
+            container.addView(imageView)
+            return imageView
+        }
+
+        override fun getCount(): Int {
+            return imageUrls.size
+        }
+
+        override fun isViewFromObject(view: View, obj: Any): Boolean {
+            return view == obj
+        }
+
+        override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
+            container.removeView(obj as View)
+        }
     }
 }

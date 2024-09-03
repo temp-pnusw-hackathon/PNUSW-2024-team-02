@@ -60,7 +60,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.setOnMarkerClickListener { marker ->
             selectedPlaceName = marker.title
             selectedLatLng = marker.position  // 마커의 위치를 저장
-            returnToPartnershipNoticeActivity()  // 선택된 장소 이름과 위치 반환
             true
         }
     }

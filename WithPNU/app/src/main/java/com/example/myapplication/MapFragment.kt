@@ -51,7 +51,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
 
         // Places API 초기화
-        Places.initialize(requireContext(), "YOUR_API_KEY_HERE")
+        Places.initialize(requireContext(), "AIzaSyCqC4aLoGhe6_Mv8KbFyD6rARFq9OsZ5EE")
         placesClient = Places.createClient(requireContext())
     }
 

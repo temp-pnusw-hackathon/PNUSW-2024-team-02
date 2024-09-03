@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,31 +18,43 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
-
-        <activity android:name=".WriteMyReview"
-            android:exported="false"
-            />
-
+        <activity
+            android:name=".ViewMoreNoticeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MoreEditNoticeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListNotice"
+            android:exported="false" />
+        <activity
+            android:name=".setting"
+            android:exported="false" />
+        <activity
+            android:name=".EditNoticeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WriteMyReview"
+            android:exported="false" />
         <activity
             android:name=".ViewMyReview"
             android:exported="false"
-            android:parentActivityName=".MainNavigationbar"
-            />
+            android:parentActivityName=".MainNavigationbar" />
         <activity
             android:name=".EditPartnershipNoticeActivity"
-            android:parentActivityName=".MainNavigationbar"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainNavigationbar" />
         <activity
             android:name=".UploadNoticeActivity"
-            android:parentActivityName=".MainNavigationbar"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainNavigationbar" />
         <activity
             android:name=".MapActivity"
             android:exported="false" />
         <activity
             android:name=".PartnershipNoticeActivity"
-            android:parentActivityName=".MainNavigationbar"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainNavigationbar" />
         <activity
             android:name=".SignUp"
             android:exported="false" />
@@ -56,8 +69,8 @@
             android:exported="false" />
         <activity
             android:name=".ChangeMyinfoActivity"
-            android:parentActivityName=".MainNavigationbar"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainNavigationbar" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">
