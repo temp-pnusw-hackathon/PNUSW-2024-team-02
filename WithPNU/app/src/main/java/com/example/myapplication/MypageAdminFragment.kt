@@ -74,9 +74,6 @@ class MypageAdminFragment : Fragment() {
         }
 
 
-
-
-
         return view
     }
 

@@ -2,10 +2,13 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -71,7 +74,7 @@ class HomeFragment : Fragment() {
         loadNotices()
 
         // Carousel 설정 추가
-        setupCarousel() // 추가한 부분
+        setupCarousel()
     }
 
     // Carousel 설정 메서드 추가
@@ -79,22 +82,26 @@ class HomeFragment : Fragment() {
         val carousel = binding.carousel // XML에서 Carousel 참조
         carousel.setAdapter(object : Carousel.Adapter {
             override fun count(): Int {
-                return 3 // Carousel 아이템 수
+                return 4 // Carousel 아이템 수
             }
 
             override fun populate(view: View, index: Int) {
+                val imageView = view as ImageView
                 when (index) {
-                    0 -> binding.carousel1.setImageResource(R.drawable.skyeye)
-                    1 -> binding.carousel2.setImageResource(R.drawable.megabox)
-                    2 -> binding.carousel3.setImageResource(R.drawable.os_fit)
+                    0 -> imageView.setImageResource(R.drawable.skyeye)
+                    1 -> imageView.setImageResource(R.drawable.megabox)
+                    2 -> imageView.setImageResource(R.drawable.os_fit)
+                    3 -> imageView.setImageResource(R.drawable.credit_burger)
+                    else -> imageView.setImageResource(R.drawable.skyeye)
                 }
             }
 
             override fun onNewItem(index: Int) {
-                // 새로운 아이템이 선택될 때 호출되는 메서드 (필요에 따라 구현)
             }
         })
     }
+
+
 
     private fun loadNotices() {
         db.collection("noticeinfo")

@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
-
+                    
 
                     <ImageButton
                         android:id="@+id/edu_view_btn"
@@ -184,29 +184,39 @@
                     android:textColor="@color/black"
                     />
 
+
                 <androidx.constraintlayout.motion.widget.MotionLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:motion="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:layout_gravity="center"
+                    android:elevation="8dp"
                     app:layoutDescription="@xml/fragment_home_scene">
 
                     <ImageView
-                        android:id="@+id/carousel1"
+                        android:id="@+id/imageview1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/skyeye" />
                     <ImageView
-                        android:id="@+id/carousel2"
+                        android:id="@+id/imageview2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/megabox" />
+
                     <ImageView
-                        android:id="@+id/carousel3"
+                        android:id="@+id/imageview3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/os_fit" />
+                        android:src="@drawable/os_fit"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="0dp" />
+
+                    <ImageView
+                        android:id="@+id/imageview4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/credit_burger" />
 
                     <androidx.constraintlayout.helper.widget.Carousel
                         android:id="@+id/carousel"
@@ -217,8 +227,8 @@
                         app:carousel_previousState="@+id/previous"
                         app:carousel_nextState="@+id/next"
                         app:carousel_infinite="true"
-                        app:carousel_firstView="@+id/carousel2"
-                        app:constraint_referenced_ids="carousel1,carousel2,carousel3" />
+                        app:carousel_firstView="@+id/imageview1"
+                        app:constraint_referenced_ids="imageview1,imageview2,imageview3,imageview4" />
                 </androidx.constraintlayout.motion.widget.MotionLayout>
 
         </LinearLayout>

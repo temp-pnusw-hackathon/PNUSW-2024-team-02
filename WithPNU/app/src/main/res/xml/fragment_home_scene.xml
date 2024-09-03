@@ -3,37 +3,46 @@
     xmlns:motion="http://schemas.android.com/apk/res-auto">
 
     <ConstraintSet android:id="@+id/start">
-        <!-- 초기 상태 제약 조건 정의 -->
+        <Constraint
+            android:id="@id/imageview1"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"/>
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/next">
-        <!-- 다음 상태 제약 조건 정의 -->
+        <Constraint
+            android:id="@id/imageview2"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"/>
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/previous">
-        <!-- 이전 상태 제약 조건 정의 -->
+        <Constraint
+            android:id="@id/imageview4"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"/>
     </ConstraintSet>
 
     <Transition
         motion:constraintSetStart="@id/start"
-        motion:constraintSetEnd="@id/next"
+        motion:constraintSetEnd="@+id/next"
         motion:duration="1000"
         android:id="@+id/forward">
         <OnSwipe
             motion:dragDirection="dragLeft"
-            motion:touchAnchorId="@+id/carousel"
             motion:touchAnchorSide="left" />
     </Transition>
 
     <Transition
-        motion:constraintSetStart="@id/start"
-        motion:constraintSetEnd="@id/previous"
-        motion:duration="1000"
+        motion:constraintSetStart="@+id/start"
+        motion:constraintSetEnd="@+id/previous"
         android:id="@+id/backward">
         <OnSwipe
             motion:dragDirection="dragRight"
-            motion:touchAnchorId="@+id/carousel"
             motion:touchAnchorSide="right" />
     </Transition>
-
 </MotionScene>
+
