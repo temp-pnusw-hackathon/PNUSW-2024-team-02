@@ -17,26 +17,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
-        <activity
-            android:name=".WriteMyReview"
-            android:exported="false"/>
+
+        <activity android:name=".WriteMyReview"
+            android:exported="false"
+            />
+
         <activity
             android:name=".ViewMyReview"
             android:exported="false"
-            android:label="@string/title_activity_view_my_review"
-            android:theme="@style/Theme.MyApplication" />
+            android:parentActivityName=".MainNavigationbar"
+            />
         <activity
             android:name=".EditPartnershipNoticeActivity"
+            android:parentActivityName=".MainNavigationbar"
             android:exported="false" />
         <activity
             android:name=".UploadNoticeActivity"
+            android:parentActivityName=".MainNavigationbar"
             android:exported="false" />
         <activity
             android:name=".MapActivity"
-            android:exported="false"
-            android:theme="@style/Theme.MyApplication" />
+            android:exported="false" />
         <activity
             android:name=".PartnershipNoticeActivity"
+            android:parentActivityName=".MainNavigationbar"
             android:exported="false" />
         <activity
             android:name=".SignUp"
@@ -52,6 +56,7 @@
             android:exported="false" />
         <activity
             android:name=".ChangeMyinfoActivity"
+            android:parentActivityName=".MainNavigationbar"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"

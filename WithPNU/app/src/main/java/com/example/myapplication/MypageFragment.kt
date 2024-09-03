@@ -60,17 +60,17 @@ class MypageFragment : Fragment() {
             startActivity(logoutIntent)
         }
 
-        // 작성한 리뷰 보기 버튼 클릭
-        val viewReviewButton: TextView = view.findViewById(R.id.view_review_btn)
-        viewReviewButton.setOnClickListener {
-            val intent = Intent(activity, ViewMyReview::class.java)
-            startActivity(intent)
-        }
-
         // 내 정보 수정하기 버튼 클릭
         val editProfileButton: TextView = view.findViewById(R.id.edit_profile_btn)
         editProfileButton.setOnClickListener {
             val intent = Intent(activity, ChangeMyinfoActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 내가 작성한 리뷰 보기 버튼 클릭
+        val viewReviewButton: TextView = view.findViewById(R.id.view_review_btn)
+        viewReviewButton.setOnClickListener {
+            val intent = Intent(activity, ViewMyReview::class.java)
             startActivity(intent)
         }
 
