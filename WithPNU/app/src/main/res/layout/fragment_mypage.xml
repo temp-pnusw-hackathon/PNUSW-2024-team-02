@@ -159,17 +159,6 @@
                         android:padding="16dp"
                         android:text="내가 작성한 리뷰 보기" />
 
-                    <TextView
-                        android:id="@+id/favorites_btn"
-                        style="@style/RegularTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
-                        android:drawablePadding="8dp"
-                        android:gravity="center_vertical"
-                        android:padding="16dp"
-                        android:text="즐겨찾기" />
 
                     <View
                         android:layout_width="match_parent"

@@ -31,15 +31,38 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 각 버튼 클릭 시 카테고리별로 DetailActivity로 이동
-        binding.totalViewBtn.setOnClickListener { navigateToDetailActivity("전체") }
-        binding.barViewBtn.setOnClickListener { navigateToDetailActivity("술집") }
-        binding.cafeViewBtn.setOnClickListener { navigateToDetailActivity("카페") }
-        binding.cultureViewBtn.setOnClickListener { navigateToDetailActivity("문화") }
-        binding.foodViewBtn.setOnClickListener { navigateToDetailActivity("음식점•식품") }
-        binding.healthAndBeautyViewBtn.setOnClickListener { navigateToDetailActivity("헬스•뷰티") }
-        binding.eduViewBtn.setOnClickListener { navigateToDetailActivity("교육") }
-        binding.medicalAndLawViewBtn.setOnClickListener { navigateToDetailActivity("의료•법") }
+        // "전체보기" 버튼 클릭 시
+        binding.totalViewBtn.setOnClickListener {
+            navigateToDetailFragment("전체")
+        }
+        // "술집" 버튼 클릭 시
+        binding.barViewBtn.setOnClickListener {
+            navigateToDetailFragment("술집")
+        }
+        // "카페" 버튼 클릭 시
+        binding.cafeViewBtn.setOnClickListener {
+            navigateToDetailFragment("카페")
+        }
+        // "문화" 버튼 클릭 시
+        binding.cultureViewBtn.setOnClickListener {
+            navigateToDetailFragment("문화")
+        }
+        // "음식점•식품" 버튼 클릭 시
+        binding.foodViewBtn.setOnClickListener {
+            navigateToDetailFragment("음식점•식품")
+        }
+        // "헬스•뷰티" 버튼 클릭 시
+        binding.healthAndBeautyViewBtn.setOnClickListener {
+            navigateToDetailFragment("헬스•뷰티")
+        }
+        // "교육" 버튼 클릭 시
+        binding.eduViewBtn.setOnClickListener {
+            navigateToDetailFragment("교육")
+        }
+        // "의료•법" 버튼 클릭 시
+        binding.medicalAndLawViewBtn.setOnClickListener {
+            navigateToDetailFragment("의료•법")
+        }
 
         // RecyclerView에 LayoutManager 설정
         binding.notice.layoutManager = LinearLayoutManager(requireContext())
@@ -65,12 +88,15 @@ class HomeFragment : Fragment() {
             }
     }
 
-    private fun navigateToDetailActivity(category: String) {
-        // DetailFragment 이동
-        val intent = Intent(requireContext(), DetailFragment::class.java).apply {
-            putExtra("category", category)
+    private fun navigateToDetailFragment(category: String) {
+        val detailFragment = DetailFragment().apply {
+            arguments = Bundle().apply {
+                putString("selectedCategory", category)
+            }
         }
-        startActivity(intent)
+
+        // MainNavigationbar 액티비티의 replaceFragment 메소드를 호출하고, Navigation Bar의 상태를 업데이트
+        (activity as? MainNavigationbar)?.replaceFragment(detailFragment, R.id.detail)
     }
 
     override fun onDestroyView() {

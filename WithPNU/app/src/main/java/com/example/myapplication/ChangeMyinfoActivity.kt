@@ -1,9 +1,11 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
@@ -12,13 +14,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.Locale
 
+
 class ChangeMyinfoActivity : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
     private lateinit var auth: FirebaseAuth
     private lateinit var changeNickname: EditText
     private lateinit var reviseButton: ImageButton
-    private lateinit var goBackButton: ImageButton
 
     // 새로 추가된 변수: 스피너 관련
     private lateinit var spinnerColleges: Spinner
@@ -50,7 +52,6 @@ class ChangeMyinfoActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         changeNickname = findViewById(R.id.change_nickname)
         reviseButton = findViewById(R.id.revise_btn)
-        goBackButton = findViewById(R.id.go_back_btn)
 
         // 새로 추가된 스피너 초기화
         spinnerColleges = findViewById(R.id.spinner_colleges)
@@ -69,16 +70,30 @@ class ChangeMyinfoActivity : AppCompatActivity() {
             }
         }
 
-        // go_back_btn 클릭 시 이전 화면으로 이동 (finish() 호출)
-        goBackButton.setOnClickListener {
-            finish()
-        }
 
         // 스피너 설정
         setupCollegeSpinners()
 
         // 현재 사용자 정보 불러오기
         fetchCurrentUserInfo()
+
+        //상단 툴바 추가하기
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) //뒤로가기 버튼 추가
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.title = "정보 수정하기" //제목 달기
+
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                // 뒤로가기 버튼 눌렀을 때 액티비티 종료
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     /**
