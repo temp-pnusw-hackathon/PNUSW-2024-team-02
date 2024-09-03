@@ -344,18 +344,34 @@ Gradle Scripts/                  # Gradle 빌드 스크립트와 설정 파일
 
 
 ## 4. 설치 및 사용 방법
-**필요 패키지**
-- 위의 사용 기술 참고
+### 1. GitHub에서 프로젝트 클론하기
+Git 설치 확인: Git이 설치되어 있지 않다면 Git 공식 사이트에서 설치하세요.
 
-```bash
-$ git clone https://github.com/test/test.git
-$ cd test/frontend
-$ npm i
-$ export NODE_ENV="development" # windows: set NODE_ENV=development
-$ npm run build:dll
-$ export TARGET="http://localhost:8000"  # windows: set NODE_ENV=http://localhost:8000
-$ npm run dev
-```
+터미널 또는 명령 프롬프트 열기: 원하는 디렉토리로 이동한 후, 터미널(맥 또는 리눅스)이나 명령 프롬프트(윈도우)를 엽니다.
+
+프로젝트 클론:
+```git clone https://github.com/The-5th-PNU-Convergence-SW-Hackathon/PNUSW-2024-team-02.git```
+
+
+### 2. Android Studio에서 프로젝트 열기
+
+Android Studio 열기: Android Studio를 실행합니다.
+
+프로젝트 열기: File > Open을 선택하고, 클론한 프로젝트의 폴더로 이동한 후 Open을 클릭합니다.
+
+### 3. 프로젝트 동기화 및 설정
+
+Gradle Sync: 프로젝트가 열리면, Android Studio는 자동으로 Gradle Sync를 시도합니다. 만약 수동으로 해야 한다면, 화면 상단의 Sync Project with Gradle Files 버튼을 클릭합니다.
+
+필수 SDK 설치: 프로젝트에 필요한 SDK 버전이나 라이브러리가 설치되어 있지 않으면, Android Studio가 필요한 항목을 설치하도록 안내할 것입니다. Install 버튼을 눌러 설치하세요.
+
+### 4. 앱 빌드 및 실행
+
+에뮬레이터 또는 실제 디바이스 연결: 프로젝트를 테스트할 에뮬레이터를 설정하거나, USB를 통해 실제 디바이스를 연결합니다.
+
+앱 실행:
+화면 상단의 Run 버튼을 클릭합니다.
+사용할 디바이스를 선택하고 앱이 정상적으로 빌드 및 실행되는지 확인합니다.
 <br/>
 
 
