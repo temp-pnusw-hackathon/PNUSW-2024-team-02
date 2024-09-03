@@ -89,8 +89,6 @@ class MypageAdminFragment : Fragment() {
             startActivity(logoutIntent)
         }
 
-
-
         return view
     }
 }

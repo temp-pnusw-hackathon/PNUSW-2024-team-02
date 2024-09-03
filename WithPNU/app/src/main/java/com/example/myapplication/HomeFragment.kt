@@ -2,15 +2,20 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import androidx.constraintlayout.helper.widget.Carousel
+
 
 class HomeFragment : Fragment() {
 
@@ -67,7 +72,36 @@ class HomeFragment : Fragment() {
 
         // Firestore에서 공지사항 불러오기
         loadNotices()
+
+        // Carousel 설정 추가
+        setupCarousel()
     }
+
+    // Carousel 설정 메서드 추가
+    private fun setupCarousel() {
+        val carousel = binding.carousel // XML에서 Carousel 참조
+        carousel.setAdapter(object : Carousel.Adapter {
+            override fun count(): Int {
+                return 4 // Carousel 아이템 수
+            }
+
+            override fun populate(view: View, index: Int) {
+                val imageView = view as ImageView
+                when (index) {
+                    0 -> imageView.setImageResource(R.drawable.skyeye)
+                    1 -> imageView.setImageResource(R.drawable.megabox)
+                    2 -> imageView.setImageResource(R.drawable.os_fit)
+                    3 -> imageView.setImageResource(R.drawable.credit_burger)
+                    else -> imageView.setImageResource(R.drawable.skyeye)
+                }
+            }
+
+            override fun onNewItem(index: Int) {
+            }
+        })
+    }
+
+
 
     private fun loadNotices() {
         db.collection("noticeinfo")
