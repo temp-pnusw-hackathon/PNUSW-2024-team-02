@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,38 +31,15 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // "전체보기" 버튼 클릭 시
-        binding.totalViewBtn.setOnClickListener {
-            navigateToDetailActivity("")
-        }
-        // "술집" 버튼 클릭 시
-        binding.barViewBtn.setOnClickListener {
-            navigateToDetailActivity("술집")
-        }
-        // "카페" 버튼 클릭 시
-        binding.cafeViewBtn.setOnClickListener {
-            navigateToDetailActivity("카페")
-        }
-        // "문화" 버튼 클릭 시
-        binding.cultureViewBtn.setOnClickListener {
-            navigateToDetailActivity("문화")
-        }
-        // "음식점•식품" 버튼 클릭 시
-        binding.foodViewBtn.setOnClickListener {
-            navigateToDetailActivity("음식점•식품")
-        }
-        // "헬스•뷰티" 버튼 클릭 시
-        binding.healthAndBeautyViewBtn.setOnClickListener {
-            navigateToDetailActivity("헬스•뷰티")
-        }
-        // "교육" 버튼 클릭 시
-        binding.eduViewBtn.setOnClickListener {
-            navigateToDetailActivity("교육")
-        }
-        // "의료•법" 버튼 클릭 시
-        binding.medicalAndLawViewBtn.setOnClickListener {
-            navigateToDetailActivity("의료•법")
-        }
+        // 각 버튼 클릭 시 카테고리별로 DetailActivity로 이동
+        binding.totalViewBtn.setOnClickListener { navigateToDetailActivity("전체") }
+        binding.barViewBtn.setOnClickListener { navigateToDetailActivity("술집") }
+        binding.cafeViewBtn.setOnClickListener { navigateToDetailActivity("카페") }
+        binding.cultureViewBtn.setOnClickListener { navigateToDetailActivity("문화") }
+        binding.foodViewBtn.setOnClickListener { navigateToDetailActivity("음식점•식품") }
+        binding.healthAndBeautyViewBtn.setOnClickListener { navigateToDetailActivity("헬스•뷰티") }
+        binding.eduViewBtn.setOnClickListener { navigateToDetailActivity("교육") }
+        binding.medicalAndLawViewBtn.setOnClickListener { navigateToDetailActivity("의료•법") }
 
         // RecyclerView에 LayoutManager 설정
         binding.notice.layoutManager = LinearLayoutManager(requireContext())
@@ -87,7 +66,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToDetailActivity(category: String) {
-        val intent = Intent(activity, DetailFragment::class.java).apply {
+        // DetailFragment 이동
+        val intent = Intent(requireContext(), DetailFragment::class.java).apply {
             putExtra("category", category)
         }
         startActivity(intent)
@@ -100,7 +80,7 @@ class HomeFragment : Fragment() {
 }
 
 // Notice 데이터 클래스
-data class Notice(val title: String, val content: String) // content는 사용하지 않음
+data class Notice(val title: String, val content: String)
 
 // 간단한 RecyclerView 어댑터
 class SimpleNoticeAdapter(private val notices: List<Notice>) :
@@ -120,6 +100,6 @@ class SimpleNoticeAdapter(private val notices: List<Notice>) :
     override fun getItemCount() = notices.size
 
     class NoticeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val titleTextView: TextView = view.findViewById(android.R.id.text1) // 제목만 표시할 TextView
+        val titleTextView: TextView = view.findViewById(android.R.id.text1)
     }
 }

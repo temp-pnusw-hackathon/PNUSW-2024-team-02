@@ -12,6 +12,9 @@ import android.widget.TextView
 import android.widget.RatingBar
 import android.widget.ImageButton
 import android.widget.ListView
+import android.widget.GridView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -182,15 +185,16 @@ class DetailMoreActivity : AppCompatActivity() {
                         reviewContents.add(content)
                     }
 
-                    // 간단하게 리뷰 내용을 ListView에 표시
+                    // 리뷰 수 만큼 ListView에 표시
                     val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, reviewContents)
-                    review_list.adapter = adapter
+                    val listView = findViewById<ListView>(R.id.review_list)
+                    listView.adapter = adapter
                 }
                 .addOnFailureListener {
                     Log.w("DetailMoreActivity", "리뷰 데이터를 가져오는 중 오류 발생")
                 }
         }
-    }
+}
 
 
     // MapView 생명주기 관리
@@ -214,6 +218,4 @@ class DetailMoreActivity : AppCompatActivity() {
         super.onLowMemory()
         mapView.onLowMemory()
     }
-
-
 }
