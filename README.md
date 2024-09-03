@@ -168,10 +168,12 @@ $ npm run dev
 
 
 ### 7. 해커톤 참여 후기
-- MEMBER1
+- 곽도연
   > 작성하세요.
 - MEMBER2
   > 작성하세요.
 - MEMBER3
+  > 작성하세요.
+- MEMBER4
   > 작성하세요.
 <br/>
