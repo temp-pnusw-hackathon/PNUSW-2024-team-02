@@ -37,6 +37,14 @@ class DetailFragment : Fragment() {
         gridView = view.findViewById(R.id.partnership_gridView)
         ongoingSwitch = view.findViewById(R.id.ongoing_switch)
 
+        // Bundle에서 전달된 카테고리 가져오기
+        arguments?.let {
+            selectedCategory = it.getString("selectedCategory", "전체")
+        }
+
+        // 해당 카테고리에 맞는 제휴업체 로드
+        loadPartnershipsByCategory(selectedCategory)
+
         // 버튼 클릭 리스너 설정
         view.findViewById<ImageButton>(R.id.bar_btn).setOnClickListener {
             selectedCategory = "술집"

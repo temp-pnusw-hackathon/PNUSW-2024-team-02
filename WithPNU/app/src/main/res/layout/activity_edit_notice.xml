@@ -16,12 +16,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="공지사항"
+                android:text="공지사항 수정하기"
                 android:textColor="@color/black"
                 android:textAppearance="@style/BoldTextStyle"
                 android:paddingVertical="16dp"
                 android:textSize="21dp" />
-
 
             <ImageButton
                 android:id="@+id/go_back_btn"
@@ -38,23 +37,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/notice_title"
+                <ListView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="공지사항 제목"
-                    android:textAppearance="@style/BoldTextStyle"
-                    android:layout_margin="16dp"
-                    android:textSize="21dp"
-                    android:layout_gravity="center" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/notice_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="공지사항 내용"
-                    android:textColor="@color/black"
-                    android:layout_marginHorizontal="32dp" />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 

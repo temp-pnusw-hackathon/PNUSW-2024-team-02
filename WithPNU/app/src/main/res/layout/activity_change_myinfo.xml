@@ -53,44 +53,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="비밀번호 변경"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:textSize="18dp"
-                android:textColor="@color/black"
-                android:padding="10dp" />
-
-            <EditText
-                android:id="@+id/change_password"
-                android:layout_width="350dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="33dp"
-                android:inputType="text"
-                android:textSize="20sp"
-                android:hint="password" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="비밀번호 확인"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:textSize="18dp"
-                android:textColor="@color/black"
-                android:padding="10dp" />
-
-            <EditText
-                android:id="@+id/chㄱeck_password"
-                android:layout_width="350dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="33dp"
-                android:inputType="text"
-                android:textSize="20sp"
-                android:hint="check_password"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="단과대학 변경"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"

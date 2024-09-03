@@ -8,31 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
+import android.net.Uri
 import org.w3c.dom.Text
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MypageAdminFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MypageAdminFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,8 +28,9 @@ class MypageAdminFragment : Fragment() {
             startActivity(intent)
         }
 
-        val editNoticeButton: TextView = view.findViewById(R.id.edit_partnership_notice_btn)
-        editNoticeButton.setOnClickListener{
+        // 제휴공지 관리하기
+        val editPartnershipNoticeButton: TextView = view.findViewById(R.id.edit_partnership_notice_btn)
+        editPartnershipNoticeButton.setOnClickListener{
             val intent = Intent(activity, EditPartnershipNoticeActivity::class.java)
             startActivity(intent)
         }
@@ -60,6 +40,42 @@ class MypageAdminFragment : Fragment() {
         uploadNoticeButton.setOnClickListener {
             //UploadNoticeActivity로 이동
             val intent = Intent(activity, UploadNoticeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 공지사항 관리하기 버튼 클릭
+        val editNoticeButton: TextView = view.findViewById(R.id.edit_notice_btn)
+        editNoticeButton.setOnClickListener {
+            //EditNoticeActivity로 이동
+            val intent = Intent(activity, EditNoticeActivity::class.java)
+            startActivity(intent)
+        }
+
+
+        //설정 버튼 클릭
+        val settingButton: TextView = view.findViewById(R.id.settings_btn)
+        settingButton.setOnClickListener {
+            //setting으로 이동
+            val intent = Intent(activity, setting::class.java)
+            startActivity(intent)
+        }
+
+        //공지사항 버튼 클릭
+        val notice: TextView = view.findViewById(R.id.notice_btn)
+        notice.setOnClickListener {
+            //ListNotice로 이동
+            val intent = Intent(activity, ListNotice::class.java)
+            startActivity(intent)
+        }
+
+        //문의/버그 신고 버튼 클릭
+        val bugreport: TextView = view.findViewById(R.id.report_issue_btn)
+        bugreport.setOnClickListener {
+            // 오픈채팅 링크로 이동
+            val url = "https://open.kakao.com/o/sH8uWIMg"
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(url)
+            }
             startActivity(intent)
         }
 
@@ -73,27 +89,6 @@ class MypageAdminFragment : Fragment() {
             startActivity(logoutIntent)
         }
 
-
         return view
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MypageAdminFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MypageAdminFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }

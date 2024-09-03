@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="gcm_defaultSenderId" translatable="false">1010424156669</string>
-    <string name="google_api_key" translatable="false">AIzaSyD41Ri6wAypUkPeM2uzcdvgLQiD-8wr9Ik</string>
-    <string name="google_app_id" translatable="false">1:1010424156669:android:62200345f468db24104994</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyD41Ri6wAypUkPeM2uzcdvgLQiD-8wr9Ik</string>
-    <string name="google_storage_bucket" translatable="false">seugeundb.appspot.com</string>
-    <string name="project_id" translatable="false">seugeundb</string>
-</resources>
