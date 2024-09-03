@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.TextView
 import android.widget.EditText
 import android.widget.Button
@@ -13,6 +14,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 
 class WriteMyReview : AppCompatActivity() {
     // Firebase Firestore 인스턴스 생성
@@ -69,6 +71,27 @@ class WriteMyReview : AppCompatActivity() {
         // 제출 버튼 클릭 시 리뷰를 데이터베이스에 저장
         submitBtn.setOnClickListener {
             saveReviewToDatabase()
+        }
+
+        // 상단 툴바 추가하기
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼 추가
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        supportActionBar?.title = "내 리뷰 작성하기" // 제목 달기
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                // 뒤로가기 버튼 눌렀을 때 액티비티 종료
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

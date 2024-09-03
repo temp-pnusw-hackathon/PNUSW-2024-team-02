@@ -2,14 +2,17 @@ package com.example.myapplication
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
-class ListNotice : AppCompatActivity() {
-
+class MoreEditNoticeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_notice)
+
+        setContentView(R.layout.activity_more_edit_notice)
 
         // 상단 툴바 추가하기
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -18,9 +21,10 @@ class ListNotice : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼 추가
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        supportActionBar?.title = "앱 공지사항" // 제목 달기
+        supportActionBar?.title = "공지사항 수정하기" // 제목 달기
 
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -32,3 +36,4 @@ class ListNotice : AppCompatActivity() {
         }
     }
 }
+

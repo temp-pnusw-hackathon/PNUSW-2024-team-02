@@ -134,10 +134,6 @@
                         android:padding="16dp"
                         android:text="내 정보 수정하기" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="#E0E0E0" />
 
                     <TextView
                         style="@style/BoldTextStyle"
