@@ -78,9 +78,6 @@
                 android:paddingVertical="15dp"
                 android:textSize="21dp" />
 
-
-
-
             <EditText
                 android:id="@+id/contentEditText"
                 android:layout_width="match_parent"
