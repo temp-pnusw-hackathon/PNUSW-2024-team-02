@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import androidx.constraintlayout.helper.widget.Carousel
+
 
 class HomeFragment : Fragment() {
 
@@ -67,6 +69,31 @@ class HomeFragment : Fragment() {
 
         // Firestore에서 공지사항 불러오기
         loadNotices()
+
+        // Carousel 설정 추가
+        setupCarousel() // 추가한 부분
+    }
+
+    // Carousel 설정 메서드 추가
+    private fun setupCarousel() {
+        val carousel = binding.carousel // XML에서 Carousel 참조
+        carousel.setAdapter(object : Carousel.Adapter {
+            override fun count(): Int {
+                return 3 // Carousel 아이템 수
+            }
+
+            override fun populate(view: View, index: Int) {
+                when (index) {
+                    0 -> binding.carousel1.setImageResource(R.drawable.skyeye)
+                    1 -> binding.carousel2.setImageResource(R.drawable.megabox)
+                    2 -> binding.carousel3.setImageResource(R.drawable.os_fit)
+                }
+            }
+
+            override fun onNewItem(index: Int) {
+                // 새로운 아이템이 선택될 때 호출되는 메서드 (필요에 따라 구현)
+            }
+        })
     }
 
     private fun loadNotices() {
