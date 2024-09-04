@@ -1,23 +1,64 @@
 package com.example.myapplication
 
-import android.content.Intent
+import android.graphics.Canvas
+import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ListAdapter
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import androidx.constraintlayout.helper.widget.Carousel
+import androidx.recyclerview.widget.DividerItemDecoration
 
 
 class HomeFragment : Fragment() {
+
+
+    //구분선 추가
+    class CustomItemDecoration(private val divider: Drawable) : RecyclerView.ItemDecoration() {
+
+        override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+            val childCount = parent.childCount
+            val itemCount = parent.adapter?.itemCount ?: 0
+
+            for (i in 0 until childCount) {
+                // 마지막 아이템이면 구분선을 그리지 않음
+                if (i == childCount - 1 && parent.getChildAdapterPosition(parent.getChildAt(i)) == itemCount - 1) {
+                    continue
+                }
+
+                val child = parent.getChildAt(i)
+
+                val params = child.layoutParams as RecyclerView.LayoutParams
+                val left = parent.paddingLeft
+                val right = parent.width - parent.paddingRight
+                val top = child.bottom + params.bottomMargin
+                val bottom = top + divider.intrinsicHeight
+
+                divider.setBounds(left, top, right, bottom)
+                divider.draw(c)
+            }
+        }
+
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+            val position = parent.getChildAdapterPosition(view)
+            // 마지막 아이템이면 구분선의 간격을 추가하지 않음
+            if (position == state.itemCount - 1) {
+                outRect.set(0, 0, 0, 0)
+            } else {
+                outRect.set(0, 0, 0, divider.intrinsicHeight)
+            }
+        }
+    }
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -77,6 +118,8 @@ class HomeFragment : Fragment() {
 
         // RecyclerView에 LayoutManager 설정
         binding.notice.layoutManager = LinearLayoutManager(requireContext())
+        // RecyclerView에 Custom 구분선 추가
+        binding.notice.addItemDecoration(CustomItemDecoration(resources.getDrawable(R.drawable.custom_divider, null)))
 
         // Firestore에서 공지사항 불러오기
         loadNotices()
