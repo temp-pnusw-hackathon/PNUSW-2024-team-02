@@ -52,10 +52,18 @@ class DetailFragment : Fragment() {
         // Bundle에서 전달된 카테고리 가져오기
         arguments?.let {
             selectedCategory = it.getString("selectedCategory", "전체")
+        } ?: run {
+            // 만약 arguments가 null이라면 디폴트로 '전체'를 설정
+            selectedCategory = "전체"  // 디폴트로 '전체' 설정
+            isTotalViewSelected = true  // '전체보기' 버튼이 눌린 상태로 설정
         }
 
         // 해당 카테고리에 맞는 제휴업체 로드
         loadPartnershipsByCategory(selectedCategory)
+
+        // '전체보기' 버튼이 눌린 상태로 UI 업데이트
+        updateButtonImages(view)  // 추가: UI 상태를 갱신하여 '전체' 버튼이 눌린 것처럼 보이게 설정
+
 
         // 버튼 클릭 리스너 설정
         view.findViewById<ImageButton>(R.id.bar_btn).setOnClickListener {
@@ -145,7 +153,7 @@ class DetailFragment : Fragment() {
 
     private fun updateButtonImages(view: View) {
         view.findViewById<ImageButton>(R.id.total_btn).setImageResource(
-            if (isTotalViewSelected) R.drawable.big_totalview_click else R.drawable.totalview
+            if (isTotalViewSelected) R.drawable.big_ttl_click else R.drawable.totalview
         )
         view.findViewById<ImageButton>(R.id.bar_btn).setImageResource(
             if (isBarViewSelected) R.drawable.big_bar_click else R.drawable.bar
@@ -160,13 +168,13 @@ class DetailFragment : Fragment() {
             if (isFoodViewSelected) R.drawable.big_food_click else R.drawable.food
         )
         view.findViewById<ImageButton>(R.id.health_btn).setImageResource(
-            if (isHealthViewSelected) R.drawable.big_health_click else R.drawable.health_and_beauty
+            if (isHealthViewSelected) R.drawable.big_healthandbeauty_click else R.drawable.health_and_beauty
         )
         view.findViewById<ImageButton>(R.id.edu_btn).setImageResource(
             if (isEduViewSelected) R.drawable.big_edu_click else R.drawable.edu
         )
         view.findViewById<ImageButton>(R.id.medi_btn).setImageResource(
-            if (isMediViewSelected) R.drawable.big_medi_click else R.drawable.medical_and_law
+            if (isMediViewSelected) R.drawable.big_medicalandlaw_click else R.drawable.medical_and_law
         )
     }
 
