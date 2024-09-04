@@ -280,7 +280,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/notice"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="190dp"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="32dp"
                     android:contentDescription="DB 연결 후 나타나는 정보"

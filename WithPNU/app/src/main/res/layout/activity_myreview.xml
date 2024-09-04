@@ -32,15 +32,16 @@
             android:orientation="vertical">
 
 
-            <GridView
+            <TextView
                 android:id="@+id/review_gridView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="아아 진짜 맛있네요 \n 저 단골될듯"
+                android:textColor="@color/black"
                 android:horizontalSpacing="10dp"
                 android:verticalSpacing="10dp"
                 android:stretchMode="columnWidth"
-                android:gravity="center"
                 android:padding="10dp" />
 
         </LinearLayout>
