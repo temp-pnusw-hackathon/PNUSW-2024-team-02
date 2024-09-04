@@ -44,6 +44,7 @@ class DetailMoreActivity : AppCompatActivity() {
     private lateinit var starred_number: TextView
     private lateinit var ratingBar: RatingBar
     private lateinit var review_list: ListView
+    private lateinit var total_review_btn: TextView
 
     private var latitude: Double? = null
     private var longitude: Double? = null
@@ -68,6 +69,7 @@ class DetailMoreActivity : AppCompatActivity() {
         starred_number = findViewById(R.id.starred_number)
         ratingBar = findViewById(R.id.ratingBar)
         review_list = findViewById(R.id.review_list)
+        total_review_btn = findViewById(R.id.total_review_btn)
 
         // Intent에서 데이터 수신
         val photoUrl = intent.getStringExtra("photoUrl")
@@ -127,6 +129,13 @@ class DetailMoreActivity : AppCompatActivity() {
             intent.putExtra("storeName", storeName)
             intent.putExtra("latitude", latitude)
             intent.putExtra("longitude", longitude)
+            startActivity(intent)
+        }
+
+        // 리뷰 전체보기 버튼
+        total_review_btn.setOnClickListener {
+            val intent = Intent(this@DetailMoreActivity, TotalReviewActivity::class.java)
+            intent.putExtra("storeName", storeName)
             startActivity(intent)
         }
 
@@ -196,7 +205,7 @@ class DetailMoreActivity : AppCompatActivity() {
                     Log.w("DetailMoreActivity", "리뷰 데이터를 가져오는 중 오류 발생")
                 }
         }
-}
+    }
 
 
     // MapView 생명주기 관리
