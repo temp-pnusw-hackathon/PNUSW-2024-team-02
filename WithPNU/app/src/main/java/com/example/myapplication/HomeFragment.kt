@@ -72,6 +72,8 @@ class HomeFragment : Fragment() {
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,6 +81,13 @@ class HomeFragment : Fragment() {
 
         // 각 버튼 클릭 시 동작
         setupCategoryButtons()
+
+        /*
+        val viewTotalNoticeButton: TextView = view.findViewById(R.id.view_total_notice_btn)
+        viewTotalNoticeButton.setOnClickListener {
+            val intent = Intent(activity,                ::class.java) // 이곳을 추가하십시오.
+            startActivity(intent)
+        }*/
 
         // RecyclerView에 LayoutManager 설정
         binding.notice.layoutManager = LinearLayoutManager(requireContext())
