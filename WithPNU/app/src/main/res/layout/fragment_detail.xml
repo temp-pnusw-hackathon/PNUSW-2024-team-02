@@ -18,6 +18,8 @@
             android:text="로그인 정보에 따라\n 알맞은 제휴 업체를 보여드려요"
             android:textAlignment="center"
             android:textColor="@color/black"
+            style="@style/RegularTextStyle"
+            android:padding="16dp"
             android:textSize="21dp" />
 
         <HorizontalScrollView
