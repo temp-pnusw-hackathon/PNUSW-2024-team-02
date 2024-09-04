@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
@@ -11,6 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
