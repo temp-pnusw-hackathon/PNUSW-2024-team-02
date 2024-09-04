@@ -19,8 +19,9 @@
         tools:ignore="MissingConstraints" />
 
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,11 +32,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-
             <GridView
+                android:id="@+id/review_gridView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp" />
+                android:horizontalSpacing="10dp"
+                android:verticalSpacing="10dp"
+                android:stretchMode="columnWidth"
+                android:gravity="center"
+                android:padding="10dp" />
 
         </LinearLayout>
     </ScrollView>

@@ -19,6 +19,9 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".TotalReviewActivity"
+            android:exported="false" />
+        <activity
             android:name=".ViewMoreNoticeActivity"
             android:exported="false" />
         <activity
