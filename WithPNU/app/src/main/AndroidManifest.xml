@@ -25,6 +25,9 @@
             android:name=".MoreEditNoticeActivity"
             android:exported="false" />
         <activity
+            android:name=".MoreEditPartnershipNotice"
+            android:exported="false" />
+        <activity
             android:name=".ListNotice"
             android:exported="false" />
         <activity

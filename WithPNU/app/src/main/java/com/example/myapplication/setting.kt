@@ -18,7 +18,7 @@ class setting : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼 추가
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        supportActionBar?.title = "설정" // 제목 달기
+        supportActionBar?.title = "설정-알림" // 제목 달기
 
     }
 
