@@ -37,8 +37,6 @@ class DetailFragment : Fragment() {
     private var isEduViewSelected = false
     private var isMediViewSelected = false
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,16 +52,15 @@ class DetailFragment : Fragment() {
             selectedCategory = it.getString("selectedCategory", "전체")
         } ?: run {
             // 만약 arguments가 null이라면 디폴트로 '전체'를 설정
-            selectedCategory = "전체"  // 디폴트로 '전체' 설정
-            isTotalViewSelected = true  // '전체보기' 버튼이 눌린 상태로 설정
+            selectedCategory = "전체"
+            isTotalViewSelected = true
         }
 
         // 해당 카테고리에 맞는 제휴업체 로드
         loadPartnershipsByCategory(selectedCategory)
 
         // '전체보기' 버튼이 눌린 상태로 UI 업데이트
-        updateButtonImages(view)  // 추가: UI 상태를 갱신하여 '전체' 버튼이 눌린 것처럼 보이게 설정
-
+        updateButtonImages(view)
 
         // 버튼 클릭 리스너 설정
         view.findViewById<ImageButton>(R.id.bar_btn).setOnClickListener {
@@ -133,8 +130,8 @@ class DetailFragment : Fragment() {
         }
 
         // Switch 상태 변경 리스너 설정
-        ongoingSwitch.setOnCheckedChangeListener { _, isChecked ->
-            loadPartnershipsByCategory(selectedCategory)  // 현재 선택된 카테고리를 다시 로드
+        ongoingSwitch.setOnCheckedChangeListener { _, _ ->
+            loadPartnershipsByCategory(selectedCategory)
         }
 
         return view
@@ -193,28 +190,37 @@ class DetailFragment : Fragment() {
         }
     }
 
-    // Firestore에서 데이터를 로드하고 GridView에 표시하는 함수
+    // Firestore에서 partnershipinfo와 crawled_data 데이터를 로드하고 GridView에 표시하는 함수
     private fun loadPartnershipsByCategory(category: String) {
-        val query = if (category == "전체") {
+        val partnershipQuery = if (category == "전체") {
             db.collection("partnershipinfo")
         } else {
             db.collection("partnershipinfo").whereEqualTo("category", category)
         }
 
-        query.get().addOnSuccessListener { documents ->
-            if (documents.isEmpty) {
-                // 데이터가 없을 경우 빈 어댑터 설정
-                gridView.adapter = null
-            } else {
+        val crawledQuery = if (category == "전체") {
+            db.collection("crawled_data")
+        } else {
+            db.collection("crawled_data").whereEqualTo("category", category)
+        }
+
+        // 두 쿼리 결과를 병합하여 GridView에 표시
+        partnershipQuery.get().addOnSuccessListener { partnershipDocuments ->
+            crawledQuery.get().addOnSuccessListener { crawledDocuments ->
+                val allDocuments = mutableListOf<DocumentSnapshot>()
+
+                allDocuments.addAll(partnershipDocuments.documents)
+                allDocuments.addAll(crawledDocuments.documents)
+
                 val filteredDocuments = if (ongoingSwitch.isChecked) {
                     val today = Date()
-                    documents.documents.filter { document ->
+                    allDocuments.filter { document ->
                         val startDate = document.getTimestamp("startDate")?.toDate()
                         val endDate = document.getTimestamp("endDate")?.toDate()
                         startDate != null && endDate != null && today in startDate..endDate
                     }
                 } else {
-                    documents.documents
+                    allDocuments
                 }
 
                 if (filteredDocuments.isEmpty()) {
@@ -223,10 +229,10 @@ class DetailFragment : Fragment() {
                     val adapter = PartnershipAdapter(requireContext(), filteredDocuments)
                     gridView.adapter = adapter
                 }
+            }.addOnFailureListener { exception ->
+                Toast.makeText(requireContext(), "Error: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
         }.addOnFailureListener { exception ->
-            // 에러가 발생했을 때도 빈 어댑터 설정
-            gridView.adapter = null
             Toast.makeText(requireContext(), "Error: ${exception.message}", Toast.LENGTH_SHORT).show()
         }
     }
@@ -253,5 +259,4 @@ class DetailFragment : Fragment() {
         }
         startActivity(intent)
     }
-
 }
