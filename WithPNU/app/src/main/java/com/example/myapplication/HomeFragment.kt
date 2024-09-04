@@ -41,8 +41,8 @@ class HomeFragment : Fragment() {
 
         // Firestore에서 공지사항 불러오기 및 아이템 클릭 이벤트 처리
         loadNotices { notice ->
-            val intent = Intent(requireContext(), ViewMoreNoticeActivity::class.java)
-            intent.putExtra("noticeId", notice.id)  // Notice ID 전달
+            val intent = Intent(requireContext(), ViewMoreNotice::class.java)
+            intent.putExtra("noticeTitle", notice.title)  // Notice 제목 전달
             intent.putExtra("userId", notice.userId)  // 업로드한 사용자 ID 전달
             startActivity(intent)
         }
@@ -115,7 +115,7 @@ class HomeFragment : Fragment() {
                         id = document.id,
                         title = document.getString("title") ?: "",
                         content = document.getString("content") ?: "",
-                        userId = document.getString("userId") ?: ""  // userId 필드 추가
+                        userId = document.getString("uid") ?: ""  // Firestore에서 "uid"로 저장된 경우
                     )
                 }
                 binding.notice.adapter = SimpleNoticeAdapter(notices, onItemClick)
