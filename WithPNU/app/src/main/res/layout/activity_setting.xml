@@ -45,10 +45,10 @@
                 style="@style/RegularTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="제휴 관련 공지사항 업로드 알림받기"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                android:padding="16dp" />
+                android:padding="16dp"
+                android:text="제휴 관련 공지사항 업로드 알림받기" />
 
             <TextView
                 style="@style/BoldTextStyle"

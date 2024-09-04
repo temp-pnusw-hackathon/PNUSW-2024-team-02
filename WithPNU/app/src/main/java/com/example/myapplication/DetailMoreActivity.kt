@@ -4,21 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager.widget.PagerAdapter
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.RatingBar
-import android.widget.ImageButton
-import android.widget.ListView
-import android.widget.GridView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import android.widget.ArrayAdapter
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
@@ -28,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 class DetailMoreActivity : AppCompatActivity() {
 
@@ -51,7 +41,7 @@ class DetailMoreActivity : AppCompatActivity() {
 
     private val currentUser = FirebaseAuth.getInstance().currentUser
     private var partnershipId: String? = null
-    private var photoUrls: List<String> = listOf() // 사진 URL 리스트
+    private var photoUrls: List<String> = listOf()
 
     private var storeName: String? = null
 
@@ -59,6 +49,7 @@ class DetailMoreActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_more_detail)
 
+        // View 초기화
         imageView = findViewById(R.id.detail_photo)
         dateTextView = findViewById(R.id.partnership_dateTodate)
         contentTextView = findViewById(R.id.partnership_content)
@@ -72,8 +63,8 @@ class DetailMoreActivity : AppCompatActivity() {
         total_review_btn = findViewById(R.id.total_review_btn)
 
         // Intent에서 데이터 수신
-        val photoUrl = intent.getStringExtra("photoUrl")
-        photoUrls = intent.getStringArrayListExtra("photoUrls") ?: listOf() // PhotoUrls 초기화
+        val photoUrl = intent.getStringArrayListExtra("photoUrls") ?: listOf()
+
         val startDate = intent.getLongExtra("startDate", 0L)
         val endDate = intent.getLongExtra("endDate", 0L)
         val content = intent.getStringExtra("content")
@@ -82,8 +73,7 @@ class DetailMoreActivity : AppCompatActivity() {
 
         latitude = intent.getDoubleExtra("latitude", 0.0)
         longitude = intent.getDoubleExtra("longitude", 0.0)
-        partnershipId = intent.getStringExtra("partnershipId") // partnershipId 초기화
-
+        partnershipId = intent.getStringExtra("partnershipId")
 
         // 인증된 사용자인지 확인
         if (currentUser == null) {
@@ -92,15 +82,23 @@ class DetailMoreActivity : AppCompatActivity() {
         }
 
         // ViewPager에 어댑터 설정
-        val adapter = ImagePagerAdapter(this, photoUrls)
-        imageView.adapter = adapter
+// Intent에서 데이터 수신
+        val photoUrls = intent.getStringArrayListExtra("photoUrls") ?: listOf()
+
+// ViewPager에 어댑터 설정
+        if (photoUrls.isNotEmpty()) {
+            val adapter = ImagePagerAdapter(this, photoUrls)
+            imageView.adapter = adapter
+        } else {
+            Log.e("DetailMoreActivity", "No photo URLs found.")
+        }
 
 
         // 날짜 설정
         if (startDate > 0 && endDate > 0) {
-            val dateFormat = java.text.SimpleDateFormat("yy.MM.dd", java.util.Locale.getDefault())
-            val formattedStartDate = dateFormat.format(java.util.Date(startDate * 1000))
-            val formattedEndDate = dateFormat.format(java.util.Date(endDate * 1000))
+            val dateFormat = SimpleDateFormat("yy.MM.dd", Locale.getDefault())
+            val formattedStartDate = dateFormat.format(Date(startDate * 1000))
+            val formattedEndDate = dateFormat.format(Date(endDate * 1000))
             dateTextView.text = "제휴 기간 : $formattedStartDate~$formattedEndDate"
         } else {
             dateTextView.text = "날짜 정보가 없습니다."
@@ -113,7 +111,6 @@ class DetailMoreActivity : AppCompatActivity() {
         // 본문 설정
         contentTextView.text = content ?: "내용이 없습니다."
 
-
         // 지도 설정
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync { googleMap ->
@@ -123,7 +120,6 @@ class DetailMoreActivity : AppCompatActivity() {
         }
 
         // 리뷰 쓰기 버튼 클릭
-
         writeReview.setOnClickListener {
             val intent = Intent(this@DetailMoreActivity, WriteMyReview::class.java)
             intent.putExtra("storeName", storeName)
@@ -144,11 +140,9 @@ class DetailMoreActivity : AppCompatActivity() {
 
         // 평균 리뷰 보기
         calculateAndDisplayAverageRating()
-
     }
 
     private fun calculateAndDisplayAverageRating() {
-        val db = FirebaseFirestore.getInstance()
         if (storeName != null) {
             db.collection("reviews")
                 .whereEqualTo("storeName", storeName)
@@ -175,11 +169,11 @@ class DetailMoreActivity : AppCompatActivity() {
                 .addOnFailureListener { e ->
                     Log.w("DetailMoreActivity", "Error getting documents: ", e)
                     starred_number.text = "평점 로드 실패"
-                    ratingBar.rating = 0f // 실패 시 RatingBar 초기화
+                    ratingBar.rating = 0f
                 }
         } else {
             starred_number.text = "가게 정보 없음"
-            ratingBar.rating = 0f // 가게 정보가 없을 경우 RatingBar 초기화
+            ratingBar.rating = 0f
         }
     }
 
@@ -198,15 +192,13 @@ class DetailMoreActivity : AppCompatActivity() {
 
                     // 리뷰 수 만큼 ListView에 표시
                     val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, reviewContents)
-                    val listView = findViewById<ListView>(R.id.review_list)
-                    listView.adapter = adapter
+                    review_list.adapter = adapter
                 }
                 .addOnFailureListener {
                     Log.w("DetailMoreActivity", "리뷰 데이터를 가져오는 중 오류 발생")
                 }
         }
     }
-
 
     // MapView 생명주기 관리
     override fun onResume() {
@@ -230,11 +222,22 @@ class DetailMoreActivity : AppCompatActivity() {
         mapView.onLowMemory()
     }
 
+    // ViewPager 어댑터
     class ImagePagerAdapter(private val context: Context, private val imageUrls: List<String>) : PagerAdapter() {
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
             val imageView = ImageView(context)
-            Glide.with(context).load(imageUrls[position]).into(imageView)
+            val imageUrl = imageUrls[position]
+
+            // 로그로 이미지 URL 확인
+            Log.d("ImagePagerAdapter", "Loading image: $imageUrl")
+
+            // Glide로 이미지 로드
+            Glide.with(context)
+                .load(imageUrl)
+                .error(R.drawable.detail_basic) // 오류 시 대체 이미지
+                .into(imageView)
+
             container.addView(imageView)
             return imageView
         }
@@ -251,4 +254,5 @@ class DetailMoreActivity : AppCompatActivity() {
             container.removeView(obj as View)
         }
     }
+
 }

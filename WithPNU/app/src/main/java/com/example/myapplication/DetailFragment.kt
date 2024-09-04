@@ -235,23 +235,23 @@ class DetailFragment : Fragment() {
     private fun openDetailMoreActivity(document: DocumentSnapshot) {
         // photos 필드를 안전하게 가져오고, 올바른 형식인지 확인
         val photos = document.get("photos") as? List<*>
-        val firstPhotoUrl = photos?.filterIsInstance<String>()?.firstOrNull()
+        val photoUrls = photos?.filterIsInstance<String>() ?: emptyList()
 
-        // Null 또는 다른 타입이 섞여 있을 가능성에 대비
-        if (firstPhotoUrl == null) {
-            Log.e("DetailFragment", "No valid photo URL found.")
+        if (photoUrls.isEmpty()) {
+            Log.e("DetailFragment", "No valid photo URLs found.")
         }
 
         val intent = Intent(requireContext(), DetailMoreActivity::class.java).apply {
-            putExtra("photoUrl", firstPhotoUrl)
+            putExtra("photoUrls", ArrayList(photoUrls)) // photoUrls 리스트 전달
             putExtra("startDate", document.getTimestamp("startDate")?.seconds ?: 0L)
             putExtra("endDate", document.getTimestamp("endDate")?.seconds ?: 0L)
             putExtra("content", document.getString("content"))
-            putExtra("storeName", document.getString("storeName")) // storeName 추가
-            putExtra("title", document.getString("title")) // title 추가
+            putExtra("storeName", document.getString("storeName"))
+            putExtra("title", document.getString("title"))
             putExtra("latitude", document.getGeoPoint("location")?.latitude)
             putExtra("longitude", document.getGeoPoint("location")?.longitude)
         }
         startActivity(intent)
     }
+
 }
