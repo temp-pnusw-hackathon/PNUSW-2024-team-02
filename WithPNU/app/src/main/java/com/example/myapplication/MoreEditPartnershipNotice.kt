@@ -5,9 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.model.LatLng
@@ -82,6 +84,15 @@ class MoreEditPartnershipNotice : AppCompatActivity() {
                 uploadDataToFirestore()
             }
         }
+
+        // 상단 툴바 추가하기
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼 추가
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        supportActionBar?.title = "제휴공지 수정하기" // 제목 달기
     }
 
     private fun setupCategoriesSpinner() {
@@ -332,6 +343,17 @@ class MoreEditPartnershipNotice : AppCompatActivity() {
                     onComplete(photoUrls)
                 }
             }
+        }
+    }
+
+    //뒤로가기 버튼
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish() // 뒤로가기 버튼 눌렀을 때 액티비티 종료
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }
