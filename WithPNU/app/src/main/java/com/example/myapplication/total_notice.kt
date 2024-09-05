@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -13,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.google.firebase.firestore.FirebaseFirestore
 
 class total_notice : AppCompatActivity() {
@@ -24,7 +26,6 @@ class total_notice : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_total_notice)
 
         gridView = findViewById(R.id.partnership_gridView)  // Make sure this ID exists in your layout
@@ -39,6 +40,12 @@ class total_notice : AppCompatActivity() {
             intent.putExtra("userId", selectedNotice.userId)
             startActivity(intent)
         }
+
+        // 상단 툴바 설정
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "공지사항 자세히 보기"
     }
 
     private fun loadNotices() {
@@ -61,6 +68,15 @@ class total_notice : AppCompatActivity() {
                 e.printStackTrace()
                 Toast.makeText(this, "Failed to load notices", Toast.LENGTH_SHORT).show()
             }
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
 class NoticeGridAdapter(
