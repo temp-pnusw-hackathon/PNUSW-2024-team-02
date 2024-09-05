@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -74,6 +75,15 @@ class PartnershipNoticeActivity : AppCompatActivity() {
 
         // Spinner 초기화 및 선택 이벤트 설정
         setupCategoriesSpinner()
+
+        // 상단 툴바 추가하기
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼 추가
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        supportActionBar?.title = "제휴공지 작성하기" // 제목 달기
     }
 
     // 카테고리 선택 함수
