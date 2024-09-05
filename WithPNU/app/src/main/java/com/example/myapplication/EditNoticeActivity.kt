@@ -42,7 +42,9 @@ class EditNoticeActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼 추가
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
+
         supportActionBar?.title = "공지사항 관리하기" // 제목 설정
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
