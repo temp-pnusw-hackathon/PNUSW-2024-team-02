@@ -119,6 +119,7 @@ class WriteMyReview : AppCompatActivity() {
     }
 
     // 리뷰를 데이터베이스에 저장하는 함수
+// WriteMyReview.kt
     private fun saveReviewToDatabase() {
         val content = contentEditText.text.toString()
 
@@ -138,17 +139,22 @@ class WriteMyReview : AppCompatActivity() {
             "rating" to rating,
             "postedDate" to Timestamp.now()
         )
+
         // Firebase Firestore에 데이터 업로드
         db.collection("reviews")
             .add(reviewData)
             .addOnSuccessListener {
                 Toast.makeText(this, "리뷰가 성공적으로 업로드되었습니다.", Toast.LENGTH_SHORT).show()
-                finish()
+
+                // 리뷰 작성 완료 신호 전달
+                setResult(RESULT_OK)
+                finish() // 액티비티 종료
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "리뷰 업로드 실패: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 
 
 }
