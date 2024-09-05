@@ -43,9 +43,9 @@
 
             <EditText
                 android:id="@+id/change_nickname"
-                android:layout_width="350dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="33dp"
+                android:layout_marginHorizontal="33dp"
                 android:inputType="text"
                 android:textSize="20sp"
                 android:hint="nickname" />
@@ -62,9 +62,9 @@
 
             <Spinner
                 android:id="@+id/spinner_colleges"
-                android:layout_width="350dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="33dp"
+                android:layout_marginHorizontal="33dp"
                 android:padding="13dp"
                 android:spinnerMode="dialog"
                 android:background="@drawable/gray_input" />
@@ -81,9 +81,9 @@
 
             <Spinner
                 android:id="@+id/spinner_major"
-                android:layout_width="350dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="33dp"
+                android:layout_marginHorizontal="33dp"
                 android:padding="13dp"
                 android:spinnerMode="dialog"
                 android:background="@drawable/gray_input" />
