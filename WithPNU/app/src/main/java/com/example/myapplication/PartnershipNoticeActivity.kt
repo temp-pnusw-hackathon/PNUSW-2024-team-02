@@ -3,12 +3,14 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,14 +45,9 @@ class PartnershipNoticeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge() // Edge-to-edge 화면 모드 활성화
+
         setContentView(R.layout.activity_partnership_notice)
-        // 시스템 바의 패딩을 설정하여 전체 화면 모드 적용
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
         // UI 요소 초기화 및 이벤트 리스너 설정
         periodEditText = findViewById(R.id.periodEditText)
         periodEditText.setOnClickListener {
@@ -74,6 +71,15 @@ class PartnershipNoticeActivity : AppCompatActivity() {
 
         // Spinner 초기화 및 선택 이벤트 설정
         setupCategoriesSpinner()
+
+        // 상단 툴바 추가하기
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼 추가
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        supportActionBar?.title = "제휴공지 작성하기" // 제목 달기
     }
 
     // 카테고리 선택 함수
@@ -254,6 +260,16 @@ class PartnershipNoticeActivity : AppCompatActivity() {
         } else {
             // 필드가 비어 있는 경우 경고 메시지 출력
             Toast.makeText(this, "모든 필드를 채워주세요.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish() // 뒤로가기 버튼 눌렀을 때 액티비티 종료
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }
