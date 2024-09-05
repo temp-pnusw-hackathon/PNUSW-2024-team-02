@@ -26,6 +26,9 @@
             android:name=".TotalReviewActivity"
             android:exported="false" />
         <activity
+            android:name=".total_notice"
+            android:exported="false" />
+        <activity
             android:name=".MoreEditNoticeActivity"
             android:exported="false" />
         <activity
