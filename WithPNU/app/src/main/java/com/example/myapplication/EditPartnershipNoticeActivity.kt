@@ -22,7 +22,6 @@ class EditPartnershipNoticeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_edit_partnership_notice)
 
         partnershipGridView = findViewById(R.id.partnership_gridView)

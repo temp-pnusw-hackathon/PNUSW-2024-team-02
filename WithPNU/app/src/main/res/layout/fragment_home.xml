@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
-
+                    
 
                     <ImageButton
                         android:id="@+id/edu_view_btn"
@@ -230,7 +230,7 @@
                         app:constraint_referenced_ids="imageview1,imageview2,imageview3,imageview4" />
                 </androidx.constraintlayout.motion.widget.MotionLayout>
 
-            </LinearLayout>
+        </LinearLayout>
 
 
             <LinearLayout
@@ -258,14 +258,14 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <!--                    <TextView-->
-                    <!--                        android:id="@+id/view_total_notice_btn"-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:textColor="transparent"-->
-                    <!--                        android:text="전체보기"-->
-                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--                        app:layout_constraintBottom_toBottomOf="parent"/>-->
+<!--                    <TextView-->
+<!--                        android:id="@+id/view_total_notice_btn"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textColor="transparent"-->
+<!--                        android:text="전체보기"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"/>-->
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -280,9 +280,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/notice"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginHorizontal="60dp"
+                    android:layout_marginHorizontal="32dp"
                     android:contentDescription="DB 연결 후 나타나는 정보"
                     tools:itemCount="3" />
 
@@ -299,6 +299,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+        </ScrollView>
 
-</FrameLayout>
+    </FrameLayout>
