@@ -82,12 +82,12 @@ class HomeFragment : Fragment() {
         // 각 버튼 클릭 시 동작
         setupCategoryButtons()
 
-        /*
+        // 제휴 전체보기
         val viewTotalNoticeButton: TextView = view.findViewById(R.id.view_total_notice_btn)
         viewTotalNoticeButton.setOnClickListener {
-            val intent = Intent(activity,                ::class.java) // 이곳을 추가하십시오.
+            val intent = Intent(activity,total_notice::class.java) // 이곳을 추가하십시오.
             startActivity(intent)
-        }*/
+        }
 
         // RecyclerView에 LayoutManager 설정
         binding.notice.layoutManager = LinearLayoutManager(requireContext())
