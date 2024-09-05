@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
@@ -44,6 +45,14 @@ class DetailMoreActivity : AppCompatActivity() {
     private var photoUrls: List<String> = listOf()
 
     private var storeName: String? = null
+    private val reviewWriteLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            // 리뷰 작성이 완료되었으므로 리뷰 목록을 다시 로드
+            loadReviews()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,7 +134,7 @@ class DetailMoreActivity : AppCompatActivity() {
             intent.putExtra("storeName", storeName)
             intent.putExtra("latitude", latitude)
             intent.putExtra("longitude", longitude)
-            startActivity(intent)
+            reviewWriteLauncher.launch(intent)
         }
 
         // 리뷰 전체보기 버튼
@@ -181,24 +190,31 @@ class DetailMoreActivity : AppCompatActivity() {
         if (storeName != null) {
             db.collection("reviews")
                 .whereEqualTo("storeName", storeName)
-                .get()
-                .addOnSuccessListener { documents ->
-                    val reviewContents = mutableListOf<String>()
-
-                    for (document in documents) {
-                        val content = document.getString("content") ?: "내용 없음"
-                        reviewContents.add(content)
+                .orderBy("postedDate", com.google.firebase.firestore.Query.Direction.DESCENDING) // 최신순으로 정렬
+                .addSnapshotListener { snapshots, e ->
+                    if (e != null) {
+                        Log.w("DetailMoreActivity", "리뷰 데이터를 가져오는 중 오류 발생", e)
+                        return@addSnapshotListener
                     }
 
-                    // 리뷰 수 만큼 ListView에 표시
-                    val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, reviewContents)
-                    review_list.adapter = adapter
-                }
-                .addOnFailureListener {
-                    Log.w("DetailMoreActivity", "리뷰 데이터를 가져오는 중 오류 발생")
+                    if (snapshots != null) {
+                        val reviewContents = mutableListOf<String>()
+
+                        for (document in snapshots) {
+                            val content = document.getString("content") ?: "내용 없음"
+                            reviewContents.add(content)
+                        }
+
+                        // 리뷰 수 만큼 ListView에 표시
+                        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, reviewContents)
+                        review_list.adapter = adapter
+                    }
                 }
         }
     }
+
+
+
 
     // MapView 생명주기 관리
     override fun onResume() {
