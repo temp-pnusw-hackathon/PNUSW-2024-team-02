@@ -2,12 +2,15 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListAdapter
@@ -19,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import androidx.constraintlayout.helper.widget.Carousel
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 
 
@@ -82,17 +86,27 @@ class HomeFragment : Fragment() {
         // 각 버튼 클릭 시 동작
         setupCategoryButtons()
 
-        // 제휴 전체보기
+        //공지사항 전체보기 (recycler view)포함
         val viewTotalNoticeButton: TextView = view.findViewById(R.id.view_total_notice_btn)
         viewTotalNoticeButton.setOnClickListener {
             val intent = Intent(activity,total_notice::class.java) // 이곳을 추가하십시오.
             startActivity(intent)
         }
 
+        // 기존 RecyclerView에서 GridView로 변경
+        loadNotices { notice ->
+            val intent = Intent(requireContext(), ViewMoreNotice::class.java)
+            intent.putExtra("noticeTitle", notice.title)  // Notice 제목 전달
+            intent.putExtra("userId", notice.userId)  // 업로드한 사용자 ID 전달
+            startActivity(intent)
+        }
+
+        /*
         // RecyclerView에 LayoutManager 설정
         binding.notice.layoutManager = LinearLayoutManager(requireContext())
         // RecyclerView에 Custom 구분선 추가
         binding.notice.addItemDecoration(CustomItemDecoration(resources.getDrawable(R.drawable.custom_divider, null)))
+        */
 
         // Firestore에서 공지사항 불러오기 및 아이템 클릭 이벤트 처리
         loadNotices { notice ->
@@ -173,7 +187,43 @@ class HomeFragment : Fragment() {
                         userId = document.getString("uid") ?: ""  // Firestore에서 "uid"로 저장된 경우
                     )
                 }
-                binding.notice.adapter = SimpleNoticeAdapter(notices, onItemClick)
+                //binding.notice.adapter = SimpleNoticeAdapter(notices, onItemClick)
+
+                val customFont = ResourcesCompat.getFont(requireContext(), R.font.pretendardregular) // 폰트 파일 불러오기
+
+                // LinearLayout에 3개의 공지사항 추가 (스크롤 없이)
+                val container = binding.notice // XML에서 만든 LinearLayout을 참조
+                container.removeAllViews() // 기존 아이템 제거
+
+                val maxItems = minOf(3, notices.size) // 최대 3개의 아이템만 추가
+                for (i in 0 until maxItems) {
+                    val notice = notices[i]
+                    val textView = TextView(requireContext()).apply {
+                        text = notice.title
+                        textSize = 18f
+                        typeface = customFont
+                        setPadding(16, 16, 16, 16)
+
+                        setOnClickListener {
+                            onItemClick(notice)
+                        }
+                    }
+                    container.addView(textView) // 아이템을 LinearLayout에 추가
+
+                    // 구분선 추가
+                    if (i < maxItems - 1) { // 마지막 아이템에는 구분선 추가 안 함
+                        val divider = View(requireContext()).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                1 // 구분선 높이
+                            ).apply {
+                                setMargins(16, 10, 16, 10) // 구분선 좌우에 여백 추가
+                            }
+                            setBackgroundColor(Color.LTGRAY) // 구분선 색상
+                        }
+                        container.addView(divider) // 구분선 추가
+                    }
+                }
             }
             .addOnFailureListener { e ->
                 e.printStackTrace()
